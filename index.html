@@ -1,0 +1,3162 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BBMW0 Technologies — AI-Powered Software for the Built Environment. Creators of JZW BIM AI, the world's most advanced BIM compliance and project management platform.">
+<meta name="keywords" content="BIM, AI, building information modelling, compliance, AEC, construction, project management, JZW BIM AI">
+<meta name="author" content="Mohamed Zaki Mohamed, BBMW0 Technologies">
+<meta property="og:title" content="BBMW0 Technologies — AI-Powered Software for the Built Environment">
+<meta property="og:description" content="Creators of JZW BIM AI — 787 standards, 13 analysis engines, 7 countries, 5 languages.">
+<meta property="og:image" content="https://bbmw96.github.io/bbmw0-technologies/jzw-logo.png">
+<title>BBMW0 Technologies — AI-Powered Software for the Built Environment</title>
+<link rel="icon" type="image/png" href="jzw-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   CSS VARIABLES & RESET
+   ============================================= */
+:root {
+  --bg-primary: #07090F;
+  --bg-secondary: #0D1220;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2235;
+  --gold: #C9A84C;
+  --gold-light: #E2C47A;
+  --gold-dark: #9A7A30;
+  --gold-glow: rgba(201,168,76,0.15);
+  --blue-accent: #3B82F6;
+  --text-primary: #F0EDE8;
+  --text-secondary: #9CA3AF;
+  --text-muted: #4B5563;
+  --border: rgba(201,168,76,0.15);
+  --border-subtle: rgba(255,255,255,0.06);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-gold: 0 0 40px rgba(201,168,76,0.12);
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --nav-height: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--gold-glow); color: var(--gold-light); }
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: var(--font-body); cursor: pointer; border: none; outline: none; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.container--wide { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 100px 0; }
+.section--sm { padding: 60px 0; }
+.gold { color: var(--gold); }
+.gold-light { color: var(--gold-light); }
+.text-center { text-align: center; }
+.text-secondary { color: var(--text-secondary); }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+/* =============================================
+   BACKGROUND EFFECTS
+   ============================================= */
+.bg-grid {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
+}
+
+.bg-glow {
+  position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* =============================================
+   NAVIGATION
+   ============================================= */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+#nav.scrolled {
+  background: rgba(7,9,15,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+.nav-inner {
+  height: var(--nav-height);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nav-logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 800; color: var(--bg-primary);
+}
+
+.nav-logo span { color: var(--gold); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none;
+}
+
+.nav-links > li { position: relative; }
+
+.nav-links > li > a,
+.nav-links > li > button {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  background: none;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.nav-links > li > a:hover,
+.nav-links > li > button:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.nav-links > li > a.active { color: var(--gold); }
+
+.nav-chevron { font-size: 10px; transition: transform 0.2s; }
+.nav-links > li.open .nav-chevron { transform: rotate(180deg); }
+
+/* Dropdown */
+.nav-dropdown {
+  display: none;
+  position: absolute; top: calc(100% + 8px); left: 0;
+  min-width: 220px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: dropIn 0.2s ease;
+}
+
+.nav-links > li.open .nav-dropdown { display: block; }
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nav-dropdown a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem; color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.nav-dropdown a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+.nav-dropdown .dd-icon { font-size: 1rem; }
+.nav-dropdown .dd-label { font-weight: 500; }
+.nav-dropdown .dd-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+
+.nav-dropdown-divider { height: 1px; background: var(--border-subtle); margin: 6px 0; }
+
+/* Nav right */
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+/* Language selector */
+.lang-selector { position: relative; }
+
+.lang-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.lang-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+.lang-flag { font-size: 1rem; }
+
+.lang-dropdown {
+  display: none;
+  position: absolute; top: calc(100% + 8px); right: 0;
+  width: 320px; max-height: 440px; overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: dropIn 0.2s ease;
+}
+
+.lang-selector.open .lang-dropdown { display: block; }
+
+.lang-region-title {
+  padding: 6px 12px 4px;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--gold);
+}
+
+.lang-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer; transition: var(--transition);
+}
+
+.lang-item:hover { background: rgba(201,168,76,0.08); }
+.lang-item.active { background: var(--gold-glow); }
+
+.lang-item .flag { font-size: 1.1rem; }
+.lang-item .lang-name { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+.lang-item .lang-native { font-size: 0.75rem; color: var(--text-secondary); margin-left: auto; }
+.lang-item .published-badge {
+  font-size: 0.65rem; background: var(--gold); color: var(--bg-primary);
+  padding: 1px 6px; border-radius: 20px; font-weight: 700;
+}
+
+/* CTA Button */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem; font-weight: 600;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+.btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+.btn--lg { padding: 14px 32px; font-size: 1rem; border-radius: var(--radius); }
+.btn--sm { padding: 7px 16px; font-size: 0.8rem; }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; padding: 8px;
+}
+.nav-hamburger span { width: 22px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: var(--transition); }
+
+/* Mobile menu */
+#mobile-menu {
+  display: none; position: fixed; top: var(--nav-height); left: 0; right: 0;
+  background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+  padding: 20px 24px; z-index: 999;
+  flex-direction: column; gap: 4px;
+}
+#mobile-menu.open { display: flex; }
+#mobile-menu a, #mobile-menu button {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; color: var(--text-secondary);
+  background: none; text-align: left; width: 100%;
+  transition: var(--transition);
+}
+#mobile-menu a:hover, #mobile-menu button:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+
+/* =============================================
+   HERO
+   ============================================= */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  padding-top: var(--nav-height);
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background: 
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(59,130,246,0.05) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.hero-particles {
+  position: absolute; inset: 0; overflow: hidden;
+}
+
+.particle {
+  position: absolute; width: 2px; height: 2px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: float linear infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  text-align: center; padding: 80px 0;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 100px;
+  font-size: 0.78rem; font-weight: 600; color: var(--gold);
+  letter-spacing: 0.5px;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  animation: fadeInUp 0.6s 0.1s ease both;
+}
+
+.hero-title .line-gold {
+  display: block; color: var(--gold);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 640px; margin: 0 auto 48px;
+  line-height: 1.7;
+  animation: fadeInUp 0.6s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 64px;
+  animation: fadeInUp 0.6s 0.3s ease both;
+}
+
+.hero-stats {
+  display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+  max-width: 700px; margin: 0 auto;
+  animation: fadeInUp 0.6s 0.4s ease both;
+}
+
+.hero-stat {
+  padding: 24px 32px; text-align: center; flex: 1;
+  border-right: 1px solid var(--border);
+  min-width: 120px;
+}
+
+.hero-stat:last-child { border-right: none; }
+
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-size: 2.2rem; font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* =============================================
+   MARQUEE
+   ============================================= */
+.marquee-section {
+  padding: 20px 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex; gap: 48px;
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
+  white-space: nowrap; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.marquee-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+
+/* =============================================
+   SECTION HEADERS
+   ============================================= */
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.section-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 600px; line-height: 1.7;
+}
+
+/* =============================================
+   PRODUCT SECTION
+   ============================================= */
+#product { background: var(--bg-secondary); }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  margin-top: 60px;
+}
+
+.product-visual {
+  position: relative;
+}
+
+.product-mockup {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow), var(--shadow-gold);
+}
+
+.mockup-header {
+  background: #0A0E1A;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.mockup-dot.red { background: #FF5F57; }
+.mockup-dot.yellow { background: #FEBC2E; }
+.mockup-dot.green { background: #28C840; }
+.mockup-title { font-size: 0.75rem; color: var(--text-muted); margin-left: 8px; font-family: var(--font-mono); }
+
+.mockup-body { padding: 20px; }
+
+.mockup-row {
+  display: flex; gap: 12px; margin-bottom: 12px;
+}
+
+.mockup-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px; padding: 14px; flex: 1;
+}
+
+.mockup-card-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+.mockup-card-value { font-size: 1.1rem; font-weight: 700; color: var(--gold); font-family: var(--font-mono); }
+.mockup-card-sub { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
+
+.mockup-bar {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px; padding: 14px;
+  margin-bottom: 12px;
+}
+
+.mockup-bar-label { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+.mockup-bar-track {
+  height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;
+}
+
+.mockup-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  animation: barFill 1.5s ease forwards;
+}
+
+@keyframes barFill { from { width: 0; } }
+
+.mockup-list { background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; }
+.mockup-list-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.75rem; color: var(--text-secondary);
+}
+.mockup-list-item:last-child { border-bottom: none; }
+.mockup-list-item .status { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.status.pass { background: #22C55E; }
+.status.warn { background: #EAB308; }
+.status.info { background: var(--blue-accent); }
+
+.product-info { padding: 20px 0; }
+
+.product-tags {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0;
+}
+
+.tag {
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  font-size: 0.75rem; color: var(--text-secondary);
+}
+
+.tag.tag-gold {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.3);
+  color: var(--gold-light);
+}
+
+.product-feature-list {
+  display: flex; flex-direction: column; gap: 14px; margin: 28px 0;
+}
+
+.product-feature-item {
+  display: flex; align-items: flex-start; gap: 12px;
+}
+
+.feature-check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; color: var(--gold); margin-top: 2px;
+}
+
+.feature-text strong { font-weight: 600; color: var(--text-primary); }
+.feature-text p { font-size: 0.875rem; color: var(--text-secondary); margin-top: 2px; }
+
+.product-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+
+/* =============================================
+   ENGINES / FEATURES
+   ============================================= */
+#engines { background: var(--bg-primary); }
+
+.engines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px; margin-top: 60px;
+}
+
+.engine-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: var(--transition);
+  position: relative; overflow: hidden;
+}
+
+.engine-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: var(--transition);
+}
+
+.engine-card:hover { border-color: var(--border); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+.engine-card:hover::before { opacity: 1; }
+
+.engine-icon {
+  width: 48px; height: 48px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 16px;
+}
+
+.engine-name { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+.engine-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+
+.engine-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.engine-tag {
+  font-size: 0.68rem; padding: 3px 8px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle);
+  border-radius: 4px; color: var(--text-muted);
+}
+
+/* =============================================
+   COUNTRIES / STANDARDS
+   ============================================= */
+#standards { background: var(--bg-secondary); }
+
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px; margin-top: 60px;
+}
+
+.country-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: var(--transition);
+}
+
+.country-card:hover { border-color: var(--border); transform: translateY(-2px); }
+
+.country-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+
+.country-flag { font-size: 2rem; }
+.country-name { font-weight: 700; font-size: 1.05rem; }
+.country-region { font-size: 0.75rem; color: var(--text-muted); }
+
+.standards-bar {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+
+.standards-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+.standards-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold)); border-radius: 3px; }
+.standards-count { font-size: 0.8rem; font-weight: 700; color: var(--gold); min-width: 40px; text-align: right; }
+
+.country-standards { display: flex; flex-wrap: wrap; gap: 6px; }
+.country-std {
+  font-size: 0.68rem; padding: 3px 8px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle);
+  border-radius: 4px; color: var(--text-secondary);
+}
+
+/* =============================================
+   PRICING
+   ============================================= */
+#pricing { background: var(--bg-primary); }
+
+.pricing-toggle {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin: 32px 0 48px;
+}
+
+.pricing-toggle button {
+  padding: 8px 20px; border-radius: 100px;
+  font-size: 0.875rem; font-weight: 500;
+  background: none; color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.pricing-toggle button.active {
+  background: rgba(201,168,76,0.1); color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.3);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px; align-items: stretch;
+}
+
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  display: flex; flex-direction: column;
+  transition: var(--transition);
+  position: relative; overflow: hidden;
+}
+
+.pricing-card.featured {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #111827 0%, #1a1e2e 100%);
+  box-shadow: var(--shadow-gold);
+}
+
+.pricing-card.featured::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+}
+
+.pricing-card:hover { transform: translateY(-4px); }
+
+.pricing-badge {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--gold); color: var(--bg-primary);
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;
+  padding: 3px 10px; border-radius: 100px;
+  text-transform: uppercase;
+}
+
+.pricing-tier { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+.pricing-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+.pricing-desc { font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
+
+.pricing-price {
+  margin-bottom: 28px;
+}
+
+.pricing-amount {
+  font-family: var(--font-display); font-size: 2.8rem; font-weight: 800;
+  color: var(--gold); line-height: 1;
+}
+
+.pricing-period { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+.pricing-features {
+  flex: 1; list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 28px;
+}
+
+.pricing-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.85rem; color: var(--text-secondary);
+}
+
+.pricing-features li::before {
+  content: '✓'; color: var(--gold); font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+
+.pricing-features li.na {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.pricing-features li.na::before { content: '—'; color: var(--text-muted); }
+
+.pricing-cta { margin-top: auto; }
+
+/* =============================================
+   DOWNLOAD
+   ============================================= */
+#download { background: var(--bg-secondary); }
+
+.download-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 60px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-gold);
+}
+
+.download-box::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse at center top, rgba(201,168,76,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.download-version {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 100px; padding: 4px 14px;
+  font-size: 0.78rem; font-weight: 600; color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.download-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 16px;
+}
+
+.download-desc { font-size: 1rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto 40px; }
+
+.download-options {
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.download-meta {
+  display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap;
+}
+
+.download-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.825rem; color: var(--text-muted);
+}
+
+.download-meta-item strong { color: var(--text-secondary); }
+
+.system-req {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-top: 40px; text-align: left;
+}
+
+.sys-req-item {
+  background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 16px;
+}
+
+.sys-req-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+.sys-req-value { font-size: 0.875rem; color: var(--text-secondary); }
+
+/* =============================================
+   ABOUT
+   ============================================= */
+#about { background: var(--bg-primary); }
+
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  margin-top: 60px;
+}
+
+.about-timeline {
+  display: flex; flex-direction: column; gap: 24px;
+  position: relative;
+}
+
+.about-timeline::before {
+  content: '';
+  position: absolute; top: 0; bottom: 0; left: 19px;
+  width: 1px; background: var(--border);
+}
+
+.timeline-item {
+  display: flex; gap: 20px;
+}
+
+.timeline-dot {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--bg-card); border: 2px solid var(--gold);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; z-index: 1;
+}
+
+.timeline-content {}
+.timeline-year { font-size: 0.7rem; color: var(--gold); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.timeline-title { font-weight: 600; font-size: 0.95rem; margin: 2px 0; }
+.timeline-desc { font-size: 0.825rem; color: var(--text-secondary); }
+
+.about-text {}
+.about-text .section-title { margin-bottom: 24px; }
+.about-text p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; font-size: 0.95rem; }
+
+.about-values {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px;
+}
+
+.value-item {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 16px;
+}
+
+.value-icon { font-size: 1.3rem; margin-bottom: 8px; }
+.value-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.value-desc { font-size: 0.78rem; color: var(--text-secondary); }
+
+/* =============================================
+   TESTIMONIALS / TRUST
+   ============================================= */
+#trust { background: var(--bg-secondary); }
+
+.trust-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 60px;
+}
+
+.trust-stat {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); padding: 32px 24px; text-align: center;
+}
+
+.trust-stat-value {
+  font-family: var(--font-display); font-size: 3rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1;
+}
+
+.trust-stat-label { font-size: 0.825rem; color: var(--text-secondary); margin-top: 8px; }
+
+/* =============================================
+   FAQ
+   ============================================= */
+#faq { background: var(--bg-primary); }
+
+.faq-list {
+  max-width: 800px; margin: 60px auto 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.faq-item {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius); overflow: hidden;
+  transition: var(--transition);
+}
+
+.faq-item.open { border-color: var(--border); }
+
+.faq-question {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px 24px; background: none; text-align: left;
+  font-size: 0.95rem; font-weight: 600; color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.faq-question:hover { color: var(--gold); }
+.faq-item.open .faq-question { color: var(--gold); }
+
+.faq-chevron {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border: 1px solid var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; transition: transform 0.3s;
+}
+
+.faq-item.open .faq-chevron { transform: rotate(180deg); border-color: var(--gold); color: var(--gold); }
+
+.faq-answer {
+  max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+}
+
+.faq-item.open .faq-answer { max-height: 400px; }
+
+.faq-answer-inner {
+  padding: 0 24px 20px;
+  font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+/* =============================================
+   CONTACT
+   ============================================= */
+#contact { background: var(--bg-secondary); }
+
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; margin-top: 60px; align-items: start;
+}
+
+.contact-info {}
+.contact-info p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.7; }
+
+.contact-links { display: flex; flex-direction: column; gap: 12px; }
+
+.contact-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: var(--transition); font-size: 0.875rem;
+}
+
+.contact-link:hover { border-color: var(--gold); transform: translateX(4px); }
+.contact-link-icon { font-size: 1.2rem; }
+.contact-link-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.contact-link-value { color: var(--text-primary); font-weight: 500; }
+
+/* Contact Form */
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.3px; }
+
+.form-input, .form-select, .form-textarea {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-family: var(--font-body); font-size: 0.875rem; color: var(--text-primary);
+  transition: var(--transition); width: 100%;
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+.form-select option { background: var(--bg-card); }
+.form-textarea { resize: vertical; min-height: 120px; }
+
+.form-success {
+  display: none;
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+  border-radius: var(--radius-sm); padding: 16px;
+  font-size: 0.875rem; color: #22C55E; text-align: center;
+}
+
+/* =============================================
+   AI CHAT WIDGET
+   ============================================= */
+#ai-chat-widget {
+  position: fixed; bottom: 24px; right: 24px; z-index: 900;
+}
+
+.ai-chat-btn {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 50%; box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: var(--bg-primary);
+  transition: var(--transition);
+  position: relative;
+}
+
+.ai-chat-btn:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(201,168,76,0.5); }
+
+.ai-chat-notification {
+  position: absolute; top: -2px; right: -2px;
+  width: 16px; height: 16px; background: #22C55E;
+  border-radius: 50%; border: 2px solid var(--bg-primary);
+  animation: pulse 2s infinite;
+}
+
+.ai-chat-panel {
+  display: none;
+  position: absolute; bottom: 76px; right: 0;
+  width: 380px; height: 520px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-chat-panel.open { display: flex; }
+
+.ai-chat-header {
+  padding: 16px 20px; display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+
+.ai-chat-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; color: var(--bg-primary);
+  flex-shrink: 0;
+}
+
+.ai-chat-name { font-weight: 600; font-size: 0.9rem; }
+.ai-chat-status { font-size: 0.72rem; color: #22C55E; }
+
+.ai-chat-close {
+  margin-left: auto; background: none; font-size: 1.1rem;
+  color: var(--text-muted); padding: 4px; transition: var(--transition);
+}
+
+.ai-chat-close:hover { color: var(--text-primary); }
+
+.ai-chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.chat-msg {
+  display: flex; gap: 10px; align-items: flex-start;
+  animation: fadeInUp 0.3s ease;
+}
+
+.chat-msg.user { flex-direction: row-reverse; }
+
+.chat-msg-avatar {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+}
+
+.chat-msg.user .chat-msg-avatar { background: var(--gold); color: var(--bg-primary); font-weight: 700; }
+
+.chat-msg-bubble {
+  max-width: 75%; padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.825rem; line-height: 1.6;
+}
+
+.chat-msg.bot .chat-msg-bubble {
+  background: var(--bg-secondary); color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px 12px 12px 12px;
+}
+
+.chat-msg.user .chat-msg-bubble {
+  background: rgba(201,168,76,0.15); color: var(--text-primary);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 12px 4px 12px 12px;
+}
+
+.chat-typing {
+  display: flex; gap: 4px; align-items: center; padding: 10px 14px;
+}
+
+.chat-typing span {
+  width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%;
+  animation: typingDot 1.2s infinite;
+}
+
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+.ai-chat-quick {
+  padding: 8px 12px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.quick-btn {
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle);
+  border-radius: 100px; font-size: 0.72rem; color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.quick-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-glow); }
+
+.ai-chat-input-row {
+  padding: 12px 16px;
+  display: flex; gap: 8px; align-items: center;
+  border-top: 1px solid var(--border-subtle);
+}
+
+#ai-chat-input {
+  flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+  border-radius: 100px; padding: 9px 16px;
+  font-family: var(--font-body); font-size: 0.825rem; color: var(--text-primary);
+  outline: none; transition: var(--transition);
+}
+
+#ai-chat-input:focus { border-color: var(--gold); }
+#ai-chat-input::placeholder { color: var(--text-muted); }
+
+.ai-send-btn {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: var(--bg-primary); flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.ai-send-btn:hover { transform: scale(1.1); }
+
+/* =============================================
+   FOOTER
+   ============================================= */
+#footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 60px 0 32px;
+}
+
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;
+}
+
+.footer-brand {}
+.footer-brand .nav-logo { margin-bottom: 16px; font-size: 1.1rem; }
+.footer-brand p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; max-width: 280px; }
+
+.footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+
+.footer-social {
+  width: 36px; height: 36px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; transition: var(--transition);
+}
+
+.footer-social:hover { border-color: var(--gold); color: var(--gold); }
+
+.footer-col-title { font-weight: 700; font-size: 0.825rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-primary); margin-bottom: 16px; }
+
+.footer-links { display: flex; flex-direction: column; gap: 8px; list-style: none; }
+.footer-links a { font-size: 0.85rem; color: var(--text-muted); transition: var(--transition); }
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border-subtle); padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+
+.footer-bottom p { font-size: 0.8rem; color: var(--text-muted); }
+.footer-bottom a { color: var(--gold); }
+
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 0.8rem; color: var(--text-muted); transition: var(--transition); }
+.footer-legal a:hover { color: var(--gold); }
+
+/* =============================================
+   COOKIE BANNER
+   ============================================= */
+#cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
+  background: var(--bg-card); border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+
+#cookie-banner p { font-size: 0.8rem; color: var(--text-secondary); flex: 1; }
+#cookie-banner a { color: var(--gold); }
+
+.cookie-actions { display: flex; gap: 8px; }
+
+/* =============================================
+   BACK TO TOP
+   ============================================= */
+#back-to-top {
+  position: fixed; bottom: 96px; right: 24px; z-index: 800;
+  width: 42px; height: 42px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: var(--text-secondary);
+  opacity: 0; visibility: hidden; transition: var(--transition);
+  cursor: pointer;
+}
+
+#back-to-top.visible { opacity: 1; visibility: visible; }
+#back-to-top:hover { background: var(--gold-glow); border-color: var(--gold); color: var(--gold); }
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+.reveal {
+  opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .trust-stats { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero-stats { flex-direction: column; }
+  .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .hero-stat:last-child { border-bottom: none; }
+  .product-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .download-box { padding: 40px 24px; }
+  .about-values { grid-template-columns: 1fr; }
+  .ai-chat-panel { width: 340px; }
+  .countries-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background Effects -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<!-- =============================================
+     NAVIGATION
+     ============================================= -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav-inner">
+
+      <!-- Logo -->
+      <a href="#hero" class="nav-logo" aria-label="BBMW0 Technologies Home">
+        <img src="jzw-logo.png" alt="JZW BIM AI Logo" style="width:36px;height:36px;border-radius:8px;object-fit:cover;">
+        <span>BBMW0<span> Technologies</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links" id="main-nav">
+
+        <li>
+          <a href="#product" class="nav-link-item">Product</a>
+        </li>
+
+        <li id="dd-features">
+          <button onclick="toggleDropdown('dd-features')" aria-expanded="false" aria-haspopup="true">
+            Features <span class="nav-chevron">▾</span>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="#engines" role="menuitem">
+              <span class="dd-icon">⚙️</span>
+              <div><div class="dd-label">Analysis Engines</div><div class="dd-sub">13 AI-powered engines</div></div>
+            </a>
+            <a href="#standards" role="menuitem">
+              <span class="dd-icon">📋</span>
+              <div><div class="dd-label">Standards Library</div><div class="dd-sub">787 standards across 7 countries</div></div>
+            </a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="#download" role="menuitem">
+              <span class="dd-icon">🌍</span>
+              <div><div class="dd-label">Multi-Language</div><div class="dd-sub">5 languages supported</div></div>
+            </a>
+          </div>
+        </li>
+
+        <li>
+          <a href="#pricing" class="nav-link-item">Pricing</a>
+        </li>
+
+        <li id="dd-company">
+          <button onclick="toggleDropdown('dd-company')" aria-expanded="false" aria-haspopup="true">
+            Company <span class="nav-chevron">▾</span>
+          </button>
+          <div class="nav-dropdown" role="menu">
+            <a href="#about" role="menuitem">
+              <span class="dd-icon">🏢</span>
+              <div><div class="dd-label">About Us</div><div class="dd-sub">Our story and mission</div></div>
+            </a>
+            <a href="#trust" role="menuitem">
+              <span class="dd-icon">📊</span>
+              <div><div class="dd-label">By the Numbers</div><div class="dd-sub">Platform statistics</div></div>
+            </a>
+            <a href="#contact" role="menuitem">
+              <span class="dd-icon">✉️</span>
+              <div><div class="dd-label">Contact</div><div class="dd-sub">Get in touch with us</div></div>
+            </a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" role="menuitem">
+              <span class="dd-icon">🐙</span>
+              <div><div class="dd-label">GitHub</div><div class="dd-sub">bbmw96/jzw-bim-ai</div></div>
+            </a>
+          </div>
+        </li>
+
+        <li>
+          <a href="#faq" class="nav-link-item">FAQ</a>
+        </li>
+
+      </ul>
+
+      <!-- Right side -->
+      <div class="nav-right">
+
+        <!-- Language Selector -->
+        <div class="lang-selector" id="lang-selector" aria-label="Language selector">
+          <button class="lang-btn" onclick="toggleLang()" aria-expanded="false" aria-haspopup="listbox">
+            <span class="lang-flag" id="current-flag">🇬🇧</span>
+            <span id="current-lang">EN</span>
+            <span>▾</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown" role="listbox">
+
+            <div class="lang-region-title">Published Languages</div>
+            <div class="lang-item active" onclick="setLang('en','🇬🇧','EN')" data-lang="en" role="option">
+              <span class="flag">🇬🇧</span>
+              <span class="lang-name">English (UK)</span>
+              <span class="lang-native">English</span>
+              <span class="published-badge">Live</span>
+            </div>
+            <div class="lang-item" onclick="setLang('ja','🇯🇵','JA')" data-lang="ja" role="option">
+              <span class="flag">🇯🇵</span>
+              <span class="lang-name">Japanese</span>
+              <span class="lang-native">日本語</span>
+              <span class="published-badge">Live</span>
+            </div>
+            <div class="lang-item" onclick="setLang('zh','🇨🇳','ZH')" data-lang="zh" role="option">
+              <span class="flag">🇨🇳</span>
+              <span class="lang-name">Chinese Simplified</span>
+              <span class="lang-native">中文简体</span>
+              <span class="published-badge">Live</span>
+            </div>
+            <div class="lang-item" onclick="setLang('ms','🇲🇾','MS')" data-lang="ms" role="option">
+              <span class="flag">🇲🇾</span>
+              <span class="lang-name">Malay</span>
+              <span class="lang-native">Bahasa Melayu</span>
+              <span class="published-badge">Live</span>
+            </div>
+            <div class="lang-item" onclick="setLang('th','🇹🇭','TH')" data-lang="th" role="option">
+              <span class="flag">🇹🇭</span>
+              <span class="lang-name">Thai</span>
+              <span class="lang-native">ภาษาไทย</span>
+              <span class="published-badge">Live</span>
+            </div>
+
+            <div class="lang-region-title" style="margin-top:8px">Other Languages</div>
+            <div class="lang-item" onclick="setLang('ar','🇸🇦','AR')" data-lang="ar" role="option"><span class="flag">🇸🇦</span><span class="lang-name">Arabic</span><span class="lang-native">العربية</span></div>
+            <div class="lang-item" onclick="setLang('zh-tw','🇹🇼','ZH-TW')" data-lang="zh-tw" role="option"><span class="flag">🇹🇼</span><span class="lang-name">Chinese Traditional</span><span class="lang-native">中文繁體</span></div>
+            <div class="lang-item" onclick="setLang('ko','🇰🇷','KO')" data-lang="ko" role="option"><span class="flag">🇰🇷</span><span class="lang-name">Korean</span><span class="lang-native">한국어</span></div>
+            <div class="lang-item" onclick="setLang('id','🇮🇩','ID')" data-lang="id" role="option"><span class="flag">🇮🇩</span><span class="lang-name">Indonesian</span><span class="lang-native">Bahasa Indonesia</span></div>
+            <div class="lang-item" onclick="setLang('vi','🇻🇳','VI')" data-lang="vi" role="option"><span class="flag">🇻🇳</span><span class="lang-name">Vietnamese</span><span class="lang-native">Tiếng Việt</span></div>
+            <div class="lang-item" onclick="setLang('es','🇪🇸','ES')" data-lang="es" role="option"><span class="flag">🇪🇸</span><span class="lang-name">Spanish</span><span class="lang-native">Español</span></div>
+            <div class="lang-item" onclick="setLang('fr','🇫🇷','FR')" data-lang="fr" role="option"><span class="flag">🇫🇷</span><span class="lang-name">French</span><span class="lang-native">Français</span></div>
+            <div class="lang-item" onclick="setLang('de','🇩🇪','DE')" data-lang="de" role="option"><span class="flag">🇩🇪</span><span class="lang-name">German</span><span class="lang-native">Deutsch</span></div>
+            <div class="lang-item" onclick="setLang('pt','🇵🇹','PT')" data-lang="pt" role="option"><span class="flag">🇵🇹</span><span class="lang-name">Portuguese</span><span class="lang-native">Português</span></div>
+            <div class="lang-item" onclick="setLang('it','🇮🇹','IT')" data-lang="it" role="option"><span class="flag">🇮🇹</span><span class="lang-name">Italian</span><span class="lang-native">Italiano</span></div>
+            <div class="lang-item" onclick="setLang('ru','🇷🇺','RU')" data-lang="ru" role="option"><span class="flag">🇷🇺</span><span class="lang-name">Russian</span><span class="lang-native">Русский</span></div>
+            <div class="lang-item" onclick="setLang('hi','🇮🇳','HI')" data-lang="hi" role="option"><span class="flag">🇮🇳</span><span class="lang-name">Hindi</span><span class="lang-native">हिन्दी</span></div>
+            <div class="lang-item" onclick="setLang('tr','🇹🇷','TR')" data-lang="tr" role="option"><span class="flag">🇹🇷</span><span class="lang-name">Turkish</span><span class="lang-native">Türkçe</span></div>
+            <div class="lang-item" onclick="setLang('nl','🇳🇱','NL')" data-lang="nl" role="option"><span class="flag">🇳🇱</span><span class="lang-name">Dutch</span><span class="lang-native">Nederlands</span></div>
+            <div class="lang-item" onclick="setLang('pl','🇵🇱','PL')" data-lang="pl" role="option"><span class="flag">🇵🇱</span><span class="lang-name">Polish</span><span class="lang-native">Polski</span></div>
+            <div class="lang-item" onclick="setLang('sv','🇸🇪','SV')" data-lang="sv" role="option"><span class="flag">🇸🇪</span><span class="lang-name">Swedish</span><span class="lang-native">Svenska</span></div>
+            <div class="lang-item" onclick="setLang('bn','🇧🇩','BN')" data-lang="bn" role="option"><span class="flag">🇧🇩</span><span class="lang-name">Bengali</span><span class="lang-native">বাংলা</span></div>
+          </div>
+        </div>
+
+        <!-- Download CTA -->
+        <a href="#download" class="btn btn-gold btn--sm" aria-label="Download JZW BIM AI">
+          ⬇ Download
+        </a>
+
+        <!-- Hamburger -->
+        <button class="nav-hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="#product" onclick="closeMobileMenu()">Product</a>
+  <a href="#engines" onclick="closeMobileMenu()">Features &amp; Engines</a>
+  <a href="#standards" onclick="closeMobileMenu()">Standards Library</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#download" onclick="closeMobileMenu()">Download</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section id="hero" aria-label="Hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-particles" id="particles" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero-content">
+
+      <div style="margin-bottom:24px;animation:fadeInUp 0.5s ease both">
+        <img src="jzw-logo.png" alt="JZW BIM AI" style="width:110px;height:110px;border-radius:20px;box-shadow:0 8px 40px rgba(201,168,76,0.25);margin:0 auto;display:block;">
+      </div>
+
+      <div class="hero-badge">
+        <span>Now Available — JZW BIM AI v5.8.0</span>
+      </div>
+
+      <h1 class="hero-title">
+        AI-Powered Software<br>
+        <span class="line-gold">for the Built Environment</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        BBMW0 Technologies creates intelligent compliance and project management platforms for 
+        AEC professionals worldwide. Our flagship product, JZW BIM AI, delivers 787 building 
+        standards across 7 countries — all in one application.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-gold btn--lg">
+          ⬇ Download Free Trial
+        </a>
+        <a href="#product" class="btn btn-outline btn--lg">
+          Explore JZW BIM AI
+        </a>
+        <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="btn btn-ghost btn--lg">
+          🐙 GitHub
+        </a>
+      </div>
+
+      <div class="hero-stats" role="list">
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-value">787</div>
+          <div class="hero-stat-label">Building Standards</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-value">13</div>
+          <div class="hero-stat-label">AI Engines</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-value">7</div>
+          <div class="hero-stat-label">Countries</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-value">5</div>
+          <div class="hero-stat-label">Languages</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-value">v5.8</div>
+          <div class="hero-stat-label">Latest Version</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item"><span class="marquee-dot"></span>ISO 19650</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>BS EN 1990</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Building Safety Act 2022</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>JASS Standards Japan</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>MS Standards Malaysia</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Singapore BCA</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Thai Industrial Standards</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>GB Standards China</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Approved Document A–R</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Bruneian Standards</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>NBS Specification</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>IFC 4.3</div>
+    <!-- Duplicate for seamless loop -->
+    <div class="marquee-item"><span class="marquee-dot"></span>ISO 19650</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>BS EN 1990</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Building Safety Act 2022</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>JASS Standards Japan</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>MS Standards Malaysia</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Singapore BCA</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Thai Industrial Standards</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>GB Standards China</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Approved Document A–R</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Bruneian Standards</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>NBS Specification</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>IFC 4.3</div>
+  </div>
+</div>
+
+<!-- =============================================
+     PRODUCT
+     ============================================= -->
+<section id="product" class="section" aria-labelledby="product-title">
+  <div class="container">
+
+    <div class="reveal">
+      <div class="section-eyebrow">Our Flagship Product</div>
+      <h2 class="section-title" id="product-title">Introducing <span class="gold">JZW BIM AI</span></h2>
+      <p class="section-desc">
+        The world's most comprehensive AI-powered BIM compliance and project management platform, 
+        purpose-built for AEC professionals across the United Kingdom, Asia, and beyond.
+      </p>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- Mockup -->
+      <div class="product-visual reveal">
+        <div class="product-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dot red"></div>
+            <div class="mockup-dot yellow"></div>
+            <div class="mockup-dot green"></div>
+            <img src="jzw-logo.png" alt="" style="width:20px;height:20px;border-radius:4px;margin-left:8px;">
+            <div class="mockup-title">JZW BIM AI — v5.8.0</div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-row">
+              <div class="mockup-card">
+                <div class="mockup-card-label">Compliance Score</div>
+                <div class="mockup-card-value">94.2%</div>
+                <div class="mockup-card-sub">ISO 19650 Verified</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mockup-card-label">Standards Loaded</div>
+                <div class="mockup-card-value">787</div>
+                <div class="mockup-card-sub">7 Countries Active</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mockup-card-label">Risk Index</div>
+                <div class="mockup-card-value">Low</div>
+                <div class="mockup-card-sub">2 items flagged</div>
+              </div>
+            </div>
+            <div class="mockup-bar">
+              <div class="mockup-bar-label">BIM Maturity Level — Level 2 Progress</div>
+              <div class="mockup-bar-track">
+                <div class="mockup-bar-fill" style="width:76%"></div>
+              </div>
+            </div>
+            <div class="mockup-list">
+              <div class="mockup-list-item"><div class="status pass"></div>BS EN 1990 Structural Assessment — PASSED</div>
+              <div class="mockup-list-item"><div class="status pass"></div>ISO 19650-2 Information Delivery — COMPLIANT</div>
+              <div class="mockup-list-item"><div class="status warn"></div>Building Safety Act 2022 — 2 ITEMS PENDING</div>
+              <div class="mockup-list-item"><div class="status info"></div>IFC 4.3 Export — READY</div>
+              <div class="mockup-list-item"><div class="status pass"></div>Fire Safety Order 2005 — COMPLIANT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-info reveal">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+          <img src="jzw-logo.png" alt="JZW BIM AI" style="width:72px;height:72px;border-radius:14px;box-shadow:0 4px 20px rgba(201,168,76,0.2);">
+          <div>
+            <div class="section-eyebrow" style="margin-bottom:4px">JZW BIM AI v5.8.0</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);">by BBMW0 Technologies</div>
+          </div>
+        </div>
+        <h3 class="section-title" style="font-size:2.2rem">One platform.<br>Every standard.</h3>
+        <p style="color:var(--text-secondary); margin-bottom:0; line-height:1.7; font-size:0.95rem">
+          JZW BIM AI brings together 787 building regulations, codes, and standards from 7 countries 
+          into a single intelligent desktop application. Built on C# .NET 8 WPF with 13 AI analysis 
+          engines, it reads your project data and automatically identifies compliance gaps before they 
+          become costly problems.
+        </p>
+
+        <div class="product-tags">
+          <span class="tag tag-gold">🇬🇧 United Kingdom</span>
+          <span class="tag tag-gold">🇸🇬 Singapore</span>
+          <span class="tag tag-gold">🇲🇾 Malaysia</span>
+          <span class="tag tag-gold">🇯🇵 Japan</span>
+          <span class="tag tag-gold">🇹🇭 Thailand</span>
+          <span class="tag tag-gold">🇨🇳 China</span>
+          <span class="tag tag-gold">🇧🇳 Brunei</span>
+          <span class="tag">C# .NET 8</span>
+          <span class="tag">WPF + WebView2</span>
+          <span class="tag">SHA-256 Signed</span>
+          <span class="tag">Offline-First</span>
+        </div>
+
+        <div class="product-feature-list">
+          <div class="product-feature-item">
+            <div class="feature-check" aria-hidden="true">✓</div>
+            <div class="feature-text">
+              <strong>787 Building Standards &amp; Regulations</strong>
+              <p>Covers structural, fire, accessibility, energy, and BIM information management standards for all 7 supported countries.</p>
+            </div>
+          </div>
+          <div class="product-feature-item">
+            <div class="feature-check" aria-hidden="true">✓</div>
+            <div class="feature-text">
+              <strong>13 AI-Powered Analysis Engines</strong>
+              <p>From IFC geometry parsing to risk scoring and NLP-based regulatory cross-referencing.</p>
+            </div>
+          </div>
+          <div class="product-feature-item">
+            <div class="feature-check" aria-hidden="true">✓</div>
+            <div class="feature-text">
+              <strong>Multilingual AI Description Generator</strong>
+              <p>Auto-generates project descriptions in English, Japanese, Chinese, Malay, and Thai.</p>
+            </div>
+          </div>
+          <div class="product-feature-item">
+            <div class="feature-check" aria-hidden="true">✓</div>
+            <div class="feature-text">
+              <strong>Security Shield Module</strong>
+              <p>Enterprise-grade anti-tamper protection with CSP headers, API endpoint guards, and licence key validation.</p>
+            </div>
+          </div>
+          <div class="product-feature-item">
+            <div class="feature-check" aria-hidden="true">✓</div>
+            <div class="feature-text">
+              <strong>Microsoft Outlook Integration</strong>
+              <p>OAuth2 PKCE-based Outlook connectivity for project communications and scheduling.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <a href="#download" class="btn btn-gold btn--lg">Download Now — Free Trial</a>
+          <a href="#pricing" class="btn btn-outline">View Pricing</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     ENGINES
+     ============================================= -->
+<section id="engines" class="section" aria-labelledby="engines-title">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-eyebrow">Under the Hood</div>
+      <h2 class="section-title" id="engines-title">13 <span class="gold">Analysis Engines</span></h2>
+      <p class="section-desc" style="margin:0 auto">
+        Each engine is purpose-built for a specific domain of AEC compliance and project intelligence.
+        Together they form the most comprehensive automated compliance platform available.
+      </p>
+    </div>
+
+    <div class="engines-grid">
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">📐</div>
+        <div class="engine-name">Structural Compliance Engine</div>
+        <div class="engine-desc">Cross-references structural design parameters against Eurocode, BS EN 1990–1999, and national annexes to flag non-compliances automatically.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">BS EN 1990</span>
+          <span class="engine-tag">Eurocode</span>
+          <span class="engine-tag">National Annexes</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🔥</div>
+        <div class="engine-name">Fire Safety Analysis Engine</div>
+        <div class="engine-desc">Analyses fire compartmentation, means of escape, sprinkler requirements, and fire resistance ratings against Approved Document B and international equivalents.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">ADB 2019</span>
+          <span class="engine-tag">Fire Safety Order</span>
+          <span class="engine-tag">BS 9999</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">♿</div>
+        <div class="engine-name">Accessibility Compliance Engine</div>
+        <div class="engine-desc">Checks designs for compliance with Approved Document M, BS 8300, and equivalent accessibility standards across all 7 supported countries.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">Approved Document M</span>
+          <span class="engine-tag">BS 8300</span>
+          <span class="engine-tag">Equality Act</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🌍</div>
+        <div class="engine-name">IFC Geometry Parser</div>
+        <div class="engine-desc">Reads and validates IFC 4.3 model data, extracting spatial geometry, property sets, and relationships for downstream compliance analysis.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">IFC 4.3</span>
+          <span class="engine-tag">OpenBIM</span>
+          <span class="engine-tag">ISO 16739</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">📊</div>
+        <div class="engine-name">BIM Maturity Assessment Engine</div>
+        <div class="engine-desc">Scores project BIM maturity across Levels 0–3 using PAS 1192, ISO 19650, and EIR/BEP assessment frameworks.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">ISO 19650</span>
+          <span class="engine-tag">PAS 1192</span>
+          <span class="engine-tag">Level 2</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">⚡</div>
+        <div class="engine-name">Energy Performance Engine</div>
+        <div class="engine-desc">Evaluates energy performance compliance against Part L, MEES regulations, and equivalent ASEAN energy codes for Singapore, Malaysia, and Thailand.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">Part L</span>
+          <span class="engine-tag">MEES</span>
+          <span class="engine-tag">SS 530</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🤖</div>
+        <div class="engine-name">AI Risk Scoring Engine</div>
+        <div class="engine-desc">Uses machine learning classification to assign risk scores to project elements, prioritising the most critical compliance gaps for project teams.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">ML Classification</span>
+          <span class="engine-tag">Risk Matrix</span>
+          <span class="engine-tag">Priority Queue</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">📝</div>
+        <div class="engine-name">NLP Regulatory Cross-Reference</div>
+        <div class="engine-desc">Natural language processing engine that maps project specifications and drawing notes to the most relevant regulatory clauses across the standards library.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">NLP</span>
+          <span class="engine-tag">DeepSeek AEC</span>
+          <span class="engine-tag">Semantic Search</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🔐</div>
+        <div class="engine-name">Security Shield Engine</div>
+        <div class="engine-desc">Multi-layer application security with CSP enforcement, anti-devtools detection, API endpoint guarding, and SHA-256 licence key validation.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">CSP Headers</span>
+          <span class="engine-tag">SHA-256</span>
+          <span class="engine-tag">Anti-Tamper</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🌐</div>
+        <div class="engine-name">Multilingual Output Engine</div>
+        <div class="engine-desc">Generates compliance reports, project descriptions, and AI summaries in 5 languages with localised regulatory terminology for each target market.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">5 Languages</span>
+          <span class="engine-tag">i18n 489 Keys</span>
+          <span class="engine-tag">RTL Support</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">📧</div>
+        <div class="engine-name">Outlook Integration Engine</div>
+        <div class="engine-desc">OAuth2 PKCE-based Microsoft Outlook connectivity enabling direct project communication, meeting scheduling, and document sharing from within the platform.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">OAuth2 PKCE</span>
+          <span class="engine-tag">MS Graph API</span>
+          <span class="engine-tag">Azure AD</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">📤</div>
+        <div class="engine-name">Export &amp; Reporting Engine</div>
+        <div class="engine-desc">Produces audit-ready compliance reports in PDF, Excel, and IFC formats with full traceability from findings to regulatory clause references.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">PDF Export</span>
+          <span class="engine-tag">Excel Reports</span>
+          <span class="engine-tag">IFC Export</span>
+        </div>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="engine-icon">🏗️</div>
+        <div class="engine-name">Programme Management Engine</div>
+        <div class="engine-desc">Tracks project milestones, information deliverables, and team responsibilities aligned to ISO 19650 project stages from briefing through handover.</div>
+        <div class="engine-tags">
+          <span class="engine-tag">ISO 19650-2</span>
+          <span class="engine-tag">RIBA Stages</span>
+          <span class="engine-tag">EIR/BEP</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     STANDARDS / COUNTRIES
+     ============================================= -->
+<section id="standards" class="section" aria-labelledby="standards-title">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-eyebrow">Global Coverage</div>
+      <h2 class="section-title" id="standards-title">787 Standards Across <span class="gold">7 Countries</span></h2>
+      <p class="section-desc" style="margin:0 auto">
+        From the UK's Building Regulations to Japan's JASS standards, JZW BIM AI covers every major 
+        building regulatory framework in its target markets.
+      </p>
+    </div>
+
+    <div class="countries-grid">
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇬🇧</span>
+          <div>
+            <div class="country-name">United Kingdom</div>
+            <div class="country-region">England, Wales, Scotland, Northern Ireland</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:100%"></div></div>
+          <div class="standards-count">210+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">Building Regulations</span>
+          <span class="country-std">Approved Documents A–R</span>
+          <span class="country-std">BS EN Eurocodes</span>
+          <span class="country-std">Building Safety Act 2022</span>
+          <span class="country-std">Fire Safety Order 2005</span>
+          <span class="country-std">Equality Act 2010</span>
+          <span class="country-std">ISO 19650</span>
+          <span class="country-std">PAS 1192</span>
+          <span class="country-std">CDM 2015</span>
+          <span class="country-std">NBS Specification</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇸🇬</span>
+          <div>
+            <div class="country-name">Singapore</div>
+            <div class="country-region">Republic of Singapore</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:72%"></div></div>
+          <div class="standards-count">150+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">BCA Building Control Act</span>
+          <span class="country-std">SS Standards</span>
+          <span class="country-std">Green Mark Scheme</span>
+          <span class="country-std">CORENET e-Submission</span>
+          <span class="country-std">Fire Code 2018</span>
+          <span class="country-std">Accessibility Code</span>
+          <span class="country-std">BIM Essential Guide</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇲🇾</span>
+          <div>
+            <div class="country-name">Malaysia</div>
+            <div class="country-region">Peninsular Malaysia, Sabah, Sarawak</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:65%"></div></div>
+          <div class="standards-count">130+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">UBBL 1984</span>
+          <span class="country-std">MS Standards</span>
+          <span class="country-std">CIDB Act</span>
+          <span class="country-std">Fire Services Act</span>
+          <span class="country-std">MS 1184 Accessibility</span>
+          <span class="country-std">GBI Malaysia</span>
+          <span class="country-std">BIM Roadmap CIDB</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇯🇵</span>
+          <div>
+            <div class="country-name">Japan</div>
+            <div class="country-region">All 47 Prefectures</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:60%"></div></div>
+          <div class="standards-count">120+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">Building Standards Law</span>
+          <span class="country-std">JASS Series</span>
+          <span class="country-std">AIJ Standards</span>
+          <span class="country-std">Seismic Performance</span>
+          <span class="country-std">Barrier-Free Law</span>
+          <span class="country-std">Housing Quality Act</span>
+          <span class="country-std">MLIT BIM Guidelines</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇨🇳</span>
+          <div>
+            <div class="country-name">China</div>
+            <div class="country-region">Mainland China</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:55%"></div></div>
+          <div class="standards-count">110+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">GB Standards</span>
+          <span class="country-std">GB 50010 Concrete</span>
+          <span class="country-std">GB 50016 Fire</span>
+          <span class="country-std">JGJ Standards</span>
+          <span class="country-std">MOHURD BIM</span>
+          <span class="country-std">Green Building</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇹🇭</span>
+          <div>
+            <div class="country-name">Thailand</div>
+            <div class="country-region">Kingdom of Thailand</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:32%"></div></div>
+          <div class="standards-count">47+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">Building Control Act</span>
+          <span class="country-std">TIS Standards</span>
+          <span class="country-std">Fire Safety Regulations</span>
+          <span class="country-std">EIA Requirements</span>
+          <span class="country-std">BIM Thailand Roadmap</span>
+        </div>
+      </div>
+
+      <div class="country-card reveal">
+        <div class="country-header">
+          <span class="country-flag">🇧🇳</span>
+          <div>
+            <div class="country-name">Brunei Darussalam</div>
+            <div class="country-region">Nation of Brunei</div>
+          </div>
+        </div>
+        <div class="standards-bar">
+          <div class="standards-bar-track"><div class="standards-bar-fill" style="width:22%"></div></div>
+          <div class="standards-count">20+</div>
+        </div>
+        <div class="country-standards">
+          <span class="country-std">Building (Control) Order</span>
+          <span class="country-std">BDCD Standards</span>
+          <span class="country-std">Bruneian Fire Code</span>
+          <span class="country-std">Accessibility Guidelines</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PRICING
+     ============================================= -->
+<section id="pricing" class="section" aria-labelledby="pricing-title">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-title" id="pricing-title">Simple, Transparent <span class="gold">Pricing</span></h2>
+      <p class="section-desc" style="margin:0 auto">
+        Choose the plan that fits your team. All tiers include the full standards library, 
+        offline-first operation, and lifetime updates within the version.
+      </p>
+    </div>
+
+    <div class="pricing-grid reveal" style="margin-top:48px">
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-name">Professional</div>
+        <div class="pricing-desc">For individual AEC professionals and sole practitioners.</div>
+        <div class="pricing-price">
+          <div class="pricing-amount">£299</div>
+          <div class="pricing-period">One-time purchase · Perpetual licence</div>
+        </div>
+        <ul class="pricing-features">
+          <li>Single user licence</li>
+          <li>787 standards library</li>
+          <li>All 13 analysis engines</li>
+          <li>5 languages</li>
+          <li>PDF &amp; Excel export</li>
+          <li>Email support</li>
+          <li class="na">Team collaboration</li>
+          <li class="na">Priority support</li>
+          <li class="na">API access</li>
+        </ul>
+        <div class="pricing-cta">
+          <a href="#download" class="btn btn-outline" style="width:100%; justify-content:center">Get Professional</a>
+        </div>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-tier">Business</div>
+        <div class="pricing-name">Team</div>
+        <div class="pricing-desc">For project teams and small-to-mid-sized practices.</div>
+        <div class="pricing-price">
+          <div class="pricing-amount">£799</div>
+          <div class="pricing-period">One-time purchase · Up to 5 users</div>
+        </div>
+        <ul class="pricing-features">
+          <li>5 user licences</li>
+          <li>787 standards library</li>
+          <li>All 13 analysis engines</li>
+          <li>5 languages</li>
+          <li>PDF, Excel &amp; IFC export</li>
+          <li>Priority email support</li>
+          <li>Team collaboration features</li>
+          <li>Shared project library</li>
+          <li class="na">API access</li>
+        </ul>
+        <div class="pricing-cta">
+          <a href="#contact" class="btn btn-gold" style="width:100%; justify-content:center">Get Team</a>
+        </div>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Corporate</div>
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-desc">For large organisations and multi-site operations.</div>
+        <div class="pricing-price">
+          <div class="pricing-amount">£1,499</div>
+          <div class="pricing-period">One-time purchase · Up to 25 users</div>
+        </div>
+        <ul class="pricing-features">
+          <li>25 user licences</li>
+          <li>787 standards library</li>
+          <li>All 13 analysis engines</li>
+          <li>5 languages</li>
+          <li>All export formats</li>
+          <li>Phone &amp; email support</li>
+          <li>Team &amp; org collaboration</li>
+          <li>Admin dashboard</li>
+          <li>API access</li>
+        </ul>
+        <div class="pricing-cta">
+          <a href="#contact" class="btn btn-outline" style="width:100%; justify-content:center">Get Enterprise</a>
+        </div>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Global</div>
+        <div class="pricing-name">Enterprise Plus</div>
+        <div class="pricing-desc">For multinational firms with complex compliance requirements.</div>
+        <div class="pricing-price">
+          <div class="pricing-amount">£3,999</div>
+          <div class="pricing-period">One-time purchase · Unlimited users</div>
+        </div>
+        <ul class="pricing-features">
+          <li>Unlimited user licences</li>
+          <li>787 standards library</li>
+          <li>All 13 analysis engines</li>
+          <li>5 languages</li>
+          <li>All export formats</li>
+          <li>Dedicated account manager</li>
+          <li>Custom integrations</li>
+          <li>White-label option</li>
+          <li>Full API access + SDK</li>
+        </ul>
+        <div class="pricing-cta">
+          <a href="#contact" class="btn btn-outline" style="width:100%; justify-content:center">Contact Sales</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="reveal text-center" style="margin-top:32px">
+      <p style="color:var(--text-muted); font-size:0.85rem">
+        All prices include VAT. Licences are perpetual — no subscription required. 
+        Volume discounts available for 50+ users. 
+        <a href="#contact" style="color:var(--gold)">Contact us</a> for custom pricing.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     DOWNLOAD
+     ============================================= -->
+<section id="download" class="section" aria-labelledby="download-title">
+  <div class="container">
+    <div class="download-box reveal">
+
+      <img src="jzw-logo.png" alt="JZW BIM AI" style="width:88px;height:88px;border-radius:18px;margin:0 auto 24px;display:block;box-shadow:0 8px 40px rgba(201,168,76,0.25);">
+
+      <div class="download-version">
+        <span>⬇</span> Latest Release — v5.8.0
+      </div>
+
+      <h2 class="download-title" id="download-title">Download <span class="gold">JZW BIM AI</span></h2>
+      <p class="download-desc">
+        Available for Windows 10 and Windows 11 (64-bit). The application is fully offline-first — 
+        your project data never leaves your machine.
+      </p>
+
+      <div class="download-options">
+        <a href="https://bbmw0storage.blob.core.windows.net/releases/JZW-BIM-AI-v5.8.0-Setup.exe"
+           class="btn btn-gold btn--lg" id="download-exe"
+           onclick="trackDownload('exe')"
+           aria-label="Download JZW BIM AI v5.8.0 installer for Windows">
+          ⬇ Download Installer (.exe) — Windows
+        </a>
+        <a href="https://github.com/bbmw96/jzw-bim-ai/releases/tag/v5.8.0"
+           target="_blank" rel="noopener"
+           class="btn btn-outline btn--lg">
+          🐙 View on GitHub
+        </a>
+      </div>
+
+      <div class="download-meta">
+        <div class="download-meta-item">📦 <strong>File size:</strong> ~50 MB</div>
+        <div class="download-meta-item">🪟 <strong>Platform:</strong> Windows 10 / 11 x64</div>
+        <div class="download-meta-item">🔐 <strong>Signed:</strong> SHA-256 (Azure Trusted Signing)</div>
+        <div class="download-meta-item">📋 <strong>Version:</strong> 5.8.0.0 — April 2026</div>
+      </div>
+
+      <div class="system-req" style="margin-top:40px">
+        <div class="sys-req-item">
+          <div class="sys-req-label">Operating System</div>
+          <div class="sys-req-value">Windows 10 or 11 (64-bit)</div>
+        </div>
+        <div class="sys-req-item">
+          <div class="sys-req-label">Runtime Required</div>
+          <div class="sys-req-value">.NET 8 Runtime + WebView2</div>
+        </div>
+        <div class="sys-req-item">
+          <div class="sys-req-label">RAM</div>
+          <div class="sys-req-value">4 GB minimum · 8 GB recommended</div>
+        </div>
+        <div class="sys-req-item">
+          <div class="sys-req-label">Storage</div>
+          <div class="sys-req-value">500 MB available disk space</div>
+        </div>
+        <div class="sys-req-item">
+          <div class="sys-req-label">Display</div>
+          <div class="sys-req-value">1366×768 minimum resolution</div>
+        </div>
+        <div class="sys-req-item">
+          <div class="sys-req-label">Internet</div>
+          <div class="sys-req-value">Not required (offline-first)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     ABOUT
+     ============================================= -->
+<section id="about" class="section" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-timeline reveal">
+        <div class="section-eyebrow">Our Journey</div>
+        <h2 class="section-title" id="about-title" style="margin-bottom:36px">Built by a <span class="gold">Railway Engineer</span><br>for the World</h2>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🚂</div>
+          <div class="timeline-content">
+            <div class="timeline-year">2016–2026</div>
+            <div class="timeline-title">Railway Infrastructure Career</div>
+            <div class="timeline-desc">Mohamed Zaki Mohamed spent a decade in railway infrastructure programme management with Colas Rail UK, Network Rail, and AECOM within the South Rail Systems Alliance, managing tamper fleet operations across Southern and Anglia regions.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">💡</div>
+          <div class="timeline-content">
+            <div class="timeline-year">2025</div>
+            <div class="timeline-title">JZW BIM AI Conceived</div>
+            <div class="timeline-desc">Drawing on frontline experience with complex regulatory compliance in infrastructure, Mohamed identified a gap in the AEC software market — no single platform covered global BIM standards comprehensively. JZW BIM AI development began.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🚀</div>
+          <div class="timeline-content">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">BBMW0 Technologies Founded</div>
+            <div class="timeline-desc">BBMW0 Technologies was established to bring AI-powered compliance and project management software to AEC professionals globally. JZW BIM AI v5.8.0 launched with 787 standards across 7 countries.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot">🌏</div>
+          <div class="timeline-content">
+            <div class="timeline-year">2026 Onwards</div>
+            <div class="timeline-title">Global Expansion</div>
+            <div class="timeline-desc">Targeting further expansion across APAC, the Middle East, and North America, with additional country standards packs and integration with leading BIM authoring tools.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="about-text reveal">
+        <div class="section-eyebrow">About BBMW0 Technologies</div>
+        <h3 class="section-title" style="font-size:2rem">Who We Are</h3>
+        <p>
+          BBMW0 Technologies is a UK-based software company founded by Mohamed Zaki Mohamed, 
+          a trilingual (English, Spanish, Arabic) mechanical engineering graduate and CMI Level 7 
+          Strategic Management candidate with a decade of experience in railway infrastructure 
+          programme management.
+        </p>
+        <p>
+          We believe that compliance should not be a barrier to great design — it should be 
+          an intelligent layer beneath it. Our mission is to make the world's building regulations 
+          accessible, automated, and actionable for every AEC professional, regardless of the 
+          country they operate in or the language they speak.
+        </p>
+        <p>
+          Based in Slough, Berkshire, United Kingdom, with connections across Malaysia, Singapore, 
+          and Japan, we are building a platform that works as hard as the professionals who use it.
+        </p>
+
+        <div class="about-values">
+          <div class="value-item">
+            <div class="value-icon">🎯</div>
+            <div class="value-name">Precision</div>
+            <div class="value-desc">Every standard referenced, every clause verified.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">🌍</div>
+            <div class="value-name">Global Reach</div>
+            <div class="value-desc">7 countries, 5 languages, one platform.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">♿</div>
+            <div class="value-name">Inclusion</div>
+            <div class="value-desc">Accessibility in design and in our products.</div>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">🔐</div>
+            <div class="value-name">Security</div>
+            <div class="value-desc">Offline-first. Your data stays with you.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     TRUST / STATS
+     ============================================= -->
+<section id="trust" class="section" aria-labelledby="trust-title">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-eyebrow">Platform Statistics</div>
+      <h2 class="section-title" id="trust-title">JZW BIM AI <span class="gold">By the Numbers</span></h2>
+    </div>
+
+    <div class="trust-stats">
+      <div class="trust-stat reveal">
+        <div class="trust-stat-value">787</div>
+        <div class="trust-stat-label">Building standards, codes &amp; regulations</div>
+      </div>
+      <div class="trust-stat reveal">
+        <div class="trust-stat-value">13</div>
+        <div class="trust-stat-label">AI-powered analysis engines</div>
+      </div>
+      <div class="trust-stat reveal">
+        <div class="trust-stat-value">489</div>
+        <div class="trust-stat-label">Internationalisation keys × 5 languages</div>
+      </div>
+      <div class="trust-stat reveal">
+        <div class="trust-stat-value">23</div>
+        <div class="trust-stat-label">JavaScript modules (8,984 lines)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     FAQ
+     ============================================= -->
+<section id="faq" class="section" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-eyebrow">Common Questions</div>
+      <h2 class="section-title" id="faq-title">Frequently Asked <span class="gold">Questions</span></h2>
+    </div>
+
+    <div class="faq-list" role="list">
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          What types of files and formats can JZW BIM AI read and analyse?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            JZW BIM AI can read IFC (ISO 16739), DXF, and standard document formats including PDF, 
+            DOCX, XLSX, and CSV for project data import. For BIM authoring tool formats such as 
+            Revit (.rvt), ArchiCAD (.pln), and Navisworks (.nwd), the application requires an export 
+            to IFC 4.3 or DXF first — this is standard practice across all major BIM coordination 
+            platforms including Solibri and Navisworks themselves.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Does the application require an internet connection to work?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            No. JZW BIM AI is built as an offline-first application — all 787 standards and 13 
+            analysis engines operate entirely locally on your machine. An internet connection is 
+            only required for the initial download, licence activation, and optional Outlook 
+            integration. Your project data never leaves your device.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Which countries' building regulations are covered?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            Version 5.8.0 covers 7 countries: United Kingdom, Singapore, Malaysia, Japan, China, 
+            Thailand, and Brunei Darussalam. The UK coverage is the most comprehensive, with over 
+            210 standards including all Approved Documents (A through R), the full Eurocode suite, 
+            Building Safety Act 2022, CDM 2015, and ISO 19650. Expansion to further markets 
+            including the Middle East, Australia, and North America is planned for future versions.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          How does the licencing system work?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            Licences are perpetual — a one-time purchase grants you lifetime use of that version with 
+            no ongoing subscription fees. Upon purchase, you receive a unique licence key delivered 
+            via email, which you enter on first launch. The key is validated against a SHA-256 hashed 
+            database of 1,001 valid keys. The licence persists locally on your device and includes a 
+            periodic heartbeat check to prevent simultaneous use across unauthorised installations.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Is the application available on the Microsoft Store?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            JZW BIM AI is currently available via direct download from this website. 
+            Microsoft Store availability is in progress — the application is currently undergoing 
+            code signing through Azure Trusted Signing and Partner Center certification. 
+            The Store version will be available in the near future. In the meantime, the direct 
+            download installer from the Download section is fully functional and safe.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          What are the system requirements?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            JZW BIM AI requires Windows 10 or Windows 11 (64-bit), the .NET 8 Runtime, and the 
+            WebView2 Runtime (pre-installed on all Windows 11 devices). Minimum 4 GB RAM is required, 
+            with 8 GB recommended for analysing large IFC models. Approximately 500 MB of disk space 
+            is needed. No internet connection is required for standard operation.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal" role="listitem">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Can I request coverage for additional countries or specific standards?
+          <span class="faq-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-answer" role="region">
+          <div class="faq-answer-inner">
+            Yes. BBMW0 Technologies welcomes requests for additional country coverage, specific 
+            regulatory standards, or custom compliance frameworks. Enterprise Plus licence holders 
+            receive priority consideration for standards expansion requests. Please use the Contact 
+            form on this page to submit your request with details of the country and standards 
+            you require.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CONTACT
+     ============================================= -->
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2 class="section-title" id="contact-title">Contact <span class="gold">BBMW0 Technologies</span></h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-info reveal">
+        <p>
+          Whether you have a question about pricing, a request for a specific country's standards, 
+          or would like to discuss an Enterprise licence, we would love to hear from you. 
+          We aim to respond to all enquiries within one business day.
+        </p>
+
+        <div class="contact-links">
+          <div class="contact-link">
+            <span class="contact-link-icon">✉️</span>
+            <div>
+              <div class="contact-link-label">Email</div>
+              <a href="mailto:bbmw0@hotmail.com" class="contact-link-value">bbmw0@hotmail.com</a>
+            </div>
+          </div>
+          <div class="contact-link">
+            <span class="contact-link-icon">🐙</span>
+            <div>
+              <div class="contact-link-label">GitHub</div>
+              <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="contact-link-value">bbmw96/jzw-bim-ai</a>
+            </div>
+          </div>
+          <div class="contact-link">
+            <span class="contact-link-icon">📍</span>
+            <div>
+              <div class="contact-link-label">Location</div>
+              <span class="contact-link-value">Slough, Berkshire, United Kingdom</span>
+            </div>
+          </div>
+          <div class="contact-link">
+            <span class="contact-link-icon">🕐</span>
+            <div>
+              <div class="contact-link-label">Response Time</div>
+              <span class="contact-link-value">Within 1 business day (GMT)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form class="contact-form" id="contact-form" onsubmit="submitContact(event)" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Full Name *</label>
+              <input type="text" id="contact-name" class="form-input" placeholder="Jane Smith" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email Address *</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="jane@example.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-company">Company / Organisation</label>
+            <input type="text" id="contact-company" class="form-input" placeholder="ACME Architecture Ltd" autocomplete="organization">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-subject">Subject *</label>
+            <select id="contact-subject" class="form-select" required>
+              <option value="">Select a subject…</option>
+              <option>Purchase enquiry — Professional</option>
+              <option>Purchase enquiry — Team</option>
+              <option>Purchase enquiry — Enterprise</option>
+              <option>Purchase enquiry — Enterprise Plus / Custom</option>
+              <option>Technical support</option>
+              <option>Feature request / Standards expansion</option>
+              <option>Partnership enquiry</option>
+              <option>Press / Media</option>
+              <option>General enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-message">Message *</label>
+            <textarea id="contact-message" class="form-textarea" placeholder="Tell us how we can help…" required></textarea>
+          </div>
+          <div class="form-success" id="form-success" role="alert">
+            ✓ Thank you — your message has been sent. We will be in touch within one business day.
+          </div>
+          <button type="submit" class="btn btn-gold btn--lg" style="width:100%; justify-content:center">
+            Send Message ➔
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer id="footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <img src="jzw-logo.png" alt="JZW BIM AI Logo" style="width:36px;height:36px;border-radius:8px;object-fit:cover;">
+          <span>BBMW0<span style="color:var(--gold)"> Technologies</span></span>
+        </div>
+        <p>
+          AI-powered software for the built environment. 
+          Creators of JZW BIM AI — the world's most comprehensive BIM compliance platform.
+          Based in Slough, Berkshire, United Kingdom.
+        </p>
+        <div class="footer-socials">
+          <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="footer-social" aria-label="GitHub">🐙</a>
+          <a href="mailto:bbmw0@hotmail.com" class="footer-social" aria-label="Email">✉️</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#product">JZW BIM AI</a></li>
+          <li><a href="#engines">Analysis Engines</a></li>
+          <li><a href="#standards">Standards Library</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener">GitHub Repository</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#trust">Platform Statistics</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Countries</div>
+        <ul class="footer-links">
+          <li><a href="#standards">🇬🇧 United Kingdom</a></li>
+          <li><a href="#standards">🇸🇬 Singapore</a></li>
+          <li><a href="#standards">🇲🇾 Malaysia</a></li>
+          <li><a href="#standards">🇯🇵 Japan</a></li>
+          <li><a href="#standards">🇨🇳 China</a></li>
+          <li><a href="#standards">🇹🇭 Thailand</a></li>
+          <li><a href="#standards">🇧🇳 Brunei</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 BBMW0 Technologies · <a href="mailto:bbmw0@hotmail.com">bbmw0@hotmail.com</a> · Registered in England &amp; Wales</p>
+      <div class="footer-legal">
+        <a href="privacy/index.html">Privacy Policy</a>
+        <a href="privacy/index.html">Terms of Use</a>
+        <a href="privacy/index.html">Licence Agreement</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     AI CHAT WIDGET
+     ============================================= -->
+<div id="ai-chat-widget" role="complementary" aria-label="AI Assistant">
+  <div class="ai-chat-panel" id="ai-chat-panel" aria-live="polite">
+    <div class="ai-chat-header">
+      <div class="ai-chat-avatar" aria-hidden="true">B</div>
+      <div>
+        <div class="ai-chat-name">BBMW0 AI Assistant</div>
+        <div class="ai-chat-status">● Online — Ask me anything</div>
+      </div>
+      <button class="ai-chat-close" onclick="toggleChat()" aria-label="Close chat">✕</button>
+    </div>
+    <div class="ai-chat-messages" id="chat-messages">
+      <div class="chat-msg bot">
+        <div class="chat-msg-avatar" aria-hidden="true">B</div>
+        <div class="chat-msg-bubble">
+          Hello! I'm the BBMW0 AI Assistant. I can answer questions about JZW BIM AI, 
+          our pricing, the standards we cover, technical requirements, and anything else 
+          about our platform. How can I help you today?
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-quick" id="quick-questions">
+      <button class="quick-btn" onclick="sendQuick('What countries does JZW BIM AI cover?')">🌍 Countries covered</button>
+      <button class="quick-btn" onclick="sendQuick('How much does JZW BIM AI cost?')">💷 Pricing</button>
+      <button class="quick-btn" onclick="sendQuick('What are the system requirements?')">💻 Requirements</button>
+      <button class="quick-btn" onclick="sendQuick('How do I install JZW BIM AI?')">⬇ Installation</button>
+    </div>
+    <div class="ai-chat-input-row">
+      <input type="text" id="ai-chat-input" placeholder="Ask about JZW BIM AI…" onkeydown="if(event.key==='Enter')sendChat()" maxlength="500" aria-label="Chat message input">
+      <button class="ai-send-btn" onclick="sendChat()" aria-label="Send message">➔</button>
+    </div>
+  </div>
+  <button class="ai-chat-btn" onclick="toggleChat()" id="chat-toggle-btn" aria-label="Open AI assistant" aria-expanded="false">
+    💬
+    <div class="ai-chat-notification" aria-hidden="true"></div>
+  </button>
+</div>
+
+<!-- Back to Top -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- Cookie Banner -->
+<div id="cookie-banner" role="alertdialog" aria-label="Cookie consent">
+  <p>
+    This website uses only essential technical cookies — no tracking, no advertising, no third-party analytics. 
+    Your data stays with you. <a href="privacy/index.html">Read our Privacy Policy.</a>
+  </p>
+  <div class="cookie-actions">
+    <button class="btn btn-gold btn--sm" onclick="acceptCookies()">Accept</button>
+  </div>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
+<script>
+'use strict';
+
+// ---- Nav Scroll ----
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 500);
+}, { passive: true });
+
+// ---- Dropdown Navigation ----
+function toggleDropdown(id) {
+  const el = document.getElementById(id);
+  const isOpen = el.classList.contains('open');
+  // Close all dropdowns
+  document.querySelectorAll('.nav-links > li').forEach(li => {
+    li.classList.remove('open');
+    const btn = li.querySelector('button');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (!isOpen) {
+    el.classList.add('open');
+    const btn = el.querySelector('button');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-links > li')) {
+    document.querySelectorAll('.nav-links > li').forEach(li => {
+      li.classList.remove('open');
+      const btn = li.querySelector('button');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+  if (!e.target.closest('#lang-selector')) {
+    document.getElementById('lang-selector').classList.remove('open');
+  }
+  if (!e.target.closest('#ai-chat-widget')) {
+    // Keep chat open if user clicked inside
+  }
+});
+
+// ---- Language Selector ----
+function toggleLang() {
+  const sel = document.getElementById('lang-selector');
+  sel.classList.toggle('open');
+  const btn = sel.querySelector('.lang-btn');
+  btn.setAttribute('aria-expanded', sel.classList.contains('open'));
+}
+
+function setLang(code, flag, label) {
+  document.getElementById('current-flag').textContent = flag;
+  document.getElementById('current-lang').textContent = label;
+  document.querySelectorAll('.lang-item').forEach(item => item.classList.remove('active'));
+  const active = document.querySelector(`.lang-item[data-lang="${code}"]`);
+  if (active) active.classList.add('active');
+  document.getElementById('lang-selector').classList.remove('open');
+  // Set html lang attribute
+  document.documentElement.lang = code;
+  // RTL support for Arabic
+  document.documentElement.dir = (code === 'ar') ? 'rtl' : 'ltr';
+  // Show notification for non-published languages
+  const published = ['en','ja','zh','ms','th'];
+  if (!published.includes(code)) {
+    showToast(`${label} — Full translation coming soon. Displaying in English.`);
+  }
+}
+
+// ---- Mobile Menu ----
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn = document.getElementById('hamburger');
+  const isOpen = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen);
+}
+
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+}
+
+// ---- FAQ Accordion ----
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen);
+}
+
+// ---- Scroll Reveal ----
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ---- Active Nav Link ----
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link-item');
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.nav-link-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => sectionObserver.observe(s));
+
+// ---- Particles ----
+(function createParticles() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      width: ${Math.random() * 3 + 1}px;
+      height: ${Math.random() * 3 + 1}px;
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+      opacity: ${Math.random() * 0.6};
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ---- Toast Notification ----
+function showToast(msg) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.style.cssText = `
+      position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:#1a2235;border:1px solid rgba(201,168,76,0.3);color:#C9A84C;
+      padding:10px 20px;border-radius:8px;font-size:0.825rem;z-index:9999;
+      opacity:0;transition:all 0.3s;white-space:nowrap;max-width:90vw;text-overflow:ellipsis;overflow:hidden;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; }, 10);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; }, 3500);
+}
+
+// ---- Download Tracking ----
+function trackDownload(type) {
+  showToast('Download starting — JZW BIM AI v5.8.0');
+}
+
+// ---- Contact Form ----
+function submitContact(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const subject = document.getElementById('contact-subject').value;
+  const message = document.getElementById('contact-message').value.trim();
+
+  if (!name || !email || !subject || !message) {
+    showToast('Please fill in all required fields.');
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showToast('Please enter a valid email address.');
+    return;
+  }
+
+  // Show success (in production, wire to a form backend such as Formspree or EmailJS)
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  // Simulate send
+  setTimeout(() => {
+    document.getElementById('form-success').style.display = 'block';
+    form.reset();
+    btn.textContent = 'Send Message ➔';
+    btn.disabled = false;
+
+    // Auto-hide success after 8 seconds
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'none';
+    }, 8000);
+  }, 1200);
+}
+
+// ---- Cookie Banner ----
+function acceptCookies() {
+  document.getElementById('cookie-banner').style.display = 'none';
+  try { localStorage.setItem('cookies_accepted', '1'); } catch(e) {}
+}
+
+(function checkCookies() {
+  try {
+    if (localStorage.getItem('cookies_accepted')) {
+      document.getElementById('cookie-banner').style.display = 'none';
+    }
+  } catch(e) {}
+})();
+
+// ---- AI Chat Widget ----
+let chatHistory = [];
+let chatOpen = false;
+let isTyping = false;
+
+const SYSTEM_PROMPT = `You are the BBMW0 Technologies AI Assistant, embedded on the official website. 
+You are knowledgeable, professional, and helpful. You represent BBMW0 Technologies and its flagship product JZW BIM AI.
+
+Key facts you know:
+- Company: BBMW0 Technologies, founded by Mohamed Zaki Mohamed
+- Location: Slough, Berkshire, United Kingdom
+- Email: bbmw0@hotmail.com
+- GitHub: github.com/bbmw96/jzw-bim-ai
+
+Product: JZW BIM AI v5.8.0
+- 787 building standards and regulations
+- 13 AI-powered analysis engines
+- 7 countries: UK, Singapore, Malaysia, Japan, China, Thailand, Brunei
+- 5 languages: English, Japanese, Chinese Simplified, Malay, Thai
+- Built on C# .NET 8 WPF + WebView2
+- Offline-first — no internet required for operation
+- Download URL: https://bbmw0storage.blob.core.windows.net/releases/JZW-BIM-AI-v5.8.0-Setup.exe
+
+Pricing (one-time, perpetual):
+- Professional: £299 (single user)
+- Team: £799 (up to 5 users)
+- Enterprise: £1,499 (up to 25 users)
+- Enterprise Plus: £3,999 (unlimited users)
+
+System requirements: Windows 10/11 x64, .NET 8 Runtime, WebView2, 4GB RAM minimum, 500MB disk.
+
+Keep answers concise, professional, and helpful. Use UK English spelling. Do not make up information you do not know — politely direct to bbmw0@hotmail.com for anything uncertain.`;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const panel = document.getElementById('ai-chat-panel');
+  const btn = document.getElementById('chat-toggle-btn');
+  panel.classList.toggle('open', chatOpen);
+  btn.setAttribute('aria-expanded', chatOpen);
+  btn.innerHTML = chatOpen ? '✕<div class="ai-chat-notification" aria-hidden="true"></div>' : '💬<div class="ai-chat-notification" aria-hidden="true"></div>';
+  if (chatOpen) {
+    setTimeout(() => document.getElementById('ai-chat-input').focus(), 300);
+  }
+}
+
+function sendQuick(text) {
+  document.getElementById('ai-chat-input').value = text;
+  sendChat();
+  document.getElementById('quick-questions').style.display = 'none';
+}
+
+async function sendChat() {
+  const input = document.getElementById('ai-chat-input');
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+
+  input.value = '';
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  isTyping = true;
+  const typingEl = appendTyping();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+
+    const data = await response.json();
+    const reply = data.content && data.content[0] ? data.content[0].text : 
+      "I'm sorry, I couldn't process that request. Please email bbmw0@hotmail.com for assistance.";
+
+    typingEl.remove();
+    appendMsg('bot', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+
+    // Keep history manageable
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-16);
+
+  } catch (err) {
+    typingEl.remove();
+    appendMsg('bot', "I'm currently unable to connect. For any questions, please email bbmw0@hotmail.com and we'll get back to you within one business day.");
+  }
+
+  isTyping = false;
+}
+
+function appendMsg(role, text) {
+  const container = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `
+    <div class="chat-msg-avatar" aria-hidden="true">${role === 'user' ? 'U' : 'B'}</div>
+    <div class="chat-msg-bubble">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function appendTyping() {
+  const container = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.innerHTML = `
+    <div class="chat-msg-avatar" aria-hidden="true">B</div>
+    <div class="chat-msg-bubble">
+      <div class="chat-typing"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ---- Smooth scroll for all anchor links ----
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const offset = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  });
+});
+
+// ---- Animate bar fills on scroll ----
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.standards-bar-fill, .mockup-bar-fill').forEach(bar => {
+        const width = bar.style.width || '0%';
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.transition = 'width 1s ease'; bar.style.width = width; }, 100);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.country-card, .product-mockup').forEach(el => barObserver.observe(el));
+
+</script>
+</body>
+</html>
