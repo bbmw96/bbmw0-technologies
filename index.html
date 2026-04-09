@@ -411,18 +411,6 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 .ai-qbtn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:#C9A84C;border-radius:20px;padding:.3rem .75rem;font-size:.72rem;cursor:pointer;transition:background .2s}
 .ai-qbtn:hover{background:rgba(201,168,76,.22)}
 
-
-/* ── Contact channel card grid ─────────────────── */
-.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;margin-top:1.8rem}
-.ch-btn{display:flex;flex-direction:column;gap:.6rem;padding:1.4rem 1.6rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:12px;text-decoration:none;color:inherit;transition:border-color .25s,transform .2s,box-shadow .25s;position:relative;overflow:hidden}
-.ch-btn::after{content:'';position:absolute;inset:0;background:rgba(201,168,76,.03);opacity:0;transition:opacity .2s}
-.ch-btn:hover{border-color:rgba(201,168,76,.5);transform:translateY(-3px);box-shadow:0 8px 28px rgba(201,168,76,.12)}
-.ch-btn:hover::after{opacity:1}
-.ch-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.2rem}
-.ch-name{font-size:.9rem;font-weight:700;color:#C9A84C;letter-spacing:.06em;text-transform:uppercase}
-.ch-desc{font-size:.8rem;color:#8892a4;line-height:1.5;flex:1}
-.ch-arrow{font-size:.75rem;color:#C9A84C;opacity:.6;margin-top:.4rem;letter-spacing:.05em}
-
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -517,7 +505,7 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 
     <div class="hero-eyebrow">
       <span class="bdot" aria-hidden="true"></span>
-      <span data-i18n="hero_badge">London, United Kingdom - Est. 2026</span>
+      <span data-i18n="hero_badge">London, United Kingdom &mdash; Est. 2026</span>
     </div>
 
     <h1 class="h1" data-i18n="hero_title">Building <span class="grad">Intelligent Software</span><br>for the World</h1>
@@ -782,12 +770,12 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <div class="ch-grid">
           <a href="mailto:bbmw0@hotmail.com?subject=Enquiry%20via%20bbmw0.com" class="ch-btn">
             <div class="ch-icon" style="background:rgba(0,120,212,0.12);color:#0078D4">&#9993;</div>
-            <div><div class="ch-name">Email</div><div class="ch-desc">bbmw0@hotmail.com. Works with any email client.</div></div>
+            <div><div class="ch-name">Email</div><div class="ch-desc">bbmw0@hotmail.com &mdash; Works with any email client</div></div>
             <span class="ch-arrow">&#8599;</span>
           </a>
           <a href="https://wa.me/447920212969?text=Hello%20BBMW0%20Technologies%2C%20I%20would%20like%20to%20enquire%20about%20your%20software." class="ch-btn" target="_blank" rel="noopener">
             <div class="ch-icon" style="background:rgba(37,211,102,0.12);color:#25D366">&#128172;</div>
-            <div><div class="ch-name">WhatsApp</div><div class="ch-desc">Quick message. Opens WhatsApp Web or the mobile app.</div></div>
+            <div><div class="ch-name">WhatsApp</div><div class="ch-desc">Quick message &mdash; Opens WhatsApp Web or app</div></div>
             <span class="ch-arrow">&#8599;</span>
           </a>
           <a href="https://github.com/bbmw96/jzw-bim-ai/issues/new?title=Enquiry&body=Hello%2C%20I%20would%20like%20to%20enquire%20about..." class="ch-btn" target="_blank" rel="noopener">
@@ -1193,7 +1181,42 @@ function sendViaAzure(data) {
 
 function sendViaEmailJS(data) {
   if (typeof emailjs === 'undefined') return Promise.reject(new Error('EmailJS unavailable'));
-  return /* EmailJS removed */
+  return emailjs.send(EJS_SVC, EJS_TPL, {
+    from_name:  data.name,
+    from_email: data.email,
+    company:    data.company || 'Not provided',
+    subject:    data.subject,
+    message:    data.message,
+    reply_to:   data.email
+  }, EJS_KEY).then(function(r) {
+    if (r.status !== 200) throw new Error('EmailJS ' + r.status);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('cf');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var d = getFormData();
+
+    // Validate
+    if (!d.name || !d.email || !d.subject || !d.message) {
+      showToast('Please fill in all required fields.'); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) {
+      showToast('Please enter a valid email address.'); return;
+    }
+    if (d.bot) { cfShowSuccess(); return; } // honeypot
+
+    cfSetLoading(true);
+
+    // Try Azure first, then EmailJS
+    sendViaAzure(d)
+      .then(cfShowSuccess)
+      .catch(function(err1) {
+        console.warn('Azure failed (' + err1.message + '), trying EmailJS...');
         sendViaEmailJS(d)
           .then(cfShowSuccess)
           .catch(function(err2) {
