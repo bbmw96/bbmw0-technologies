@@ -178,6 +178,11 @@ img{max-width:100%;display:block}::selection{background:var(--goldf);color:var(-
 .ch-desc{font-size:.79rem !important;color:#8892a4 !important;line-height:1.5 !important;flex:1 !important;margin:0 !important}
 .ch-arrow{font-size:.75rem !important;color:#C9A84C !important;opacity:.65 !important;margin-top:.4rem !important}
 
+
+/* Security hardening */
+@media print { body { display: none !important; } }
+* { -webkit-tap-highlight-color: transparent; }
+
 </style>
 </head>
 <body>
@@ -489,7 +494,7 @@ img{max-width:100%;display:block}::selection{background:var(--goldf);color:var(-
     <div class="ci rev-l">
       <p data-i18n="ct_p">Whether you have a question about pricing, a request for a specific country's standards, or would like to discuss an Enterprise licence, we would love to hear from you. We aim to respond within one business day.</p>
       <div class="clks">
-        <a href="mailto:bbmw0@hotmail.com" class="clk"><span class="clk-i">&#9993;&#65039;</span><div><div class="clk-s" data-i18n="ct_email_l">Email</div><span class="clk-v">bbmw0@hotmail.com</span></div></a>
+        <a data-em="YmJtdzBAaG90bWFpbC5jb20=" href="#" class="clk"><span class="clk-i">&#9993;&#65039;</span><div><div class="clk-s" data-i18n="ct_email_l">Email</div><span class="clk-v">bbmw0@hotmail.com &nbsp;&middot;&nbsp; mohamed.zaki@bbmw0.com</span></div></a>
         <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="clk"><span class="clk-i">&#128025;</span><div><div class="clk-s">GitHub</div><span class="clk-v">bbmw96/jzw-bim-ai</span></div></a>
         <div class="clk"><span class="clk-i">&#128205;</span><div><div class="clk-s" data-i18n="ct_loc_l">Location</div><span class="clk-v" data-i18n="ct_loc">London, United Kingdom</span></div></div>
         <a href="https://bbmw0.com" class="clk"><span class="clk-i">&#127760;</span><div><div class="clk-s" data-i18n="ct_web_l">Website</div><span class="clk-v">bbmw0.com</span></div></a>
@@ -534,7 +539,7 @@ img{max-width:100%;display:block}::selection{background:var(--goldf);color:var(-
       <p data-i18n="ft_desc">AI-powered software for the built environment. Creators of JZW BIM AI. Based in London, United Kingdom.</p>
       <div class="fsoc">
         <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="fso" aria-label="GitHub">&#128025;</a>
-        <a href="mailto:bbmw0@hotmail.com" class="fso" aria-label="Email">&#9993;&#65039;</a>
+        <a data-em="YmJtdzBAaG90bWFpbC5jb20=" href="#" class="fso" aria-label="Email">&#9993;&#65039;</a>
         <a href="https://bbmw0.com" class="fso" aria-label="Website">&#127760;</a>
       </div>
     </div>
@@ -543,7 +548,7 @@ img{max-width:100%;display:block}::selection{background:var(--goldf);color:var(-
     <div><div class="fct" data-i18n="ft_ctrs">Countries</div><ul class="fls"><li><a href="#standards">&#127468;&#127463; <span data-i18n="c_uk">United Kingdom</span></a></li><li><a href="#standards">&#127480;&#127468; <span data-i18n="c_sg">Singapore</span></a></li><li><a href="#standards">&#127474;&#127486; <span data-i18n="c_my">Malaysia</span></a></li><li><a href="#standards">&#127471;&#127477; <span data-i18n="c_jp">Japan</span></a></li><li><a href="#standards">&#127464;&#127475; <span data-i18n="c_cn">China</span></a></li><li><a href="#standards">&#127481;&#127469; <span data-i18n="c_th">Thailand</span></a></li><li><a href="#standards">&#127463;&#127475; <span data-i18n="c_bn">Brunei</span></a></li></ul></div>
   </div>
   <div class="fbot">
-    <p>&#169; 2026 BBMW0 Technologies &#183; <a href="mailto:bbmw0@hotmail.com" style="color:var(--gold)">bbmw0@hotmail.com</a> &#183; <span data-i18n="ft_reg">Registered in England &amp; Wales</span></p>
+    <p>&#169; 2026 BBMW0 Technologies &#183; <a data-em="YmJtdzBAaG90bWFpbC5jb20=" href="#" style="color:var(--gold)">bbmw0@hotmail.com &nbsp;&middot;&nbsp; mohamed.zaki@bbmw0.com</a> &#183; <span data-i18n="ft_reg">Registered in England &amp; Wales</span></p>
     <div class="fleg"><a href="privacy/index.html" data-i18n="ft_prv">Privacy Policy</a><a href="privacy/index.html" data-i18n="ft_tos">Terms of Use</a><a href="privacy/index.html" data-i18n="ft_lic">Licence Agreement</a></div>
   </div>
 </div>
@@ -5922,6 +5927,65 @@ function esc(t) {
 }
 
 </script>
+
+<script>
+(function(){
+  'use strict';
+
+  // 1. Disable right-click context menu
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+
+  // 2. Block common inspect keyboard shortcuts
+  document.addEventListener('keydown', function(e){
+    // F12
+    if(e.key === 'F12' || e.keyCode === 123){ e.preventDefault(); return false; }
+    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+    if(e.ctrlKey && e.shiftKey && (e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c')){ e.preventDefault(); return false; }
+    // Ctrl+U (view source)
+    if(e.ctrlKey && (e.key==='U'||e.key==='u')){ e.preventDefault(); return false; }
+    // Ctrl+S (save page)
+    if(e.ctrlKey && (e.key==='S'||e.key==='s')){ e.preventDefault(); return false; }
+  });
+
+  // 3. Anti-devtools detection — blur page if DevTools open
+  var _devOpen = false;
+  var _threshold = 160;
+  function _checkDevTools(){
+    var w = window.outerWidth - window.innerWidth;
+    var h = window.outerHeight - window.innerHeight;
+    if(w > _threshold || h > _threshold){
+      if(!_devOpen){
+        _devOpen = true;
+        document.body.style.filter = 'blur(8px)';
+        document.body.style.userSelect = 'none';
+      }
+    } else {
+      if(_devOpen){
+        _devOpen = false;
+        document.body.style.filter = '';
+        document.body.style.userSelect = '';
+      }
+    }
+  }
+  setInterval(_checkDevTools, 1000);
+
+  // 4. Disable text selection on sensitive elements
+  var _selStyle = document.createElement('style');
+  _selStyle.textContent = '.no-sel{-webkit-user-select:none;-moz-user-select:none;user-select:none}';
+  document.head.appendChild(_selStyle);
+
+  // 5. Decode obfuscated email links at runtime
+  document.querySelectorAll('[data-em]').forEach(function(el){
+    var decoded = atob(el.getAttribute('data-em'));
+    el.setAttribute('href', 'mailto:' + decoded);
+    if(!el.textContent.trim() || el.textContent.includes('&#')){
+      el.textContent = decoded;
+    }
+  });
+
+})();
+</script>
+
 </body>
 </html
 es:{
