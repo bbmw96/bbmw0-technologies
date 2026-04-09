@@ -288,6 +288,11 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 .delay-1{transition-delay:0.1s}.delay-2{transition-delay:0.2s}.delay-3{transition-delay:0.3s}.delay-4{transition-delay:0.4s}
 
 /* RESPONSIVE */
+
+/* SPINNER */
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(4,10,18,0.25);border-top-color:#040A12;border-radius:50%;animation:cfSpin 0.7s linear infinite;vertical-align:middle}
+@keyframes cfSpin{to{transform:rotate(360deg)}}
+
 @media(max-width:960px){
   .pgrid{grid-template-columns:1fr}
   .about-grid{grid-template-columns:1fr;gap:48px}
@@ -351,6 +356,7 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 @media(max-width:720px){.pillars-grid{grid-template-columns:1fr;gap:14px}}
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -669,26 +675,67 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <div class="clink"><span class="ci">&#9201;&#65039;</span><div><div class="cs" data-i18n="ct_rl">Response time</div><span class="cv" data-i18n="ct_rv">Within 1 business day (GMT)</span></div></div>
       </div>
     </div>
-    <form class="cf rev-r" id="cf" onsubmit="submitForm(event)" novalidate>
-      <div class="crow">
-        <div><label class="clbl" for="cf-name" data-i18n="cf_name">Full name *</label><input type="text" id="cf-name" class="cinp" required autocomplete="name" placeholder="Jane Smith"></div>
-        <div><label class="clbl" for="cf-email" data-i18n="cf_email">Email *</label><input type="email" id="cf-email" class="cinp" required autocomplete="email" placeholder="jane@example.com"></div>
+    <div class="rev-r">
+      <!-- CHANNEL TABS -->
+      <div class="cf-tabs" role="tablist">
+        <button class="cf-tab active" onclick="switchTab('form',this)" role="tab" aria-selected="true" data-i18n="tab_form">Send a Message</button>
+        <button class="cf-tab" onclick="switchTab('channels',this)" role="tab" aria-selected="false" data-i18n="tab_channels">Other Ways to Reach Us</button>
       </div>
-      <div><label class="clbl" for="cf-co" data-i18n="cf_co">Company</label><input type="text" id="cf-co" class="cinp" autocomplete="organization"></div>
-      <div>
-        <label class="clbl" for="cf-sub" data-i18n="cf_sub">Subject *</label>
-        <select id="cf-sub" class="csel" required>
-          <option value="" data-i18n="cf_ph">Select a subject...</option>
-          <option data-i18n="cf_o1">Enquiry about JZW BIM AI</option>
-          <option data-i18n="cf_o2">Purchase enquiry</option>
-          <option data-i18n="cf_o3">Partnership</option>
-          <option data-i18n="cf_o4">General enquiry</option>
-        </select>
+
+      <!-- TAB 1: FORM -->
+      <div class="cf-panel active" id="panel-form">
+        <form class="cf" id="cf" novalidate>
+          <div class="crow">
+            <div><label class="clbl" for="cf-name" data-i18n="cf_name">Full name *</label><input type="text" id="cf-name" name="name" class="cinp" required autocomplete="name" placeholder="Jane Smith"></div>
+            <div><label class="clbl" for="cf-email" data-i18n="cf_email">Email *</label><input type="email" id="cf-email" name="email" class="cinp" required autocomplete="email" placeholder="jane@example.com"></div>
+          </div>
+          <div><label class="clbl" for="cf-co" data-i18n="cf_co">Company</label><input type="text" id="cf-co" name="company" class="cinp" autocomplete="organization"></div>
+          <div>
+            <label class="clbl" for="cf-sub" data-i18n="cf_sub">Subject *</label>
+            <select id="cf-sub" name="subject" class="csel" required>
+              <option value="" data-i18n="cf_ph">Select a subject...</option>
+              <option data-i18n="cf_o1">Enquiry about JZW BIM AI</option>
+              <option data-i18n="cf_o2">Purchase enquiry</option>
+              <option data-i18n="cf_o3">Partnership</option>
+              <option data-i18n="cf_o4">General enquiry</option>
+            </select>
+          </div>
+          <div><label class="clbl" for="cf-msg" data-i18n="cf_msg">Message *</label><textarea id="cf-msg" name="message" class="cta" required placeholder="Tell us how we can help..."></textarea></div>
+          <input type="hidden" name="_subject" value="New enquiry via bbmw0.com">
+          <input type="hidden" name="_next" value="https://bbmw0.com/?sent=1">
+          <div class="csuc" id="csuc" role="status">&#10003; <span data-i18n="cf_ok">Message sent. We will be in touch within one business day.</span></div>
+          <button type="submit" class="btn btn-g" style="width:100%;justify-content:center;padding:13px" data-i18n="cf_send">Send Message</button>
+        </form>
+        <p class="cf-note" data-i18n="cf_note">Messages are delivered directly to our inbox. We respond within one business day.</p>
       </div>
-      <div><label class="clbl" for="cf-msg" data-i18n="cf_msg">Message *</label><textarea id="cf-msg" class="cta" required placeholder="Tell us how we can help..."></textarea></div>
-      <div class="csuc" id="csuc" role="status">&#10003; <span data-i18n="cf_ok">Message sent. We will be in touch within one business day.</span></div>
-      <button type="submit" class="btn btn-g" style="width:100%;justify-content:center;padding:13px" data-i18n="cf_send">Send Message</button>
-    </form>
+
+      <!-- TAB 2: CHANNELS -->
+      <div class="cf-panel" id="panel-channels">
+        <div class="ch-grid">
+          <a href="mailto:bbmw0@hotmail.com?subject=Enquiry%20via%20bbmw0.com" class="ch-btn">
+            <div class="ch-icon" style="background:rgba(0,120,212,0.12);color:#0078D4">&#9993;</div>
+            <div><div class="ch-name">Email</div><div class="ch-desc">bbmw0@hotmail.com &mdash; Works with any email client</div></div>
+            <span class="ch-arrow">&#8599;</span>
+          </a>
+          <a href="https://wa.me/447920212969?text=Hello%20BBMW0%20Technologies%2C%20I%20would%20like%20to%20enquire%20about%20your%20software." class="ch-btn" target="_blank" rel="noopener">
+            <div class="ch-icon" style="background:rgba(37,211,102,0.12);color:#25D366">&#128172;</div>
+            <div><div class="ch-name">WhatsApp</div><div class="ch-desc">Quick message &mdash; Opens WhatsApp Web or app</div></div>
+            <span class="ch-arrow">&#8599;</span>
+          </a>
+          <a href="https://github.com/bbmw96/jzw-bim-ai/issues/new?title=Enquiry&body=Hello%2C%20I%20would%20like%20to%20enquire%20about..." class="ch-btn" target="_blank" rel="noopener">
+            <div class="ch-icon" style="background:rgba(255,255,255,0.07);color:var(--text2)">&#128025;</div>
+            <div><div class="ch-name">GitHub Issues</div><div class="ch-desc">For technical questions about JZW BIM AI</div></div>
+            <span class="ch-arrow">&#8599;</span>
+          </a>
+          <button class="ch-btn" onclick="copyEmail()" id="copy-btn">
+            <div class="ch-icon" style="background:rgba(201,168,76,0.1);color:var(--gold)">&#128203;</div>
+            <div><div class="ch-name" data-i18n="ch_copy">Copy email address</div><div class="ch-desc">bbmw0@hotmail.com</div></div>
+            <span class="ch-arrow" id="copy-arrow">&#128203;</span>
+          </button>
+        </div>
+        <p class="cf-note" data-i18n="ch_note">We respond to all enquiries within one business day regardless of the channel used.</p>
+      </div>
+    </div>
   </div>
 </div>
 </section>
@@ -780,6 +827,7 @@ en:{
   cf_name:'Full name *',cf_email:'Email address *',cf_co:'Company',cf_sub:'Subject *',cf_ph:'Select a subject...',
   cf_o1:'Enquiry about JZW BIM AI',cf_o2:'Purchase enquiry',cf_o3:'Partnership',cf_o4:'General enquiry',
   cf_msg:'Message *',cf_send:'Send Message',cf_ok:'Message sent. We will be in touch within one business day.',
+  tab_form:'Send a Message',tab_channels:'Other Ways to Reach Us',ch_copy:'Copy email address',ch_note:'We respond to all enquiries within one business day.',cf_note:'Messages are delivered directly to our inbox. We respond within one business day.',
   ft_desc:'Precision software for professionals worldwide. Based in London, United Kingdom.',
   ft_prod:'Products',ft_co:'Company',ft_prv:'Privacy Policy',ft_tos:'Terms of Use',ft_reg:'Registered in England &amp; Wales',
   ck_msg:'This site uses only essential cookies. No tracking, no advertising.',ck_lnk:'Privacy Policy',ck_ok:'Accept'
@@ -815,7 +863,7 @@ ja:{
   cf_name:'お名前 *',cf_email:'メールアドレス *',cf_co:'会社名',cf_sub:'件名 *',cf_ph:'件名を選択...',
   cf_o1:'JZW BIM AIについて',cf_o2:'購入のお問い合わせ',cf_o3:'パートナーシップ',cf_o4:'一般的なお問い合わせ',
   cf_msg:'メッセージ *',cf_send:'送信する',cf_ok:'メッセージが送信されました。',
-  ft_desc:'世界中のプロフェッショナル向け精密ソフトウェア。英国ロンドン拠点。',ft_prod:'製品',ft_co:'会社情報',ft_prv:'プライバシーポリシー',ft_tos:'利用規約',ft_reg:'イングランドおよびウェールズに登録',
+  tab_form:'メッセージを送る',tab_channels:'その他の連絡方法',ch_copy:'メールアドレスをコピー',ch_note:'チャンネルに関わらず、1営業日以内に返信いたします。',cf_note:'メッセージは直接受信箱に届きます。',ft_desc:'世界中のプロフェッショナル向け精密ソフトウェア。英国ロンドン拠点。',ft_prod:'製品',ft_co:'会社情報',ft_prv:'プライバシーポリシー',ft_tos:'利用規約',ft_reg:'イングランドおよびウェールズに登録',
   ck_msg:'このサイトは必要なクッキーのみを使用します。',ck_lnk:'プライバシーポリシー',ck_ok:'同意する'
 },
 zh:{
@@ -849,7 +897,7 @@ zh:{
   cf_name:'全名 *',cf_email:'电子邮件 *',cf_co:'公司',cf_sub:'主题 *',cf_ph:'选择主题...',
   cf_o1:'关于JZW BIM AI',cf_o2:'购买咨询',cf_o3:'合作伙伴',cf_o4:'一般咨询',
   cf_msg:'留言 *',cf_send:'发送消息',cf_ok:'消息已发送。',
-  ft_desc:'面向全球专业人员的精密软件。总部位于英国伦敦。',ft_prod:'产品',ft_co:'公司',ft_prv:'隐私政策',ft_tos:'使用条款',ft_reg:'在英格兰和威尔士注册',
+  tab_form:'发送消息',tab_channels:'其他联系方式',ch_copy:'复制邮箱地址',ch_note:'无论通过哪种渠道，我们都在一个工作日内回复。',cf_note:'消息将直接发送到我们的收件箱。',ft_desc:'面向全球专业人员的精密软件。总部位于英国伦敦。',ft_prod:'产品',ft_co:'公司',ft_prv:'隐私政策',ft_tos:'使用条款',ft_reg:'在英格兰和威尔士注册',
   ck_msg:'本网站仅使用必要的基本Cookie。',ck_lnk:'隐私政策',ck_ok:'接受'
 },
 ms:{
@@ -882,7 +930,7 @@ ms:{
   cf_name:'Nama Penuh *',cf_email:'Alamat E-mel *',cf_co:'Syarikat',cf_sub:'Subjek *',cf_ph:'Pilih subjek...',
   cf_o1:'Pertanyaan tentang JZW BIM AI',cf_o2:'Pertanyaan pembelian',cf_o3:'Perkongsian',cf_o4:'Pertanyaan umum',
   cf_msg:'Mesej *',cf_send:'Hantar Mesej',cf_ok:'Mesej dihantar.',
-  ft_desc:'Perisian tepat untuk profesional di seluruh dunia. London, UK.',ft_prod:'Produk',ft_co:'Syarikat',ft_prv:'Dasar Privasi',ft_tos:'Syarat Penggunaan',ft_reg:'Berdaftar di England &amp; Wales',
+  tab_form:'Hantar Mesej',tab_channels:'Cara Lain untuk Menghubungi',ch_copy:'Salin alamat e-mel',ch_note:'Kami membalas semua pertanyaan dalam satu hari bekerja.',cf_note:'Mesej disampaikan terus ke peti masuk kami.',ft_desc:'Perisian tepat untuk profesional di seluruh dunia. London, UK.',ft_prod:'Produk',ft_co:'Syarikat',ft_prv:'Dasar Privasi',ft_tos:'Syarat Penggunaan',ft_reg:'Berdaftar di England &amp; Wales',
   ck_msg:'Laman web ini hanya menggunakan kuki penting.',ck_lnk:'Dasar Privasi',ck_ok:'Terima'
 },
 th:{
@@ -915,7 +963,7 @@ th:{
   cf_name:'ชื่อ-นามสกุล *',cf_email:'อีเมล *',cf_co:'บริษัท',cf_sub:'หัวข้อ *',cf_ph:'เลือกหัวข้อ...',
   cf_o1:'สอบถาม JZW BIM AI',cf_o2:'สอบถามการซื้อ',cf_o3:'ความร่วมมือ',cf_o4:'สอบถามทั่วไป',
   cf_msg:'ข้อความ *',cf_send:'ส่งข้อความ',cf_ok:'ส่งข้อความแล้ว',
-  ft_desc:'ซอฟต์แวร์ที่แม่นยำสำหรับผู้เชี่ยวชาญทั่วโลก ลอนดอน สหราชอาณาจักร',ft_prod:'ผลิตภัณฑ์',ft_co:'บริษัท',ft_prv:'นโยบายความเป็นส่วนตัว',ft_tos:'ข้อกำหนด',ft_reg:'จดทะเบียนในอังกฤษและเวลส์',
+  tab_form:'ส่งข้อความ',tab_channels:'วิธีอื่นในการติดต่อ',ch_copy:'คัดลอกที่อยู่อีเมล',ch_note:'เราตอบกลับทุกการสอบถามภายใน 1 วันทำการ',cf_note:'ข้อความส่งตรงถึงกล่องจดหมายของเรา',ft_desc:'ซอฟต์แวร์ที่แม่นยำสำหรับผู้เชี่ยวชาญทั่วโลก ลอนดอน สหราชอาณาจักร',ft_prod:'ผลิตภัณฑ์',ft_co:'บริษัท',ft_prv:'นโยบายความเป็นส่วนตัว',ft_tos:'ข้อกำหนด',ft_reg:'จดทะเบียนในอังกฤษและเวลส์',
   ck_msg:'เว็บไซต์นี้ใช้เฉพาะคุกกี้ที่จำเป็น',ck_lnk:'นโยบายความเป็นส่วนตัว',ck_ok:'ยอมรับ'
 }
 };
@@ -1007,27 +1055,151 @@ var obs = new IntersectionObserver(function(entries) {
 }, {threshold: 0.06, rootMargin: '0px 0px -30px 0px'});
 document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(function(el) { obs.observe(el); });
 
-// ── FORM ─────────────────────────────────────
-function submitForm(e) {
-  e.preventDefault();
-  var n = document.getElementById('cf-name').value.trim();
-  var em = document.getElementById('cf-email').value.trim();
-  var s = document.getElementById('cf-sub').value;
-  var m = document.getElementById('cf-msg').value.trim();
-  var co = document.getElementById('cf-co').value.trim();
-  if (!n || !em || !s || !m) { showToast('Please fill in all required fields.'); return; }
-  if (!/^[^\x20@]+@[^\x20@]+\.[^\x20@]+$/.test(em)) { showToast('Please enter a valid email address.'); return; }
-  var btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = '...'; btn.disabled = true;
-  var body = ['=== BBMW0 Technologies Enquiry ===','','From:    ' + n,'Email:   ' + em,'Company: ' + (co || 'Not provided'),'Subject: ' + s,'','--- Message ---',m,'','--- Sent from bbmw0.com ---'].join('\n');
-  window.location.href = 'mailto:bbmw0@hotmail.com?subject=' + encodeURIComponent(s + ' - ' + n) + '&body=' + encodeURIComponent(body);
-  setTimeout(function() {
-    document.getElementById('csuc').style.display = 'block';
-    e.target.reset();
-    btn.innerHTML = (LANGS[currentLang] || LANGS.en).cf_send || 'Send Message';
-    btn.disabled = false;
-    setTimeout(function() { document.getElementById('csuc').style.display = 'none'; }, 9000);
-  }, 400);
+// ── FORM — DUAL REDUNDANCY ENGINE ────────────────────────────────────────────
+// Primary:  Azure Function (BBMW0 own infrastructure)
+// Fallback: EmailJS (automatic retry if Azure is unavailable)
+// Fallback2: Show contact channels if both fail
+
+var AZURE_ENDPOINT = 'https://bbmw0-mailer.azurewebsites.net/api/send';
+var EJS_SVC  = 'REPLACE_EMAILJS_SERVICE_ID';
+var EJS_TPL  = 'REPLACE_EMAILJS_TEMPLATE_ID';
+var EJS_KEY  = 'REPLACE_EMAILJS_PUBLIC_KEY';
+
+// Initialise EmailJS
+if (typeof emailjs !== 'undefined') {
+  try { emailjs.init({ publicKey: EJS_KEY }); } catch(e) {}
+}
+
+function getFormData() {
+  return {
+    name:    document.getElementById('cf-name').value.trim(),
+    email:   document.getElementById('cf-email').value.trim(),
+    company: document.getElementById('cf-co').value.trim(),
+    subject: document.getElementById('cf-sub').value,
+    message: document.getElementById('cf-msg').value.trim(),
+    bot:     document.querySelector('[name="website"]') ? document.querySelector('[name="website"]').value : ''
+  };
+}
+
+function cfSetLoading(yes) {
+  var btn = document.getElementById('cf-btn');
+  if (!btn) return;
+  btn.disabled = yes;
+  btn.innerHTML = yes
+    ? '<span style="display:inline-flex;align-items:center;gap:8px"><span class="spin"></span>Sending...</span>'
+    : ((LANGS[currentLang] || LANGS.en).cf_send || 'Send Message');
+}
+
+function cfShowSuccess() {
+  var el = document.getElementById('csuc');
+  if (el) { el.style.display = 'block'; setTimeout(function(){el.style.display='none';},10000); }
+  var form = document.getElementById('cf');
+  if (form) form.reset();
+  cfSetLoading(false);
+}
+
+function cfShowError(msg) {
+  var el = document.getElementById('cerr');
+  if (el) {
+    el.textContent = msg || 'Could not deliver your message. Please use the Other Ways to Reach Us tab.';
+    el.style.display = 'block';
+    setTimeout(function(){ el.style.display = 'none'; }, 9000);
+  }
+  cfSetLoading(false);
+  var ch = document.querySelector('[onclick*="channels"]');
+  if (ch) { ch.style.background = 'rgba(201,168,76,0.1)'; ch.style.color = 'var(--gold)'; }
+}
+
+function sendViaAzure(data) {
+  return fetch(AZURE_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Azure ' + r.status);
+    return r.json();
+  }).then(function(j) {
+    if (!j.success) throw new Error(j.error || 'Azure error');
+  });
+}
+
+function sendViaEmailJS(data) {
+  if (typeof emailjs === 'undefined') return Promise.reject(new Error('EmailJS unavailable'));
+  return emailjs.send(EJS_SVC, EJS_TPL, {
+    from_name:  data.name,
+    from_email: data.email,
+    company:    data.company || 'Not provided',
+    subject:    data.subject,
+    message:    data.message,
+    reply_to:   data.email
+  }, EJS_KEY).then(function(r) {
+    if (r.status !== 200) throw new Error('EmailJS ' + r.status);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('cf');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var d = getFormData();
+
+    // Validate
+    if (!d.name || !d.email || !d.subject || !d.message) {
+      showToast('Please fill in all required fields.'); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) {
+      showToast('Please enter a valid email address.'); return;
+    }
+    if (d.bot) { cfShowSuccess(); return; } // honeypot
+
+    cfSetLoading(true);
+
+    // Try Azure first, then EmailJS
+    sendViaAzure(d)
+      .then(cfShowSuccess)
+      .catch(function(err1) {
+        console.warn('Azure failed (' + err1.message + '), trying EmailJS...');
+        sendViaEmailJS(d)
+          .then(cfShowSuccess)
+          .catch(function(err2) {
+            console.warn('EmailJS also failed:', err2.message);
+            cfShowError();
+          });
+      });
+  });
+});
+
+// ── CONTACT TABS ─────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.cf-tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected','false');
+  });
+  document.querySelectorAll('.cf-panel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function copyEmail() {
+  var email = 'bbmw0@hotmail.com';
+  navigator.clipboard.writeText(email).then(function() {
+    var arrow = document.getElementById('copy-arrow');
+    var btn = document.getElementById('copy-btn');
+    arrow.textContent = '\u2713';
+    arrow.style.color = '#22C55E';
+    btn.querySelector('.ch-name').textContent = 'Copied!';
+    setTimeout(function() {
+      arrow.textContent = '\u{1F4CB}';
+      arrow.style.color = '';
+      var L = (LANGS[currentLang] || LANGS.en);
+      btn.querySelector('.ch-name').innerHTML = L.ch_copy || 'Copy email address';
+    }, 2500);
+  }).catch(function() {
+    window.prompt('Copy this email address:', email);
+  });
 }
 
 // ── COOKIES ──────────────────────────────────
