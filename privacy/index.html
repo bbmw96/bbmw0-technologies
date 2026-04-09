@@ -5,19 +5,24 @@
   <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTAiIGZpbGw9IiMwZDExMTciLz4KICA8cG9seWdvbiBwb2ludHM9IjgsNDggMTgsMTYgMjYsMzggMzIsMjIgMzgsMzggNDYsMTYgNTYsNDggNDgsNDggMzgsMjggMzIsNDQgMjYsMjggMTYsNDgiIGZpbGw9IiNDOUE4NEMiLz4KPC9zdmc+Cg==">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — BBMW0 Technologies</title>
+<title>Privacy Policy  &middot;  BBMW0 Technologies</title>
 <link rel="canonical" href="https://bbmw0.com/privacy/">
 <style>
 body{font-family:"DM Sans",system-ui,sans-serif;background:#040A12;color:#EEE9E2;max-width:800px;margin:0 auto;padding:60px 28px;line-height:1.75}
 h1{font-size:2rem;margin-bottom:8px;color:#C9A84C}h2{font-size:1.2rem;margin:32px 0 8px;color:#C9A84C}
 a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
 .back{display:inline-block;margin-bottom:40px;color:#C9A84C;text-decoration:none;font-size:0.85rem}
+
+/* Security hardening */
+@media print { body { display: none !important; } }
+* { -webkit-tap-highlight-color: transparent; }
+
 </style>
 </head>
 <body>
 <a href="/" class="back">&#8592; Back to bbmw0.com</a>
 <h1>Privacy Policy</h1>
-<p><strong>BBMW0 Technologies</strong> &mdash; Last updated: April 2026</p>
+<p><strong>BBMW0 Technologies</strong>  &middot;  Last updated: April 2026</p>
 
 <h2>1. What We Collect</h2>
 <p>When you submit the contact form, we collect your name, email address, company name (optional), and message. We do not use tracking cookies, advertising pixels, or analytics services.</p>
@@ -32,15 +37,74 @@ a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
 <p>Contact form submissions are retained for up to 24 months for the purpose of responding to and managing your enquiry.</p>
 
 <h2>5. Your Rights</h2>
-<p>Under UK GDPR you have the right to access, correct, or request deletion of your personal data. Contact us at <a href="mailto:bbmw0@hotmail.com">bbmw0@hotmail.com</a>.</p>
+<p>Under UK GDPR you have the right to access, correct, or request deletion of your personal data. Contact us at <a data-em="YmJtdzBAaG90bWFpbC5jb20=" href="#">bbmw0@hotmail.com &nbsp;&middot;&nbsp; mohamed.zaki@bbmw0.com</a>.</p>
 
 <h2>6. Contact</h2>
-<p>BBMW0 Technologies, London, United Kingdom. Email: <a href="mailto:bbmw0@hotmail.com">bbmw0@hotmail.com</a></p>
+<p>BBMW0 Technologies, London, United Kingdom. Email: <a data-em="YmJtdzBAaG90bWFpbC5jb20=" href="#">bbmw0@hotmail.com &nbsp;&middot;&nbsp; mohamed.zaki@bbmw0.com</a></p>
 
 <h2>Terms of Use</h2>
 <p>JZW BIM AI software is licensed under a perpetual, non-transferable licence. Reverse engineering, redistribution, or resale is prohibited. Full licence terms are provided with your licence key.</p>
 
 <h2>Licence Agreement</h2>
 <p>By purchasing and activating JZW BIM AI you agree to the End User Licence Agreement (EULA) provided at the time of purchase. The software is provided as-is; BBMW0 Technologies makes no warranty regarding fitness for any specific regulatory purpose.</p>
+
+<script>
+(function(){
+  'use strict';
+
+  // 1. Disable right-click context menu
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+
+  // 2. Block common inspect keyboard shortcuts
+  document.addEventListener('keydown', function(e){
+    // F12
+    if(e.key === 'F12' || e.keyCode === 123){ e.preventDefault(); return false; }
+    // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+    if(e.ctrlKey && e.shiftKey && (e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c')){ e.preventDefault(); return false; }
+    // Ctrl+U (view source)
+    if(e.ctrlKey && (e.key==='U'||e.key==='u')){ e.preventDefault(); return false; }
+    // Ctrl+S (save page)
+    if(e.ctrlKey && (e.key==='S'||e.key==='s')){ e.preventDefault(); return false; }
+  });
+
+  // 3. Anti-devtools detection — blur page if DevTools open
+  var _devOpen = false;
+  var _threshold = 160;
+  function _checkDevTools(){
+    var w = window.outerWidth - window.innerWidth;
+    var h = window.outerHeight - window.innerHeight;
+    if(w > _threshold || h > _threshold){
+      if(!_devOpen){
+        _devOpen = true;
+        document.body.style.filter = 'blur(8px)';
+        document.body.style.userSelect = 'none';
+      }
+    } else {
+      if(_devOpen){
+        _devOpen = false;
+        document.body.style.filter = '';
+        document.body.style.userSelect = '';
+      }
+    }
+  }
+  setInterval(_checkDevTools, 1000);
+
+  // 4. Disable text selection on sensitive elements
+  var _selStyle = document.createElement('style');
+  _selStyle.textContent = '.no-sel{-webkit-user-select:none;-moz-user-select:none;user-select:none}';
+  document.head.appendChild(_selStyle);
+
+  // 5. Decode obfuscated email links at runtime
+  document.querySelectorAll('[data-em]').forEach(function(el){
+    var decoded = atob(el.getAttribute('data-em'));
+    el.setAttribute('href', 'mailto:' + decoded);
+    if(!el.textContent.trim() || el.textContent.includes('&#')){
+      el.textContent = decoded;
+    }
+  });
+
+})();
+</script>
+
 </body>
 </html>
