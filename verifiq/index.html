@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VERIFIQ - IFC Compliance Checker for Singapore and Malaysia</title>
+  <meta name="description" content="VERIFIQ checks IFC models against Singapore CORENET-X (IFC+SG COP 3.1) and Malaysia NBeS regulations. 20 compliance check levels, 100% offline, instant results.">
+  <meta name="keywords" content="IFC compliance, CORENET-X, Singapore BIM, NBeS Malaysia, IFC checker, BCA submission, SCDF compliance">
+  <meta property="og:title" content="VERIFIQ - IFC Compliance Checker">
+  <meta property="og:description" content="Check IFC models against Singapore CORENET-X and Malaysia NBeS. 20 check levels, Design Code engine, 100% offline.">
+  <meta property="og:url" content="https://verifiq.bbmw0.com">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    :root {
+      --teal:      #00c4a0;
+      --teal-dark: #009e82;
+      --navy:      #061221;
+      --navy-2:    #0a1e35;
+      --navy-3:    #0d2845;
+      --white:     #f0f6ff;
+      --mid:       #7a9bbf;
+      --border:    rgba(0,196,160,.18);
+      --gold:      #c9a84c;
+      --red:       #ef4444;
+      --amber:     #f59e0b;
+      --green:     #22c55e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behaviour: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--navy); colour: var(--white); line-height: 1.6; overflow-x: hidden; }
+    body { color: var(--white); }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 80px 0; }
+    .section-sm { padding: 48px 0; }
+
+    /* NAVBAR */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(6,18,33,.94); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand-group { display: flex; align-items: center; gap: 16px; }
+    .bbmw0-mark { display: flex; align-items: center; opacity: .85; transition: opacity .2s; }
+    .bbmw0-mark:hover { opacity: 1; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; color: var(--white); }
+    .vq-logo { width: 36px; height: 36px; background: linear-gradient(135deg,#00c4a0,#0097a7); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: var(--navy); flex-shrink: 0; }
+    .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,.12); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { font-size: 13px; color: var(--mid); font-weight: 500; }
+    .nav-links a:hover { color: var(--white); text-decoration: none; }
+    .btn-nav { background: var(--teal); color: var(--navy) !important; border-radius: 6px; padding: 7px 16px; font-size: 13px; font-weight: 700; transition: background .2s; }
+    .btn-nav:hover { background: var(--teal-dark); text-decoration: none !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 64px; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,196,160,.18) 0%, transparent 60%), var(--navy); }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,196,160,.12); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(32px,4.5vw,54px); font-weight: 900; line-height: 1.1; letter-spacing: -.5px; margin-bottom: 20px; }
+    .hero h1 span { color: var(--teal); }
+    .hero-sub { font-size: 17px; color: var(--mid); line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--teal); color: var(--navy); border: none; border-radius: 8px; padding: 13px 28px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s, transform .1s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,.2); border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer; transition: border-color .2s, color .2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); text-decoration: none; }
+    .hero-meta { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+    .hero-meta-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--mid); }
+    .hero-meta-item::before { content: '\2713'; color: var(--teal); font-weight: 700; }
+    .hero-visual { background: var(--navy-2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,.5); }
+    .hw-bar { background: var(--navy-3); padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
+    .hw-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .hw-title { font-size: 11px; color: var(--mid); margin-left: 8px; }
+    .hw-body { padding: 20px; }
+    .hw-score { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+    .hw-score-num { font-size: 52px; font-weight: 900; color: var(--amber); }
+    .hw-score-label { font-size: 11px; color: var(--mid); margin-top: 2px; }
+    .hw-bars { display: flex; flex-direction: column; gap: 8px; }
+    .hw-bar-row { display: flex; align-items: center; gap: 10px; }
+    .hw-bar-label { font-size: 11px; color: var(--mid); width: 60px; flex-shrink: 0; }
+    .hw-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
+    .hw-bar-fill { height: 100%; border-radius: 3px; }
+    .hw-bar-count { font-size: 11px; color: var(--mid); width: 28px; text-align: right; flex-shrink: 0; }
+
+    /* STATS STRIP */
+    .stats-strip { background: var(--navy-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(5,1fr); }
+    .stat-item { text-align: center; padding: 0 20px; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 32px; font-weight: 900; color: var(--teal); line-height: 1; }
+    .stat-label { font-size: 12px; color: var(--mid); margin-top: 5px; }
+
+    /* SECTION TITLE */
+    .section-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 12px; }
+    .section-title { font-size: clamp(26px,3vw,38px); font-weight: 800; line-height: 1.15; margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--mid); max-width: 560px; }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 52px; }
+    .step { background: var(--navy-2); border: 1px solid var(--border); border-radius: 12px; padding: 28px 22px; position: relative; }
+    .step-num { width: 36px; height: 36px; background: rgba(0,196,160,.12); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: var(--teal); margin-bottom: 16px; }
+    .step h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 12px; color: var(--mid); line-height: 1.7; }
+    .step-arrow { position: absolute; right: -13px; top: 50%; transform: translateY(-50%); color: var(--teal); font-size: 18px; z-index: 1; }
+
+    /* FEATURES */
+    .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 52px; }
+    .feature { background: var(--navy-2); border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; transition: border-color .2s, transform .2s; }
+    .feature:hover { border-color: rgba(0,196,160,.4); transform: translateY(-2px); }
+    .feature-icon { font-size: 28px; margin-bottom: 14px; }
+    .feature h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .feature p { font-size: 13px; color: var(--mid); line-height: 1.7; }
+    .feature-tag { display: inline-block; margin-top: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(0,196,160,.1); color: var(--teal); border-radius: 4px; padding: 2px 8px; }
+
+    /* CHECKS */
+    .checks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; background: var(--navy-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: border-color .2s; }
+    .check-item:hover { border-color: rgba(0,196,160,.45); }
+    .check-num { width: 28px; height: 28px; background: rgba(0,196,160,.12); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
+    .check-info h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .check-info p { font-size: 11px; color: var(--mid); line-height: 1.5; }
+    .check-click-hint { font-size: 10px; color: var(--teal); margin-top: 4px; opacity: .7; }
+
+    /* AGENCIES */
+    .agencies { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+    .agency-badge { background: var(--navy-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; cursor: pointer; transition: border-color .2s, background .2s; }
+    .agency-badge:hover { border-color: var(--teal); background: rgba(0,196,160,.06); }
+    .agency-badge small { font-size: 10px; color: var(--mid); font-weight: 400; display: block; }
+    .agency-badge .click-hint { font-size: 10px; color: var(--teal); margin-top: 2px; }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-top: 48px; }
+    .pricing-card { background: var(--navy-2); border: 1px solid var(--border); border-radius: 12px; padding: 24px 18px; text-align: center; transition: border-color .2s, transform .2s; }
+    .pricing-card.featured { border-color: var(--teal); background: rgba(0,196,160,.06); transform: scale(1.03); }
+    .pricing-card:hover:not(.featured) { border-color: rgba(0,196,160,.35); transform: translateY(-2px); }
+    .pricing-tier { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal); margin-bottom: 10px; }
+    .pricing-devices { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+    .pricing-desc { font-size: 11px; color: var(--mid); margin-bottom: 16px; }
+    .pricing-badge { background: rgba(0,196,160,.12); color: var(--teal); border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 16px; }
+    .pricing-features { list-style: none; font-size: 11px; color: var(--mid); line-height: 2; }
+    .pricing-features li::before { content: '\2713  '; color: var(--teal); }
+    .pricing-cta { display: block; margin-top: 18px; background: var(--teal); color: var(--navy); border-radius: 6px; padding: 9px 16px; font-size: 12px; font-weight: 700; transition: background .2s; }
+    .pricing-cta:hover { background: var(--teal-dark); text-decoration: none; }
+    .pricing-note { font-size: 11px; color: var(--mid); margin-top: 28px; text-align: center; }
+
+    /* COMPAT */
+    .compat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 40px; }
+    .compat-card { background: var(--navy-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; }
+    .compat-icon { font-size: 32px; margin-bottom: 10px; }
+    .compat-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .compat-detail { font-size: 11px; color: var(--mid); line-height: 1.6; }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; align-items: start; }
+    .contact-info h3 { font-size: 22px; font-weight: 800; margin-bottom: 16px; }
+    .contact-info p { font-size: 14px; color: var(--mid); line-height: 1.8; margin-bottom: 24px; }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .contact-link { display: flex; align-items: center; gap: 12px; background: var(--navy-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; font-size: 13px; font-weight: 600; color: var(--white); transition: border-color .2s; }
+    .contact-link:hover { border-color: var(--teal); text-decoration: none; color: var(--teal); }
+    .contact-link-icon { font-size: 18px; }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-size: 12px; font-weight: 600; color: var(--mid); }
+    .form-group input, .form-group select, .form-group textarea { background: var(--navy-2); border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-size: 13px; color: var(--white); outline: none; font-family: inherit; transition: border-color .2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-group select option { background: var(--navy-2); }
+    #form-submit { background: var(--teal); color: var(--navy); border: none; border-radius: 8px; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s; align-self: flex-start; }
+    #form-submit:hover { background: var(--teal-dark); }
+    #form-submit:disabled { opacity: .6; cursor: not-allowed; }
+    #form-status { font-size: 13px; padding: 10px 14px; border-radius: 7px; display: none; }
+    #form-status.success { background: rgba(34,197,94,.1); color: #86efac; border: 1px solid rgba(34,197,94,.3); }
+    #form-status.error { background: rgba(239,68,68,.1); color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
+
+    /* MODAL */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--navy-2); border: 1px solid var(--border); border-radius: 14px; max-width: 640px; width: 100%; max-height: 82vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,.8); }
+    .modal-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 28px 0; }
+    .modal-icon { font-size: 32px; margin-bottom: 8px; }
+    .modal-title { font-size: 18px; font-weight: 800; }
+    .modal-subtitle { font-size: 12px; color: var(--teal); font-weight: 600; margin-top: 3px; }
+    .modal-close { background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--mid); font-size: 16px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: border-color .2s, color .2s; }
+    .modal-close:hover { border-color: var(--teal); color: var(--teal); }
+    .modal-body { padding: 20px 28px 28px; font-size: 13px; color: var(--mid); line-height: 1.75; }
+    .modal-body h4 { font-size: 13px; font-weight: 700; color: var(--white); margin: 14px 0 6px; }
+    .modal-body ul { margin: 6px 0 10px 18px; }
+    .modal-body li { margin-bottom: 4px; }
+    .modal-body p { margin-bottom: 10px; }
+    .modal-link { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,196,160,.1); border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--teal); margin-top: 12px; transition: background .2s; }
+    .modal-link:hover { background: rgba(0,196,160,.2); text-decoration: none; }
+
+    /* BADGE */
+    .badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+    .badge-teal  { background: rgba(0,196,160,.15); color: var(--teal); }
+    .badge-amber { background: rgba(245,158,11,.15); color: var(--amber); }
+    .badge-green { background: rgba(34,197,94,.15);  color: var(--green); }
+    .badge-red   { background: rgba(239,68,68,.15);  color: var(--red); }
+
+    /* FOOTER */
+    footer { background: var(--navy-3); border-top: 1px solid var(--border); padding: 40px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+    .footer-brand p { font-size: 13px; color: var(--mid); margin-top: 12px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--mid); margin-bottom: 14px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col ul li a { font-size: 13px; color: var(--mid); transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--teal); text-decoration: none; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--mid); }
+    .footer-brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .features { grid-template-columns: 1fr 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+      .pricing-card.featured { transform: none; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: repeat(3,1fr); }
+      .compat-grid { grid-template-columns: 1fr 1fr; }
+      .checks-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .steps { grid-template-columns: 1fr; }
+      .features { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MODAL BACKDROP -->
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-icon" id="modal-icon"></div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-subtitle" id="modal-subtitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand-group">
+    <a href="https://bbmw0.com" target="_blank" title="BBMW0 Technologies" class="bbmw0-mark" aria-label="BBMW0 Technologies - opens in new tab">
+      <svg viewBox="0 0 112 90" xmlns="http://www.w3.org/2000/svg" width="36" height="29" fill="#c9a84c" aria-hidden="true">
+        <polygon points="0,57 18,13 36,53 56,7 76,53 94,13 112,57"/>
+        <rect x="0" y="51" width="112" height="9"/>
+        <polygon points="0,42 18,86 36,46 56,92 76,46 94,86 112,42"/>
+      </svg>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-brand">
+      <div class="vq-logo">VQ</div>
+      VERIFIQ
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#checks">Checks</a>
+    <a href="#agencies">Agencies</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+    <a href="https://github.com/bbmw96/verifiq/releases/download/v2.0.0/VERIFIQ-v2.0.0-Setup.exe" class="btn-nav">&#x2B07; Download</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero section">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge"><span>&#x1F195;</span> v2.0.0 - Full Feature Release</div>
+        <h1>IFC Compliance<br><span>Made Effortless</span></h1>
+        <p class="hero-sub">VERIFIQ checks your IFC models against Singapore <strong>CORENET-X</strong> (IFC+SG COP 3.1, December 2025) and Malaysia <strong>NBeS/UBBL 1984</strong> regulations - 20 check levels, instant results, 100% offline.</p>
+        <div class="hero-btns">
+          <a href="https://github.com/bbmw96/verifiq/releases/download/v2.0.0/VERIFIQ-v2.0.0-Setup.exe" class="btn-primary">&#x2B07; Download Free Trial</a>
+          <a href="#features" class="btn-outline">See All Features &#x2192;</a>
+        </div>
+        <div class="hero-meta">
+          <span class="hero-meta-item">100% Offline</span>
+          <span class="hero-meta-item">Windows 10+</span>
+          <span class="hero-meta-item">COP 3.1 December 2025</span>
+          <span class="hero-meta-item">NBeS 2024</span>
+          <span class="hero-meta-item">Free Trial</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hw-bar">
+          <div class="hw-dot" style="background:#ff5f57"></div>
+          <div class="hw-dot" style="background:#febc2e"></div>
+          <div class="hw-dot" style="background:#28c840"></div>
+          <span class="hw-title">VERIFIQ v2.0.0 - Compliance Dashboard</span>
+        </div>
+        <div class="hw-body">
+          <div class="hw-score">
+            <div class="hw-score-num">78.4%</div>
+            <div class="hw-score-label">Compliance Score &nbsp;|&nbsp; 2,847 elements checked</div>
+          </div>
+          <div class="hw-bars">
+            <div class="hw-bar-row"><span class="hw-bar-label">Critical</span><div class="hw-bar-track"><div class="hw-bar-fill" style="width:18%;background:#ef4444"></div></div><span class="hw-bar-count" style="color:#ef4444">41</span></div>
+            <div class="hw-bar-row"><span class="hw-bar-label">Error</span><div class="hw-bar-track"><div class="hw-bar-fill" style="width:32%;background:#f59e0b"></div></div><span class="hw-bar-count" style="color:#f59e0b">127</span></div>
+            <div class="hw-bar-row"><span class="hw-bar-label">Warning</span><div class="hw-bar-track"><div class="hw-bar-fill" style="width:22%;background:#eab308"></div></div><span class="hw-bar-count" style="color:#eab308">89</span></div>
+            <div class="hw-bar-row"><span class="hw-bar-label">Pass</span><div class="hw-bar-track"><div class="hw-bar-fill" style="width:85%;background:#22c55e"></div></div><span class="hw-bar-count" style="color:#22c55e">2,590</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+            <span class="badge badge-teal">BCA</span>
+            <span class="badge badge-red">SCDF 3 critical</span>
+            <span class="badge badge-amber">URA 12 warnings</span>
+            <span class="badge badge-green">NEA passed</span>
+            <span class="badge badge-teal">Gateway G2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num">20</div><div class="stat-label">Compliance Check Levels</div></div>
+      <div class="stat-item"><div class="stat-num">196</div><div class="stat-label">COP 3.1 Classification Codes</div></div>
+      <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Singapore Regulatory Agencies</div></div>
+      <div class="stat-item"><div class="stat-num">21</div><div class="stat-label">Pages and Sections</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Offline - Nothing Leaves Your Machine</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">From IFC File to Compliance Report in Four Steps</h2>
+    <p class="section-sub">No cloud upload, no subscription, no waiting. Load, validate, fix, export.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Load Your IFC File</h3>
+        <p>Open .ifc, .ifczip, .ifcxml or .ifc+sg files. Load multiple files together for federated multi-discipline validation.</p>
+        <span class="step-arrow">&#x2192;</span>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Run Validation</h3>
+        <p>Choose Singapore, Malaysia or Combined mode. Select your gateway. Click Run - all 20 check levels run on every element in parallel.</p>
+        <span class="step-arrow">&#x2192;</span>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Review and Fix</h3>
+        <p>Filter up to 5,000 findings by Severity, Agency, Storey, Gateway and more. Fix property errors directly in VERIFIQ without returning to Revit or ArchiCAD.</p>
+        <span class="step-arrow">&#x2192;</span>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Export Report</h3>
+        <p>Export compliance reports in Word, Excel, PDF, CSV, JSON, HTML or BCF across 8 professional templates including BCA and SCDF submission formats.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features" style="background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">Everything You Need for IFC Compliance</h2>
+    <p class="section-sub">One desktop application covering all stages from model checking to submission-ready report.</p>
+    <div class="features">
+      <div class="feature"><div class="feature-icon">&#x1F4CB;</div><h3>All Results with 7 Filters</h3><p>Every finding filtered by Severity, Discipline, IFC Entity, Agency, Storey, Gateway and Check Type. Each row shows the exact property that failed, the expected value and the actual value.</p><span class="feature-tag">Results</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F4D0;</div><h3>Design Code Engine</h3><p>URA room size checks, BCA accessibility door widths and ramp gradients, SCDF travel distances and exit widths, NEA ventilation rates, PUB sanitary fitting ratios and BCA Green Mark thermal values. Every rule cites the regulation clause.</p><span class="feature-tag">Design Code</span></div>
+      <div class="feature"><div class="feature-icon">&#x270F;&#xFE0F;</div><h3>Property Editor</h3><p>Fix missing or incorrect property values directly in VERIFIQ - no need to return to Revit or ArchiCAD. Writes a corrected IFC alongside your original. Your original file is never modified.</p><span class="feature-tag">Fix</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F9CA;</div><h3>3D Viewer with Compliance Overlay</h3><p>Elements colour-coded red, orange, yellow and green by compliance. First-person walk mode, section planes, measurement tools, storey filter, discipline filter and element property panel.</p><span class="feature-tag">3D Viewer</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F4E4;</div><h3>Export Reports - 8 Templates</h3><p>Professional, Executive Summary, BCA Submission, SCDF Submission, NBeS Submission, Technical, Audit and Minimal. Export to Word, Excel, PDF, CSV, JSON, HTML, Markdown or BCF.</p><span class="feature-tag">Export</span></div>
+      <div class="feature"><div class="feature-icon">&#x2B06;</div><h3>Auto-Update System</h3><p>Silent background download. Install now or defer to when you close the application. Progress bar in the update banner. Mandatory update support for organisation deployments.</p><span class="feature-tag">Updates</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F4CF;</div><h3>Rules Database</h3><p>Browse all 196 COP 3.1 classification codes, SGPset_ property requirements by entity, all 8 Singapore agency assignments, UBBL 1984 Malaysia rules and all 20 check level descriptions.</p><span class="feature-tag">Reference</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F50D;</div><h3>Search and Select</h3><p>Search all validated elements by name, GUID, IFC class, classification code or storey. Jump directly to findings for any element.</p><span class="feature-tag">Search</span></div>
+      <div class="feature"><div class="feature-icon">&#x1F4D6;</div><h3>User Manual and User Guide</h3><p>Interactive step-by-step guide for onboarding. Nine-section reference manual covering all 20 checks, BIM software export guides, Singapore agencies, Malaysia NBeS, troubleshooting and full glossary.</p><span class="feature-tag">Documentation</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 CHECKS -->
+<section class="section" id="checks">
+  <div class="container">
+    <div class="section-tag">Validation Engine</div>
+    <h2 class="section-title">20 Compliance Check Levels</h2>
+    <p class="section-sub">Run on every single element in your model. Click any check to learn more. Singapore and Malaysia modes included.</p>
+    <div class="checks-grid">
+      <div class="check-item" onclick="showCheck('L1')"><div class="check-num">L1</div><div class="check-info"><h4>IFC Entity Class</h4><p>No IfcBuildingElementProxy - every element must use a specific class</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L2')"><div class="check-num">L2</div><div class="check-info"><h4>PredefinedType</h4><p>Specific value required - NOTDEFINED is not accepted</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L3')"><div class="check-num">L3</div><div class="check-info"><h4>ObjectType (UserDefined)</h4><p>When PredefinedType=USERDEFINED, ObjectType must be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L4')"><div class="check-num">L4</div><div class="check-info"><h4>Classification Reference</h4><p>Every element must have an IfcClassificationReference attached</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L5')"><div class="check-num">L5</div><div class="check-info"><h4>Classification Edition</h4><p>References must point to the current COP 3.1 edition</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L6')"><div class="check-num">L6</div><div class="check-info"><h4>Mandatory Pset_</h4><p>All required IFC standard property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L7')"><div class="check-num">L7</div><div class="check-info"><h4>SGPset_ (Singapore Only)</h4><p>All required Singapore-specific property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L8')"><div class="check-num">L8</div><div class="check-info"><h4>Property Values Populated</h4><p>Required properties must not be empty or NOTDEFINED</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L9')"><div class="check-num">L9</div><div class="check-info"><h4>Data Type Validation</h4><p>Values must match required type: string, boolean, number or measure</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L10')"><div class="check-num">L10</div><div class="check-info"><h4>Enumeration Values</h4><p>Enumeration properties must use a value from the permitted list</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L11')"><div class="check-num">L11</div><div class="check-info"><h4>Spatial Containment</h4><p>Every element must sit within a valid IfcBuildingStorey</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L12')"><div class="check-num">L12</div><div class="check-info"><h4>Storey Elevations</h4><p>IfcBuildingStorey elements must have correct elevation values</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L13')"><div class="check-num">L13</div><div class="check-info"><h4>Georeferencing</h4><p>IfcMapConversion to SVY21 (Singapore) or GDM2000 (Malaysia)</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L14')"><div class="check-num">L14</div><div class="check-info"><h4>Site and Building Hierarchy</h4><p>IfcProject, IfcSite and IfcBuilding hierarchy must be complete</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L15')"><div class="check-num">L15</div><div class="check-info"><h4>GUID Uniqueness</h4><p>Every element GlobalId must be unique across the model</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L16')"><div class="check-num">L16</div><div class="check-info"><h4>Material Assignment</h4><p>Structural elements must have an IfcMaterial assigned</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L17')"><div class="check-num">L17</div><div class="check-info"><h4>Space Boundary</h4><p>IfcSpace elements must have space boundary relationships</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L18')"><div class="check-num">L18</div><div class="check-info"><h4>Geometry Validity</h4><p>Element bounding boxes must be non-degenerate</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L19')"><div class="check-num">L19</div><div class="check-info"><h4>IFC Schema Version</h4><p>File must declare a valid IFC4 or IFC2x3 schema version</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L20')"><div class="check-num">L20</div><div class="check-info"><h4>File Header Completeness</h4><p>FILE_DESCRIPTION, FILE_NAME and FILE_SCHEMA must all be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENCIES -->
+<section class="section-sm" id="agencies" style="background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="section-tag" style="text-align:center">Singapore CORENET-X</div>
+    <h2 class="section-title">8 Regulatory Agencies</h2>
+    <p class="section-sub" style="margin:0 auto 8px">VERIFIQ checks against all 8 agencies simultaneously. Click any agency to learn exactly what it checks and why it matters for your submission.</p>
+    <div class="agencies">
+      <div class="agency-badge" onclick="showAgency('BCA')">BCA<small>Building and Construction Authority</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('SCDF')">SCDF<small>Singapore Civil Defence Force</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('URA')">URA<small>Urban Redevelopment Authority</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('NEA')">NEA<small>National Environment Agency</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('PUB')">PUB<small>Public Utilities Board</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('SLA')">SLA<small>Singapore Land Authority</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('LTA')">LTA<small>Land Transport Authority</small><span class="click-hint">Click for details</span></div>
+      <div class="agency-badge" onclick="showAgency('JTC')">JTC<small>JTC Corporation</small><span class="click-hint">Click for details</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPATIBILITY -->
+<section class="section" id="compat">
+  <div class="container">
+    <div class="section-tag">BIM Software</div>
+    <h2 class="section-title">Works With Your BIM Software</h2>
+    <p class="section-sub">Export IFC from your preferred tool and load it straight into VERIFIQ. The User Manual includes step-by-step export guides for each platform.</p>
+    <div class="compat-grid">
+      <div class="compat-card"><div class="compat-icon">&#x1F534;</div><div class="compat-name">Autodesk Revit</div><div class="compat-detail">IFC4 Reference View with IFC+SG Shared Parameters. Full SGPset_ support.</div></div>
+      <div class="compat-card"><div class="compat-icon">&#x1F7E0;</div><div class="compat-name">Graphisoft ArchiCAD</div><div class="compat-detail">IFC+SG Translator from go.gov.sg/ifcsg. Classification Manager for code assignment.</div></div>
+      <div class="compat-card"><div class="compat-icon">&#x1F535;</div><div class="compat-name">Tekla Structures</div><div class="compat-detail">IFC4 export with IFC+SG property set definitions. Full structural element support.</div></div>
+      <div class="compat-card"><div class="compat-icon">&#x1F7E4;</div><div class="compat-name">Bentley OpenBuildings</div><div class="compat-detail">IFC4 Reference View export with IFC+SG property mapping configured.</div></div>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <span class="badge badge-teal">.ifc</span>
+      <span class="badge badge-teal">.ifczip</span>
+      <span class="badge badge-teal">.ifcxml</span>
+      <span class="badge badge-teal">.ifc+sg</span>
+      <span class="badge badge-amber">IFC4 Reference View</span>
+      <span class="badge badge-amber">IFC2x3 supported</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="background:var(--navy-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-tag">Pricing</div>
+    <h2 class="section-title">Perpetual Licences - Pay Once, Use Forever</h2>
+    <p class="section-sub">No subscriptions. No expiry. Both Singapore and Malaysia modes included in every tier. Trial is free with no time limit.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card"><div class="pricing-tier">Trial</div><div class="pricing-devices">Free</div><div class="pricing-desc">1 device - 10 elements per run</div><div class="pricing-badge">No time limit</div><ul class="pricing-features"><li>All 20 check levels</li><li>All export formats</li><li>Singapore and Malaysia</li><li>No credit card required</li></ul><a href="https://github.com/bbmw96/verifiq/releases/download/v2.0.0/VERIFIQ-v2.0.0-Setup.exe" class="pricing-cta">Download Free</a></div>
+      <div class="pricing-card"><div class="pricing-tier">Individual</div><div class="pricing-devices">1 Device</div><div class="pricing-desc">Unlimited elements per run</div><div class="pricing-badge">Perpetual</div><ul class="pricing-features"><li>Unlimited validation</li><li>All features</li><li>Singapore and Malaysia</li><li>Perpetual licence</li></ul><a href="#contact" class="pricing-cta">Get Quote</a></div>
+      <div class="pricing-card featured"><div class="pricing-tier">Practice</div><div class="pricing-devices">5 Devices</div><div class="pricing-desc">Unlimited elements per run</div><div class="pricing-badge">Most Popular</div><ul class="pricing-features"><li>5 workstations</li><li>All features</li><li>Singapore and Malaysia</li><li>Perpetual licence</li></ul><a href="#contact" class="pricing-cta">Get Quote</a></div>
+      <div class="pricing-card"><div class="pricing-tier">Enterprise</div><div class="pricing-devices">25 Devices</div><div class="pricing-desc">IT deployment package</div><div class="pricing-badge">Perpetual</div><ul class="pricing-features"><li>25 workstations</li><li>Silent IT deployment</li><li>Auto-update broadcast</li><li>Singapore and Malaysia</li></ul><a href="#contact" class="pricing-cta">Get Quote</a></div>
+      <div class="pricing-card"><div class="pricing-tier">Unlimited</div><div class="pricing-devices">Site Licence</div><div class="pricing-desc">Entire organisation</div><div class="pricing-badge">Perpetual</div><ul class="pricing-features"><li>Unlimited devices</li><li>Multi-office support</li><li>Auto-update broadcast</li><li>Priority support</li></ul><a href="#contact" class="pricing-cta">Get Quote</a></div>
+    </div>
+    <p class="pricing-note">Licence key format: <code style="font-family:monospace;background:rgba(255,255,255,.07);padding:2px 8px;border-radius:4px">VRFQ-XXXX-XXXX-XXXX-XXXX</code> &nbsp;|&nbsp; Activate in the Settings page within VERIFIQ</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-tag">Get in Touch</div>
+    <h2 class="section-title">Contact BBMW0 Technologies</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Questions? We are here.</h3>
+        <p>For licence enquiries, technical support, custom training or bulk pricing for your organisation, reach out directly. We aim to respond within one business day.</p>
+        <div class="contact-links">
+          <a href="mailto:bbmw0@hotmail.com" class="contact-link"><span class="contact-link-icon">&#x2709;&#xFE0F;</span>bbmw0@hotmail.com</a>
+          <a href="https://wa.me/447920212969" class="contact-link" target="_blank" rel="noopener"><span class="contact-link-icon">&#x1F4AC;</span>WhatsApp +44 7920 212 969</a>
+          <a href="https://bbmw0.com" class="contact-link" target="_blank" rel="noopener"><span class="contact-link-icon">&#x1F310;</span>bbmw0.com</a>
+          <a href="https://github.com/bbmw96/verifiq" class="contact-link" target="_blank" rel="noopener"><span class="contact-link-icon">&#x2699;&#xFE0F;</span>github.com/bbmw96/verifiq</a>
+        </div>
+      </div>
+      <div>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group"><label for="cf-name">Full Name *</label><input type="text" id="cf-name" placeholder="Your name" required></div>
+            <div class="form-group"><label for="cf-email">Email Address *</label><input type="email" id="cf-email" placeholder="you@company.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="cf-company">Company / Organisation</label><input type="text" id="cf-company" placeholder="Firm name"></div>
+            <div class="form-group"><label for="cf-subject">Subject *</label><select id="cf-subject" required><option value="">Select...</option><option>Licence Enquiry</option><option>Technical Support</option><option>Bulk / Enterprise Pricing</option><option>Training Request</option><option>General Question</option></select></div>
+          </div>
+          <div class="form-group"><label for="cf-message">Message *</label><textarea id="cf-message" placeholder="Tell us how we can help..." required></textarea></div>
+          <div id="form-status"></div>
+          <button type="submit" id="form-submit">Send Message &#x2192;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-row">
+          <a href="https://bbmw0.com" target="_blank" title="BBMW0 Technologies" style="opacity:.75;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75">
+            <svg viewBox="0 0 112 90" xmlns="http://www.w3.org/2000/svg" width="30" height="24" fill="#c9a84c" aria-hidden="true">
+              <polygon points="0,57 18,13 36,53 56,7 76,53 94,13 112,57"/>
+              <rect x="0" y="51" width="112" height="9"/>
+              <polygon points="0,42 18,86 36,46 56,92 76,46 94,86 112,42"/>
+            </svg>
+          </a>
+          <div class="nav-brand" style="font-size:18px"><div class="vq-logo">VQ</div>VERIFIQ</div>
+        </div>
+        <p>IFC Compliance Checker for Singapore CORENET-X (COP 3.1) and Malaysia NBeS. Built by BBMW0 Technologies.</p>
+      </div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#checks">20 Check Levels</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#compat">Compatibility</a></li><li><a href="https://github.com/bbmw96/verifiq/releases/download/v2.0.0/VERIFIQ-v2.0.0-Setup.exe">Download</a></li></ul></div>
+      <div class="footer-col"><h4>Resources</h4><ul><li><a href="https://github.com/bbmw96/verifiq" target="_blank">GitHub</a></li><li><a href="https://github.com/bbmw96/verifiq/releases" target="_blank">Release Notes</a></li><li><a href="https://go.gov.sg/ifcsg" target="_blank">IFC+SG Downloads</a></li><li><a href="https://portal.corenet.gov.sg" target="_blank">CORENET-X Portal</a></li><li><a href="https://go.gov.sg/cxcop" target="_blank">COP 3.1 Documentation</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="https://bbmw0.com" target="_blank">BBMW0 Technologies</a></li><li><a href="#contact">Contact</a></li><li><a href="mailto:bbmw0@hotmail.com">bbmw0@hotmail.com</a></li><li><a href="https://wa.me/447920212969" target="_blank">WhatsApp</a></li><li><a href="https://github.com/bbmw96" target="_blank">GitHub Profile</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>Copyright 2026 BBMW0 Technologies. All rights reserved.</span>
+      <span>VERIFIQ v2.0.0 &nbsp;|&nbsp; Singapore COP 3.1 December 2025 &nbsp;|&nbsp; Malaysia NBeS 2024</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── ASYNC FONT LOAD ─────────────────────────────────────────────────
+(function() {
+  var l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap';
+  l.onload = function() { document.body.style.fontFamily = "'Inter','Segoe UI',system-ui,sans-serif"; };
+  document.head.appendChild(l);
+  setTimeout(function() { document.body.style.opacity = '1'; }, 2000);
+})();
+
+// ── MODAL SYSTEM ────────────────────────────────────────────────────
+var AGENCY_DATA = {
+  BCA: {
+    icon: '&#x1F1F8;&#x1F1EC;',
+    title: 'Building and Construction Authority (BCA)',
+    subtitle: 'Singapore\'s Lead Agency for CORENET-X',
+    body: '<h4>Role and Mandate</h4><p>The Building and Construction Authority is Singapore\'s lead government agency overseeing the built environment sector. BCA regulates the safety, quality and sustainability of buildings and construction in Singapore, and is the primary custodian of the CORENET-X digital submission platform.</p><h4>What VERIFIQ Checks for BCA</h4><ul><li>Structural element IFC class correctness (IfcBeam, IfcColumn, IfcSlab, IfcWall)</li><li>LoadBearing property on all structural elements</li><li>FireRating property where required by code</li><li>IsExternal property distinguishing internal from external elements</li><li>Pset_WallCommon, Pset_BeamCommon, Pset_ColumnCommon and related standard property sets</li><li>SGPset_StructuralProperties for Singapore-specific structural data</li><li>Building height, GFA and storey data on IfcBuilding and IfcSite</li></ul><h4>Why It Matters</h4><p>BCA reviews all building plan submissions through CORENET-X for structural adequacy, fire safety, accessibility and sustainability compliance. Findings marked BCA Critical will cause automatic rejection by the CORENET-X automated checker before any human reviewer sees the submission.</p><a href="https://www.bca.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; bca.gov.sg</a>&nbsp;<a href="https://portal.corenet.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; CORENET-X Portal</a>'
+  },
+  SCDF: {
+    icon: '&#x1F691;',
+    title: 'Singapore Civil Defence Force (SCDF)',
+    subtitle: 'Fire Safety and Emergency Preparedness',
+    body: '<h4>Role and Mandate</h4><p>The Singapore Civil Defence Force is responsible for fire safety, civil defence and emergency medical services in Singapore. For CORENET-X submissions, SCDF reviews all fire safety provisions in a building, including fire-rated compartmentation, means of escape, fire-fighting access and suppression systems.</p><h4>What VERIFIQ Checks for SCDF</h4><ul><li>Fire resistance periods on IfcWall, IfcSlab and IfcDoor elements (SGPset_WallFireRating, SGPset_DoorFireRating)</li><li>FireResistancePeriod property populated with a valid value in minutes (e.g. 60, 90, 120)</li><li>Fire door classification codes (e.g. A-DOR-FRD-01 for a fire-rated door)</li><li>Exit staircase width and travel distance data on IfcStair and IfcSpace</li><li>Sprinkler provision indicator on IfcSpace elements</li><li>Emergency lighting and exit signage properties where required</li></ul><h4>Why It Matters</h4><p>Fire safety non-compliance is one of the most common causes of CORENET-X submission rejection. Incorrect or missing fire resistance ratings on compartment walls and fire doors will be flagged as Critical by VERIFIQ and will cause rejection at the SCDF automated checker stage.</p><a href="https://www.scdf.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; scdf.gov.sg</a>&nbsp;<a href="https://www.scdf.gov.sg/home/fire-safety/fire-safety-resources" target="_blank" rel="noopener" class="modal-link">&#x1F517; Fire Safety Resources</a>'
+  },
+  URA: {
+    icon: '&#x1F3D9;&#xFE0F;',
+    title: 'Urban Redevelopment Authority (URA)',
+    subtitle: 'Land Use Planning and Development Control',
+    body: '<h4>Role and Mandate</h4><p>The Urban Redevelopment Authority is Singapore\'s land use planning authority. URA controls the use of land and buildings through the Master Plan and development control guidelines. For CORENET-X, URA reviews GFA computations, plot ratio, building height and land use compliance.</p><h4>What VERIFIQ Checks for URA</h4><ul><li>GFA category on IfcSpace elements (SGPset_SpaceGFA with GFACategory property)</li><li>GrossPlannedArea values on IfcSpace - must match declared room use</li><li>PlotRatio data on IfcSite and IfcBuilding</li><li>BuildingHeight on IfcBuilding matching approved storey count</li><li>IfcSpace occupancy and use classification consistency</li><li>Void and double-volume spaces correctly classified and excluded from GFA where applicable</li></ul><h4>Why It Matters</h4><p>GFA miscalculations are a common cause of planning approval delays. If IfcSpace elements are missing GFA category data or have incorrect gross planned area values, URA cannot verify the submitted GFA against the approved Gross Plot Ratio, which will cause rejection or a request for resubmission.</p><a href="https://www.ura.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; ura.gov.sg</a>&nbsp;<a href="https://www.ura.gov.sg/Corporate/Guidelines/Development-Control" target="_blank" rel="noopener" class="modal-link">&#x1F517; Development Control Guidelines</a>'
+  },
+  NEA: {
+    icon: '&#x1F343;',
+    title: 'National Environment Agency (NEA)',
+    subtitle: 'Environmental Health and Ventilation',
+    body: '<h4>Role and Mandate</h4><p>The National Environment Agency is responsible for environmental protection, public health and air quality in Singapore. For CORENET-X submissions, NEA reviews mechanical ventilation, natural ventilation, noise control and environmental sustainability provisions in buildings.</p><h4>What VERIFIQ Checks for NEA</h4><ul><li>SGPset_SpaceVentilation on IfcSpace elements - required for all habitable spaces</li><li>AirChangeRate property - must meet minimum requirements per space type</li><li>NaturalVentilationArea - window-to-floor area ratio for naturally ventilated spaces</li><li>MechanicalVentilationProvided boolean flag on spaces without natural ventilation</li><li>Noise level and environmental properties on IfcSpace where applicable</li></ul><h4>Why It Matters</h4><p>Under the Environmental Public Health (EPH) Act and Building Control Regulations, habitable rooms must provide adequate ventilation. Missing ventilation data on IfcSpace elements will prevent NEA from verifying compliance and will result in the submission being flagged for correction before approval.</p><a href="https://www.nea.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; nea.gov.sg</a>&nbsp;<a href="https://www.nea.gov.sg/our-services/pollution-control/air-pollution" target="_blank" rel="noopener" class="modal-link">&#x1F517; Air Quality and Ventilation</a>'
+  },
+  PUB: {
+    icon: '&#x1F4A7;',
+    title: 'Public Utilities Board (PUB)',
+    subtitle: 'Water Supply and Sanitary Provisions',
+    body: '<h4>Role and Mandate</h4><p>PUB is Singapore\'s national water agency, managing the collection, production, distribution and reclamation of water. For CORENET-X submissions, PUB reviews sanitary fitting counts, water efficiency ratings and drainage provisions to ensure compliance with the Water Efficiency Management Plan (WEMP) requirements.</p><h4>What VERIFIQ Checks for PUB</h4><ul><li>SGPset_SanitaryFittingWELS on IfcSanitaryTerminal elements</li><li>WELSRating property - Water Efficiency Labelling Scheme rating (1-3 ticks)</li><li>SanitaryFittingCount and FittingType on sanitary spaces</li><li>Cistern volume and flow rate data where required</li><li>Rainwater harvesting and NEWater reuse indicators on IfcBuilding</li></ul><h4>Why It Matters</h4><p>Under the Environmental Public Health (Sanitary Facilities) Regulations, minimum sanitary fitting ratios are required for different building types. All fittings in commercial and public buildings must meet minimum WELS ratings. Missing or incorrect WELS data will cause PUB to flag the submission before approval is granted.</p><a href="https://www.pub.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; pub.gov.sg</a>&nbsp;<a href="https://www.pub.gov.sg/savewater/atwork/waterefficientbuildings" target="_blank" rel="noopener" class="modal-link">&#x1F517; Water Efficient Buildings</a>'
+  },
+  SLA: {
+    icon: '&#x1F5FA;&#xFE0F;',
+    title: 'Singapore Land Authority (SLA)',
+    subtitle: 'Land Administration and Georeferencing',
+    body: '<h4>Role and Mandate</h4><p>The Singapore Land Authority manages state land and property, maintains the national land register and is responsible for the national coordinate reference system SVY21 (EPSG:3414). For CORENET-X, SLA verifies that all submitted building models are correctly georeferenced to SVY21 so that each building can be precisely located on the national cadastral map.</p><h4>What VERIFIQ Checks for SLA</h4><ul><li>IfcMapConversion entity presence - without this the model has no geospatial position</li><li>Eastings, Northings and Orthogonal Height values in SVY21 coordinate system</li><li>XAxisAbscissa and XAxisOrdinate for correct orientation (true north reference)</li><li>Scale value must be 1.0 (SVY21 is in metres)</li><li>IfcProjectedCRS referencing EPSG:3414 or SVY21</li></ul><h4>Why It Matters</h4><p>Without correct SVY21 georeferencing, the building cannot be placed on the national cadastral map, which means SLA cannot process the title deeds or land transaction documents associated with the development. This is one of the most common Critical findings in CORENET-X submissions.</p><a href="https://www.sla.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; sla.gov.sg</a>&nbsp;<a href="https://www.sla.gov.sg/sirent/mapservices/" target="_blank" rel="noopener" class="modal-link">&#x1F517; SVY21 Coordinate System</a>'
+  },
+  LTA: {
+    icon: '&#x1F68C;',
+    title: 'Land Transport Authority (LTA)',
+    subtitle: 'Parking, Roads and Transport Infrastructure',
+    body: '<h4>Role and Mandate</h4><p>The Land Transport Authority plans and develops Singapore\'s land transport infrastructure and systems, including roads, MRT and bus networks. For CORENET-X, LTA reviews parking provisions, loading and unloading bay requirements, pedestrian linkages and transport-related spaces in building developments.</p><h4>What VERIFIQ Checks for LTA</h4><ul><li>SGPset_ParkingLot on IfcSpace elements classified as car parks</li><li>ParkingLotType property (Standard, Accessible, Motorcycle, Bicycle)</li><li>BayDimensions - minimum 2.4m x 4.8m for standard bays per LTA requirements</li><li>AccessibleBayCount - minimum percentage of accessible parking bays</li><li>LoadingBayDimensions and LoadingBayCount where required by development type</li><li>Cycle parking provisions for new residential and commercial developments</li></ul><h4>Why It Matters</h4><p>LTA\'s parking provision requirements are mandatory for most new developments. Incorrect classification of car park spaces or missing bay dimension data prevents LTA from verifying that the development meets the minimum parking standards for its use type and GFA.</p><a href="https://www.lta.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; lta.gov.sg</a>&nbsp;<a href="https://www.lta.gov.sg/content/ltagov/en/industry_innovations/industry_matters/development_construction_resources.html" target="_blank" rel="noopener" class="modal-link">&#x1F517; Development and Construction</a>'
+  },
+  JTC: {
+    icon: '&#x1F3ED;',
+    title: 'JTC Corporation (JTC)',
+    subtitle: 'Industrial Land and Infrastructure',
+    body: '<h4>Role and Mandate</h4><p>JTC Corporation is Singapore\'s leading developer and manager of industrial infrastructure, including industrial estates, science and business parks and specialised industrial facilities. For CORENET-X, JTC reviews industrial developments built on JTC land to ensure they meet specific industrial use and structural requirements.</p><h4>What VERIFIQ Checks for JTC</h4><ul><li>SGPset_JTCFloor on IfcSlab elements in industrial buildings</li><li>IndustrialUse property - classification of industrial use type (general, light, logistics)</li><li>FloorLoadCapacity - must meet minimum kPa requirements for industrial floor slabs</li><li>CeilingHeight - minimum clear height requirements for different industrial uses</li><li>LoadingAccessProvision - dock levellers and loading bay compliance</li><li>Tenancy unit demarcation data for multi-tenanted flatted factory buildings</li></ul><h4>Why It Matters</h4><p>JTC requirements only apply to developments on JTC-managed land. However, for those projects, the SGPset_JTCFloor and IndustrialUse data are mandatory for JTC to verify that the development meets the industrial plot conditions and lease requirements. Missing data causes the JTC review to pend until corrected.</p><a href="https://www.jtc.gov.sg" target="_blank" rel="noopener" class="modal-link">&#x1F517; jtc.gov.sg</a>&nbsp;<a href="https://www.jtc.gov.sg/industrial-land-and-space/Pages/default.aspx" target="_blank" rel="noopener" class="modal-link">&#x1F517; Industrial Land and Space</a>'
+  }
+};
+
+var CHECK_DATA = {
+  L1: { icon:'&#x1F3D7;&#xFE0F;', title:'L1 - IFC Entity Class', subtitle:'Severity: Critical for IfcBuildingElementProxy', body:'<h4>What This Check Does</h4><p>Level 1 verifies that every building element in the IFC model uses a specific, recognised IFC class - not the generic fallback class IfcBuildingElementProxy. The IFC4 schema defines hundreds of specific entity classes for every conceivable building component, from IfcWall and IfcBeam to IfcSanitaryTerminal and IfcLightFixture.</p><h4>Why IfcBuildingElementProxy Is Not Permitted</h4><p>IfcBuildingElementProxy exists in the IFC schema as a last resort for elements that cannot be described by any specific class. In a correctly configured IFC model exported from Revit, ArchiCAD, Tekla or Bentley, no element should use this class. When BCA\'s automated checker encounters a proxy element, it cannot determine what that element is, which property sets apply to it, or which agency should review it. The submission will be rejected.</p><h4>Common Causes</h4><ul><li>Generic Model categories in Revit that have no IFC mapping configured</li><li>Custom families exported without an IFC type assignment</li><li>ArchiCAD objects using the default "Object" type without an IFC class override</li></ul><h4>How to Fix</h4><p>In your BIM software, set the IFC Entity Class for each element category to the correct specific class (e.g. IfcFurniture, IfcEquipmentElement, IfcBuildingElementProxy should be changed to a real class). Download the IFC+SG Shared Parameters from go.gov.sg/ifcsg which includes the correct mappings.</p><a href="https://go.gov.sg/ifcsg" target="_blank" rel="noopener" class="modal-link">&#x1F517; Download IFC+SG Shared Parameters</a>' },
+  L2: { icon:'&#x1F3F7;&#xFE0F;', title:'L2 - PredefinedType', subtitle:'Severity: Error for NOTDEFINED', body:'<h4>What This Check Does</h4><p>Level 2 checks that every IFC element has a PredefinedType attribute set to a specific, meaningful value. PredefinedType is a sub-classification within an IFC entity class that describes what kind of that element it is. For example, an IfcWall can have PredefinedType of SHEAR, PARAPET, SOLIDWALL or POLYGONAL - each representing a different type of wall.</p><h4>Why NOTDEFINED Is Not Accepted</h4><p>NOTDEFINED means the BIM author did not specify what type of element this is. For Singapore CORENET-X and Malaysia NBeS, every element must be precisely described so that the relevant agency can apply the correct check rules. BCA cannot determine whether a wall is a shear wall or a partition wall without the PredefinedType, and therefore cannot apply the correct structural or fire safety rules.</p><h4>Common Causes</h4><ul><li>Default IFC export settings in Revit that do not map category subtypes to PredefinedType</li><li>Elements added without specifying their specific type in the BIM software</li><li>ArchiCAD elements using the default type classification without a specific value</li></ul><h4>How to Fix</h4><p>In Revit, use Shared Parameters to set the IfcExportType parameter for each element. In ArchiCAD, use the IFC Manager to assign PredefinedType values. Where none of the standard values apply, use USERDEFINED and populate the ObjectType property (see Level 3).</p>' },
+  L3: { icon:'&#x1F4DD;', title:'L3 - ObjectType (UserDefined)', subtitle:'Severity: Warning', body:'<h4>What This Check Does</h4><p>Level 3 applies only when an element has PredefinedType set to USERDEFINED. In this case, the IFC standard requires that the ObjectType attribute is also populated with a clear description of what the element actually is. This provides a human-readable label when no standard PredefinedType value is appropriate.</p><h4>When USERDEFINED Is Appropriate</h4><p>USERDEFINED should only be used when the element genuinely cannot be described by any of the standard PredefinedType values. For example, a specialist piece of laboratory equipment may have no matching IFC PredefinedType, in which case USERDEFINED is correct - but ObjectType must then say something meaningful like "Biosafety Cabinet Class II" rather than being left blank.</p><h4>How to Fix</h4><p>In Revit, set both the IfcExportType shared parameter to USERDEFINED and populate the IfcObjectType shared parameter with a descriptive value. In ArchiCAD, set the PredefinedType to USERDEFINED in the IFC Manager and populate the Object Type field.</p>' },
+  L4: { icon:'&#x1F4C2;', title:'L4 - Classification Reference', subtitle:'Severity: Critical', body:'<h4>What This Check Does</h4><p>Level 4 checks that every building element has an IfcClassificationReference attached, pointing to a valid IFC+SG classification code (for Singapore) or NBeS classification code (for Malaysia). Classification codes are the primary identifier used by all 8 CORENET-X agencies to determine which rules apply to each element.</p><h4>The IFC+SG Classification System</h4><p>The IFC+SG classification system contains 196 identified building component codes in COP 3.1 (December 2025). Each code has a structured format, for example A-WAL-EXW-01 (External Wall, Architectural), S-BEA-PRE-01 (Precast Beam, Structural) or M-PIP-CHW-01 (Chilled Water Pipe, MEP). The code tells every reviewing agency instantly what the element is, which property sets are required and which agency should check it.</p><h4>Common Causes</h4><ul><li>IFC+SG Shared Parameters not installed in Revit</li><li>Classification codes not assigned to element families in the BIM software</li><li>IFC+SG Translator not applied in ArchiCAD</li><li>Export configuration not including classification data</li></ul><a href="https://go.gov.sg/ifcsg" target="_blank" rel="noopener" class="modal-link">&#x1F517; Download IFC+SG Industry Mapping</a>&nbsp;<a href="https://info.corenet.gov.sg/ifc-sg/templates--apps-and-more/ifc-sg-excel-mapping-file" target="_blank" rel="noopener" class="modal-link">&#x1F517; IFC+SG Excel Mapping File</a>' },
+  L5: { icon:'&#x1F4C5;', title:'L5 - Classification Edition', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 5 checks that the classification reference in the model points to the correct, current edition of the IFC+SG classification system - COP 3.1, December 2025. It is not sufficient to have a classification reference; it must reference the current edition, not an older one.</p><h4>Why Edition Matters</h4><p>The IFC+SG classification system has been updated across multiple COP editions. Classification codes from COP 1.0, COP 2.0 or earlier editions of COP 3 may have been renumbered, renamed or made obsolete in COP 3.1. CORENET-X will reject submissions that reference deprecated classification editions because the agency review rules are edition-specific.</p><h4>How to Fix</h4><p>Update your IFC+SG Shared Parameters and Industry Mapping file to the December 2025 COP 3.1 edition, available from go.gov.sg/ifcsg. Re-assign classification codes to your elements using the updated mapping. The IfcClassification entity in the exported IFC must reference "IFC+SG" with the edition string "COP 3.1 (December 2025)".</p><a href="https://go.gov.sg/ifcsg" target="_blank" rel="noopener" class="modal-link">&#x1F517; Download COP 3.1 December 2025</a>' },
+  L6: { icon:'&#x1F4CB;', title:'L6 - Mandatory Pset_', subtitle:'Severity: Critical or Error', body:'<h4>What This Check Does</h4><p>Level 6 checks that all required IFC standard property sets (Pset_) are attached to each element. The IFC4 standard defines a specific set of property sets for each entity class. For example, IfcWall requires Pset_WallCommon, IfcBeam requires Pset_BeamCommon and IfcDoor requires Pset_DoorCommon.</p><h4>What Pset_ Contains</h4><p>Standard Pset_ property sets contain properties such as IsExternal (whether the element is on the building exterior), LoadBearing (structural), FireRating, ThermalTransmittance (U-value), AcousticRating and many others. These are the properties that BCA, SCDF, NEA and other agencies use to verify compliance.</p><h4>Common Causes</h4><ul><li>IFC export configuration not including property sets</li><li>Revit families missing the required shared parameter mappings</li><li>Manual IFC export without "Export IFC Properties" enabled</li></ul><a href="https://technical.buildingsmart.org/standards/ifc/ifc-schema-specifications/" target="_blank" rel="noopener" class="modal-link">&#x1F517; IFC4 Property Set Definitions</a>' },
+  L7: { icon:'&#x1F1F8;&#x1F1EC;', title:'L7 - SGPset_ (Singapore Only)', subtitle:'Severity: Critical - Singapore submissions only', body:'<h4>What This Check Does</h4><p>Level 7 checks for Singapore-specific property sets (SGPset_) that are defined in the IFC+SG COP 3.1 and are required in addition to the standard IFC Pset_ sets. These property sets are unique to Singapore and contain data required by Singapore\'s regulatory agencies that is not covered by the international IFC standard.</p><h4>Key SGPset_ Property Sets</h4><ul><li>SGPset_WallFireRating - fire resistance period for fire-rated walls (required by SCDF)</li><li>SGPset_DoorFireRating - fire resistance period for fire-rated doors (required by SCDF)</li><li>SGPset_SpaceGFA - Gross Floor Area category and area for URA GFA computation</li><li>SGPset_SpaceVentilation - ventilation type, air change rate and area (required by NEA)</li><li>SGPset_SanitaryFittingWELS - WELS rating and fitting count (required by PUB)</li><li>SGPset_ParkingLot - parking bay type and dimensions (required by LTA)</li><li>SGPset_JTCFloor - industrial floor load capacity (required by JTC for JTC land)</li></ul><h4>How to Fix</h4><p>Install the IFC+SG Shared Parameters file from go.gov.sg/ifcsg. Add SGPset_ parameters to the relevant Revit categories or ArchiCAD object types. Ensure the IFC export configuration includes SGPset_ property sets.</p><a href="https://go.gov.sg/ifcsg" target="_blank" rel="noopener" class="modal-link">&#x1F517; IFC+SG Shared Parameters Download</a>' },
+  L8: { icon:'&#x270F;&#xFE0F;', title:'L8 - Property Values Populated', subtitle:'Severity: Critical or Error', body:'<h4>What This Check Does</h4><p>Level 8 checks that all required property values are actually populated with meaningful data - not left empty, set to null or set to NOTDEFINED. A property set can be present but contain no useful data if all its properties are blank, which is functionally the same as the property set not being there at all from the agency\'s perspective.</p><h4>Commonly Missing Values</h4><ul><li>FireRating left blank on fire-rated elements</li><li>ThermalTransmittance (U-value) missing on external walls and roofs</li><li>LoadBearing not set on structural walls and columns</li><li>IsExternal not set on elements that need an inside/outside distinction</li><li>GFACategory missing on IfcSpace elements</li><li>WELSRating blank on sanitary fittings</li></ul><h4>How to Fix</h4><p>Using the Property Editor in VERIFIQ, you can fix missing property values directly without returning to your BIM software. Click the Fix button on any Level 8 finding to queue it for correction. For systematic fixes across many elements, return to Revit or ArchiCAD and populate the values at the family or type level.</p>' },
+  L9: { icon:'&#x1F522;', title:'L9 - Data Type Validation', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 9 checks that each property value is stored with the correct IFC data type. The IFC standard defines strict data types for every property: IfcBoolean (true/false), IfcLabel (text string), IfcReal (decimal number), IfcLengthMeasure (in metres), IfcPressureMeasure (in Pascals) and so on.</p><h4>Why Data Types Matter</h4><p>A FireRating of "60" stored as an IfcLabel (text) rather than IfcReal (number) cannot be processed by the CORENET-X rule engine, which expects a numeric value to compare against the minimum required fire resistance period. Similarly, a LoadBearing value of "1" stored as an integer instead of IfcBoolean.TRUE will fail the data type check and may not be correctly interpreted by agency systems.</p><h4>Common Causes</h4><ul><li>Manual data entry in BIM software using a text field instead of the correct parameter type</li><li>Import of data from spreadsheets that converts numeric values to strings</li><li>Incorrect parameter type definition in shared parameter files</li></ul><h4>How to Fix</h4><p>Check your Revit Shared Parameter file to ensure parameter types match the required IFC data types. The IFC+SG Shared Parameters file from go.gov.sg/ifcsg includes the correct parameter types for all SGPset_ properties.</p>' },
+  L10: { icon:'&#x1F4CB;', title:'L10 - Enumeration Values', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 10 checks that where a property requires a value from a defined list (enumeration), the value provided is one of the permitted options. For example, the GFACategory property on IfcSpace must be one of the permitted values defined in the IFC+SG COP 3.1 (such as "ResidentialHDB", "CommercialRetail", "OfficePlanning" etc.). Any value outside the permitted list will fail this check.</p><h4>Common Examples</h4><ul><li>GFACategory on IfcSpace - must be from the COP 3.1 GFA category enumeration</li><li>ParkingLotType on SGPset_ParkingLot - must be Standard, Accessible, Motorcycle or Bicycle</li><li>WELSRating - must be 1, 2 or 3 (tick ratings), not arbitrary numbers</li><li>FireResistancePeriod - must be one of the standard ratings (30, 60, 90, 120, 180, 240 minutes)</li></ul><h4>How to Fix</h4><p>The permitted enumeration values for each property are listed in the IFC+SG Industry Mapping Excel, which can be imported into VERIFIQ via the Import Mapping page. The mapping file shows every permitted value for every enumeration property.</p><a href="https://info.corenet.gov.sg/ifc-sg/templates--apps-and-more/ifc-sg-excel-mapping-file" target="_blank" rel="noopener" class="modal-link">&#x1F517; IFC+SG Industry Mapping Excel</a>' },
+  L11: { icon:'&#x1F3D7;&#xFE0F;', title:'L11 - Spatial Containment', subtitle:'Severity: Critical', body:'<h4>What This Check Does</h4><p>Level 11 checks that every building element is contained within a valid IfcBuildingStorey using an IfcRelContainedInSpatialStructure relationship. This relationship tells the IFC model which floor each element is on, and is required for all elements from walls and columns to doors, windows, furniture and equipment.</p><h4>Why Spatial Containment Is Critical</h4><p>Without spatial containment, agencies cannot determine which floor an element is on, which means storey-based checks (floor load calculations, egress route calculations, GFA by floor calculations) cannot be performed. URA uses storey containment to verify GFA by floor against approved plans. SCDF uses it for travel distance and exit calculations.</p><h4>Common Causes</h4><ul><li>Elements modelled in Revit without a host level assignment</li><li>Elements placed in a linked model that is not properly merged into the spatial hierarchy</li><li>Custom families with incorrect spatial relationship settings</li><li>IFC export configurations that omit containment relationships</li></ul><h4>How to Fix</h4><p>In Revit, ensure all elements have a valid Level assignment. For linked models, use the correct IFC export settings to maintain the spatial hierarchy from linked files. In ArchiCAD, all placed elements should automatically have storey assignments.</p>' },
+  L12: { icon:'&#x1F4D0;', title:'L12 - Storey Elevations', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 12 checks that each IfcBuildingStorey has a valid Elevation property value set, expressed in metres above the SVY21 vertical datum (for Singapore) or the local datum (for Malaysia). The elevation value must be a real number, must be consistent with the building height and must increase logically from basement levels to upper floors.</p><h4>Why Elevations Matter</h4><p>Storey elevations are used by SLA to verify the building\'s relationship to the national cadastral datum. They are used by BCA for structural calculations and floor-to-floor height compliance. They are used by SCDF to calculate storey height for fire-fighting access requirements. Incorrect or missing elevations prevent automated cross-checking between the 3D model and the submitted engineering drawings.</p><h4>How to Fix</h4><p>In Revit, set the Level elevation to the correct value relative to the project base point, and ensure the IFC export is configured to map Revit levels to IfcBuildingStorey with the elevation correctly exported. The elevation in the IFC file should be in metres.</p>' },
+  L13: { icon:'&#x1F30F;', title:'L13 - Georeferencing', subtitle:'Severity: Critical - different systems for SG and MY', body:'<h4>What This Check Does</h4><p>Level 13 checks that the IFC model includes an IfcMapConversion entity that correctly positions the model in the national coordinate reference system - SVY21 (EPSG:3414) for Singapore and GDM2000 for Malaysia. This is how the model is pinned to its real-world location.</p><h4>Singapore: SVY21 (EPSG:3414)</h4><p>SVY21 is Singapore\'s national coordinate reference system, using Transverse Mercator projection with the origin at the Padang. Coordinates are expressed as Eastings and Northings in metres. The IFC model must include IfcMapConversion with Eastings, Northings, OrthogonalHeight (elevation above mean sea level), XAxisAbscissa and XAxisOrdinate (for rotation). This is required by SLA for cadastral mapping and by BCA for site boundary verification.</p><h4>Malaysia: GDM2000</h4><p>GDM2000 is Malaysia\'s geodetic datum. IFC models submitted for Malaysia NBeS must reference GDM2000 coordinates. The IfcMapConversion must include the correct coordinates for the site location.</p><a href="https://www.sla.gov.sg/sirent/mapservices/" target="_blank" rel="noopener" class="modal-link">&#x1F517; SVY21 Coordinate System</a>' },
+  L14: { icon:'&#x1F3DB;&#xFE0F;', title:'L14 - Site and Building Hierarchy', subtitle:'Severity: Critical', body:'<h4>What This Check Does</h4><p>Level 14 checks that the IFC model contains a complete and correctly structured spatial hierarchy: IfcProject contains exactly one IfcSite, which contains at least one IfcBuilding, which contains all IfcBuildingStorey elements. This is the fundamental spatial structure of every IFC model and must be present and correct for any submission.</p><h4>Required Hierarchy</h4><p>IfcProject (one, with Name and Description) contains IfcSite (one per development site, with LongName equal to the land lot number) contains IfcBuilding (one per building block, with Name, Description and NumberOfStoreys) contains IfcBuildingStorey (one per floor, with Elevation and LongName) contains all building elements.</p><h4>Common Issues</h4><ul><li>Multiple IfcProject entities in the same file (invalid - there must be exactly one)</li><li>IfcBuilding placed directly under IfcProject without IfcSite</li><li>IfcBuildingStorey with no parent IfcBuilding</li><li>Missing Name or Description on IfcProject, IfcSite or IfcBuilding</li><li>LandLotNumber on IfcSite not matching the planning approval lot number</li></ul>' },
+  L15: { icon:'&#x1F194;', title:'L15 - GUID Uniqueness', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 15 checks that every element in the IFC model has a globally unique identifier (GlobalId) that is not duplicated anywhere else in the same model or across federated models. The IFC GlobalId is a 22-character base64-encoded string derived from a UUID, and each element must have exactly one unique identifier.</p><h4>Why GUIDs Matter</h4><p>GUIDs are the primary key used by BCF (BIM Collaboration Format) workflows, change tracking systems, and agency review tools to refer to specific elements. If two elements share the same GUID, issue tracking, clash detection and sequential submission tracking all break down. CORENET-X uses GUIDs to track elements across multiple submissions of the same project.</p><h4>Common Causes</h4><ul><li>Copying elements in Revit without allowing Revit to assign new GUIDs</li><li>Importing elements from another project without regenerating GUIDs</li><li>IFC file editing tools that duplicate elements without updating GUIDs</li></ul><h4>How to Fix</h4><p>Most BIM software will automatically assign unique GUIDs to new elements. If duplicates are detected, regenerate element GUIDs in Revit (there are add-ins available for this) or use ArchiCAD\'s IFC Manager to detect and resolve GUID conflicts before export.</p>' },
+  L16: { icon:'&#x1F9F1;', title:'L16 - Material Assignment', subtitle:'Severity: Error for structural elements', body:'<h4>What This Check Does</h4><p>Level 16 checks that structural elements (IfcBeam, IfcColumn, IfcSlab, IfcWall where LoadBearing=TRUE, IfcFooting, IfcPile) have a material assignment attached through IfcRelAssociatesMaterial. The material assignment describes what the element is made of - concrete, steel, timber, masonry or composite construction.</p><h4>Why Material Data Is Required</h4><p>BCA uses material data to verify structural adequacy. An IfcBeam without a material assignment cannot be cross-referenced against the structural engineer\'s calculations. The material data also feeds into sustainability assessments, carbon calculations and material quantity take-off for cost verification.</p><h4>Material Detail Required</h4><ul><li>IfcMaterial with Name (e.g. "Reinforced Concrete C30/37", "Structural Steel S275")</li><li>For layered assemblies: IfcMaterialLayerSetUsage with layer thicknesses and materials</li><li>For composite sections: IfcMaterialProfileSetUsage with profile dimensions</li></ul><h4>How to Fix</h4><p>In Revit, assign structural materials to all structural element types. In ArchiCAD, use the Building Materials settings to assign materials. Ensure the IFC export includes material associations.</p>' },
+  L17: { icon:'&#x1F4D0;', title:'L17 - Space Boundary', subtitle:'Severity: Warning', body:'<h4>What This Check Does</h4><p>Level 17 checks that IfcSpace elements have space boundary relationships (IfcRelSpaceBoundary) connecting them to the bounding elements (walls, floors, ceilings, doors, windows) that form the physical enclosure of the space. Space boundaries are required for thermal analysis, acoustic analysis and detailed space data.</p><h4>Why Space Boundaries Are Needed</h4><p>NEA requires space boundary data to verify ventilation compliance - the ventilated area of a space must be calculated from the actual space geometry, not just a declared value. BCA Green Mark sustainability assessments use space boundaries for thermal simulation. URA uses space area data from IfcSpace geometry for GFA verification.</p><h4>Levels of Space Boundary</h4><ul><li>1st level: approximate space boundaries (required as a minimum)</li><li>2nd level: detailed boundaries with correct geometry for simulation (preferred for sustainability submissions)</li></ul><h4>How to Fix</h4><p>In Revit, use the "Export Room Boundaries" option in the IFC export settings. In ArchiCAD, ensure spaces (zones) are correctly enclosed by walls and the IFC export includes space boundary generation.</p>' },
+  L18: { icon:'&#x1F4D0;', title:'L18 - Geometry Validity', subtitle:'Severity: Warning', body:'<h4>What This Check Does</h4><p>Level 18 checks that every element has a valid 3D geometry representation with a non-degenerate bounding box. A degenerate bounding box occurs when an element has zero width, zero height or zero depth - meaning it has no meaningful 3D geometry at all. This check catches geometry errors that would prevent the 3D viewer from displaying the element correctly.</p><h4>Why Geometry Matters for Compliance</h4><p>CORENET-X uses 3D geometry for clash detection between submitted models, for volume calculations (room volumes, structural element volumes) and for visual review by agency officers. Elements with invalid geometry cannot be reviewed in the CORENET-X 3D viewer and will cause the submission to be flagged for resubmission with corrected geometry.</p><h4>Common Causes</h4><ul><li>Zero-thickness walls or slabs</li><li>Elements created as 2D lines that were accidentally elevated to 3D</li><li>Corrupted geometry from IFC export or import operations</li><li>Elements at the wrong scale (e.g. millimetres instead of metres)</li></ul>' },
+  L19: { icon:'&#x1F4C4;', title:'L19 - IFC Schema Version', subtitle:'Severity: Error', body:'<h4>What This Check Does</h4><p>Level 19 checks that the IFC file header declares a valid and supported IFC schema version. The FILE_SCHEMA section in the IFC STEP physical file must declare either IFC4 (IFC4 ADD2 TC1 or later) or IFC2X3 (IFC2x3 TC1). Older schema versions or non-standard schema declarations will fail this check.</p><h4>Singapore: IFC4 Required for COP 3.1</h4><p>Singapore CORENET-X COP 3.1 requires IFC4 Reference View (IFC4 RV) as the base schema. IFC2x3 is accepted for legacy submissions but SGPset_ properties and some advanced georeferencing features require IFC4. From 2025 onwards, BCA strongly recommends IFC4 for all new submissions.</p><h4>Malaysia: IFC4 and IFC2x3 Both Accepted</h4><p>The Malaysia NBeS IFC Mapping 2024 supports both IFC4 and IFC2x3. However, IFC4 is recommended for new projects.</p><a href="https://technical.buildingsmart.org/standards/ifc/" target="_blank" rel="noopener" class="modal-link">&#x1F517; IFC Standard Specifications</a>' },
+  L20: { icon:'&#x1F4C3;', title:'L20 - File Header Completeness', subtitle:'Severity: Warning', body:'<h4>What This Check Does</h4><p>Level 20 checks that the IFC file header section (the STEP physical file header before the DATA section) contains all required metadata: FILE_DESCRIPTION (description and implementation level), FILE_NAME (name, timestamp, author, organisation, preprocessor, originating system, authorisation) and FILE_SCHEMA (schema name and version).</p><h4>Required Header Fields</h4><ul><li>FILE_DESCRIPTION: description tuple (e.g. "ViewDefinition [ReferenceView]") and implementation level ("2;1")</li><li>FILE_NAME: filename, creation timestamp, author list, organisation list, preprocessor name and version, originating system name, authorisation</li><li>FILE_SCHEMA: schema identifier tuple, must be ("IFC4") or ("IFC2X3")</li></ul><h4>Why Header Data Matters</h4><p>The file header is the first thing CORENET-X reads when processing a submission. Missing or malformed header data can cause the file to be rejected before any element data is even read. The author and organisation fields are used to track submissions and identify the responsible BIM author for each element in federated models.</p><h4>How to Fix</h4><p>Most IFC export tools populate the header automatically. Ensure your BIM software\'s IFC export settings include your company name, author name and the correct schema version. Do not manually edit the IFC file header as this can corrupt the STEP format.</p>' }
+};
+
+function showAgency(code) {
+  var d = AGENCY_DATA[code];
+  if (!d) return;
+  document.getElementById('modal-icon').innerHTML = d.icon;
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-subtitle').textContent = d.subtitle;
+  document.getElementById('modal-body').innerHTML = d.body;
+  var bd = document.getElementById('modal-backdrop');
+  bd.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showCheck(code) {
+  var d = CHECK_DATA[code];
+  if (!d) return;
+  document.getElementById('modal-icon').innerHTML = d.icon;
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-subtitle').textContent = d.subtitle;
+  document.getElementById('modal-body').innerHTML = d.body;
+  var bd = document.getElementById('modal-backdrop');
+  bd.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-backdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+// ── CONTACT FORM ─────────────────────────────────────────────────
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var name    = document.getElementById('cf-name').value.trim();
+  var email   = document.getElementById('cf-email').value.trim();
+  var company = document.getElementById('cf-company').value.trim();
+  var subject = document.getElementById('cf-subject').value;
+  var message = document.getElementById('cf-message').value.trim();
+  var status  = document.getElementById('form-status');
+  var btn     = document.getElementById('form-submit');
+
+  if (!name || !email || !subject || !message) {
+    status.className = 'error'; status.style.display = 'block';
+    status.textContent = 'Please fill in all required fields.'; return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.className = 'error'; status.style.display = 'block';
+    status.textContent = 'Please enter a valid email address.'; return;
+  }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  var body = 'Name: ' + name + '\nEmail: ' + email + (company ? '\nCompany: ' + company : '') + '\nSubject: ' + subject + '\n\nMessage:\n' + message;
+  fetch('https://bbmw0-mailer.azurewebsites.net/api/send', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, email: email, company: company, subject: subject, message: message })
+  }).then(function(r) {
+    if (r.ok) {
+      status.className = 'success'; status.style.display = 'block';
+      status.textContent = 'Message sent. We will get back to you within one business day.';
+      btn.textContent = 'Sent'; document.getElementById('contact-form').reset();
+    } else { throw new Error(); }
+  }).catch(function() {
+    window.location.href = 'mailto:bbmw0@hotmail.com?subject=' + encodeURIComponent('[VERIFIQ] ' + subject) + '&body=' + encodeURIComponent(body);
+    status.className = 'success'; status.style.display = 'block';
+    status.textContent = 'Opening your email client. Alternatively, email bbmw0@hotmail.com directly.';
+    btn.disabled = false; btn.textContent = 'Send Message \u2192';
+  });
+});
+</script>
+</body>
+</html>
