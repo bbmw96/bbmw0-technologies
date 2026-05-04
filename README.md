@@ -14,7 +14,7 @@ Official website for BBMW0 Technologies and JZW BIM AI.
 The website will be live at: https://bbmw96.github.io/bbmw0-technologies
 
 ## Files
-- `index.html` — Main website (single-file, self-contained)
-- `privacy/index.html` — Privacy Policy & Terms
-- `.nojekyll` — Prevents GitHub Pages Jekyll processing
-- `CNAME` — Custom domain (leave blank for GitHub Pages subdomain)
+- `index.html`: Main website (single-file, self-contained)
+- `privacy/index.html`: Privacy Policy & Terms
+- `.nojekyll`: Prevents GitHub Pages Jekyll processing
+- `CNAME`: Custom domain (leave blank for GitHub Pages subdomain)
