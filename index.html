@@ -201,7 +201,9 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 .pcard-desc{font-size:0.86rem;color:var(--text2);line-height:1.72;flex:1;margin-bottom:22px}
 .pcard-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:26px}
 .ptag{font-size:0.63rem;padding:2px 8px;background:rgba(255,255,255,0.03);border:1px solid var(--bdr2);border-radius:4px;color:var(--text3)}
-.pcard-acts{display:flex;gap:10px;margin-top:auto}
+.pcard-acts{display:flex;gap:10px;margin-top:auto;align-items:stretch}
+.pcard-acts .btn-g{flex:1;min-width:0;justify-content:center;padding:11px 16px;font-size:0.82rem}
+.pcard-acts .btn-o{flex:0 0 44px;width:44px;padding:0;justify-content:center;font-size:1rem}
 
 /* PLACEHOLDER CARD */
 .pcard-ph{
@@ -618,8 +620,8 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <span class="ptag">&#127463;&#127475; BN</span><span class="ptag">C# .NET 8</span><span class="ptag">Offline-First</span>
       </div>
       <div class="pcard-acts">
-        <a href="jzw-bim-ai/" class="btn btn-g" style="flex:1;justify-content:center" data-i18n="pc_learn">Learn More &amp; Download</a>
-        <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 15px" aria-label="View on GitHub">&#128025;</a>
+        <a href="jzw-bim-ai/" class="btn btn-g" data-i18n="pc_learn">Learn More &amp; Download</a>
+        <a href="https://github.com/bbmw96/jzw-bim-ai" target="_blank" rel="noopener" class="btn btn-o" aria-label="View on GitHub">&#128025;</a>
       </div>
     </div>
 
@@ -637,8 +639,8 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <span class="ptag">&#127480;&#127468; SG</span><span class="ptag">&#127474;&#127486; MY</span><span class="ptag">IFC+SG 2025</span><span class="ptag">NBeS 2024</span><span class="ptag">C# .NET 8</span><span class="ptag">Offline-First</span>
       </div>
       <div class="pcard-acts">
-        <a href="https://verifiq.bbmw0.com" class="btn btn-g" style="flex:1;justify-content:center">Learn More &amp; Download</a>
-        <a href="https://github.com/bbmw96/verifiq" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 15px" aria-label="View on GitHub">&#128025;</a>
+        <a href="https://verifiq.bbmw0.com" class="btn btn-g">Learn More &amp; Download</a>
+        <a href="https://github.com/bbmw96/verifiq" target="_blank" rel="noopener" class="btn btn-o" aria-label="View on GitHub">&#128025;</a>
       </div>
     </div>
 
@@ -665,8 +667,8 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <span class="ptag">AI Agent</span><span class="ptag">Web App</span><span class="ptag">Automation</span><span class="ptag">Content</span>
       </div>
       <div class="pcard-acts">
-        <a href="https://bbmw96.github.io/bbmw0-ari/" target="_blank" rel="noopener" class="btn btn-g" style="flex:1;justify-content:center">Learn More &amp; Join Waitlist &#8599;</a>
-        <a href="https://github.com/bbmw96/bbmw0-ari" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 14px" aria-label="GitHub">&#128279;</a>
+        <a href="https://bbmw96.github.io/bbmw0-ari/" target="_blank" rel="noopener" class="btn btn-g">Learn More &amp; Join Waitlist &#8599;</a>
+        <a href="https://github.com/bbmw96/bbmw0-ari" target="_blank" rel="noopener" class="btn btn-o" aria-label="GitHub">&#128279;</a>
       </div>
     </div>
 
@@ -699,19 +701,44 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
         <span class="ptag">Browser Game</span><span class="ptag">Free</span><span class="ptag">No Install</span>
       </div>
       <div class="pcard-acts">
-        <a href="https://bbmw96.github.io/neon-snake/" target="_blank" rel="noopener" class="btn btn-g" style="flex:1;justify-content:center">Play Now &#8599;</a>
-        <a href="https://github.com/bbmw96/neon-snake" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 14px" aria-label="GitHub">&#128279;</a>
+        <a href="https://bbmw96.github.io/neon-snake/" target="_blank" rel="noopener" class="btn btn-g">Play Now &#8599;</a>
+        <a href="https://github.com/bbmw96/neon-snake" target="_blank" rel="noopener" class="btn btn-o" aria-label="GitHub">&#128279;</a>
       </div>
     </div>
 
-    <!-- Next Product Placeholder -->
-    <div class="pcard-ph rev delay-5">
+    <!-- Stack Game - Browser Game -->
+    <div class="pcard rev delay-5">
       <div class="pcard-bar"></div>
+      <div class="pcard-status"><span class="pcard-status-dot"></span>Live &middot; v1.0</div>
+      <div class="pcard-logo" style="background:linear-gradient(135deg,#0a1628,#102040);border:1px solid rgba(201,168,76,0.22);padding:0">
+        <svg viewBox="0 0 68 68" xmlns="http://www.w3.org/2000/svg" width="68" height="68" aria-label="Stack Game logo">
+          <rect width="68" height="68" rx="13" fill="#0a1628"/>
+          <rect x="18" y="46" width="32" height="8" rx="2" fill="#c9a84c" opacity="0.95"/>
+          <rect x="20" y="36" width="28" height="8" rx="2" fill="#c9a84c" opacity="0.78"/>
+          <rect x="22" y="26" width="24" height="8" rx="2" fill="#c9a84c" opacity="0.60"/>
+          <rect x="24" y="16" width="20" height="8" rx="2" fill="#c9a84c" opacity="0.40"/>
+          <line x1="34" y1="8" x2="34" y2="14" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="pcard-name">Stack Game</div>
+      <div class="pcard-version">v1.0 &bull; Browser Game</div>
+      <p class="pcard-desc">Precision stacking challenge where timing determines how high your tower climbs. Physics-based blocks, progressive speed, and a high-score leaderboard. No install needed.</p>
+      <div class="pcard-tags">
+        <span class="ptag">Browser Game</span><span class="ptag">Free</span><span class="ptag">No Install</span><span class="ptag">JavaScript</span>
+      </div>
+      <div class="pcard-acts">
+        <a href="https://bbmw96.github.io/stack-game/" target="_blank" rel="noopener" class="btn btn-g">Play Now &#8599;</a>
+        <a href="https://github.com/bbmw96/stack-game" target="_blank" rel="noopener" class="btn btn-o" aria-label="View on GitHub">&#128279;</a>
+      </div>
+    </div>
+
+    <!-- Next Product Placeholder - full width -->
+    <div class="pcard-ph rev delay-6" style="grid-column:1/-1;padding:40px 60px">
       <div class="ph-icon" aria-hidden="true">&#10010;</div>
       <div class="ph-title">Next product in development</div>
-      <p class="ph-desc">BBMW0 Technologies continues to engineer precision tools across AEC, AI, and digital industries.</p>
+      <p class="ph-desc" style="max-width:520px;margin:0 auto">BBMW0 Technologies continuously engineers precision tools across AEC, AI, gaming, and digital industries. Every new product ships with a fully multilingual website, a unique visual identity, and a polyglot codebase.</p>
     </div>
-    </div>
+  </div>
 
   </div>
 </div>
