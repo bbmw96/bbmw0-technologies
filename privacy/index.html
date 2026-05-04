@@ -67,7 +67,7 @@ a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
     if(e.ctrlKey && (e.key==='S'||e.key==='s')){ e.preventDefault(); return false; }
   });
 
-  // 3. Anti-devtools detection — blur page if DevTools open
+  // 3. Anti-devtools detection: blur page if DevTools open
   var _devOpen = false;
   var _threshold = 160;
   function _checkDevTools(){
