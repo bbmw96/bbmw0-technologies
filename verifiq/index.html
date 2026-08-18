@@ -124,7 +124,7 @@
     .check-item { display: flex; align-items: flex-start; gap: 12px; background: var(--navy-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: border-color .2s; }
     .check-item:hover { border-color: rgba(0,196,160,.45); }
     .check-num { width: 28px; height: 28px; background: rgba(0,196,160,.12); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--teal); flex-shrink: 0; }
-    .check-info h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .check-info h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
     .check-info p { font-size: 11px; color: var(--mid); line-height: 1.5; }
     .check-click-hint { font-size: 10px; color: var(--teal); margin-top: 4px; opacity: .7; }
 
@@ -287,6 +287,7 @@
 </nav>
 
 <!-- HERO -->
+<main id="main">
 <section class="hero section">
   <div class="container">
     <div class="hero-inner">
@@ -417,26 +418,26 @@
     <h2 class="section-title">20 Compliance Check Levels</h2>
     <p class="section-sub">Run on every single element in your model. Click any check to learn more. Singapore and Malaysia modes included.</p>
     <div class="checks-grid">
-      <div class="check-item" onclick="showCheck('L1')"><div class="check-num">L1</div><div class="check-info"><h4>IFC Entity Class</h4><p>No IfcBuildingElementProxy - every element must use a specific class</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L2')"><div class="check-num">L2</div><div class="check-info"><h4>PredefinedType</h4><p>Specific value required - NOTDEFINED is not accepted</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L3')"><div class="check-num">L3</div><div class="check-info"><h4>ObjectType (UserDefined)</h4><p>When PredefinedType=USERDEFINED, ObjectType must be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L4')"><div class="check-num">L4</div><div class="check-info"><h4>Classification Reference</h4><p>Every element must have an IfcClassificationReference attached</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L5')"><div class="check-num">L5</div><div class="check-info"><h4>Classification Edition</h4><p>References must point to the current COP 3.1 edition</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L6')"><div class="check-num">L6</div><div class="check-info"><h4>Mandatory Pset_</h4><p>All required IFC standard property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L7')"><div class="check-num">L7</div><div class="check-info"><h4>SGPset_ (Singapore Only)</h4><p>All required Singapore-specific property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L8')"><div class="check-num">L8</div><div class="check-info"><h4>Property Values Populated</h4><p>Required properties must not be empty or NOTDEFINED</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L9')"><div class="check-num">L9</div><div class="check-info"><h4>Data Type Validation</h4><p>Values must match required type: string, boolean, number or measure</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L10')"><div class="check-num">L10</div><div class="check-info"><h4>Enumeration Values</h4><p>Enumeration properties must use a value from the permitted list</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L11')"><div class="check-num">L11</div><div class="check-info"><h4>Spatial Containment</h4><p>Every element must sit within a valid IfcBuildingStorey</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L12')"><div class="check-num">L12</div><div class="check-info"><h4>Storey Elevations</h4><p>IfcBuildingStorey elements must have correct elevation values</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L13')"><div class="check-num">L13</div><div class="check-info"><h4>Georeferencing</h4><p>IfcMapConversion to SVY21 (Singapore) or GDM2000 (Malaysia)</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L14')"><div class="check-num">L14</div><div class="check-info"><h4>Site and Building Hierarchy</h4><p>IfcProject, IfcSite and IfcBuilding hierarchy must be complete</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L15')"><div class="check-num">L15</div><div class="check-info"><h4>GUID Uniqueness</h4><p>Every element GlobalId must be unique across the model</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L16')"><div class="check-num">L16</div><div class="check-info"><h4>Material Assignment</h4><p>Structural elements must have an IfcMaterial assigned</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L17')"><div class="check-num">L17</div><div class="check-info"><h4>Space Boundary</h4><p>IfcSpace elements must have space boundary relationships</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L18')"><div class="check-num">L18</div><div class="check-info"><h4>Geometry Validity</h4><p>Element bounding boxes must be non-degenerate</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L19')"><div class="check-num">L19</div><div class="check-info"><h4>IFC Schema Version</h4><p>File must declare a valid IFC4 or IFC2x3 schema version</p><span class="check-click-hint">Click to learn more</span></div></div>
-      <div class="check-item" onclick="showCheck('L20')"><div class="check-num">L20</div><div class="check-info"><h4>File Header Completeness</h4><p>FILE_DESCRIPTION, FILE_NAME and FILE_SCHEMA must all be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L1')"><div class="check-num">L1</div><div class="check-info"><h3>IFC Entity Class</h3><p>No IfcBuildingElementProxy - every element must use a specific class</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L2')"><div class="check-num">L2</div><div class="check-info"><h3>PredefinedType</h3><p>Specific value required - NOTDEFINED is not accepted</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L3')"><div class="check-num">L3</div><div class="check-info"><h3>ObjectType (UserDefined)</h3><p>When PredefinedType=USERDEFINED, ObjectType must be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L4')"><div class="check-num">L4</div><div class="check-info"><h3>Classification Reference</h3><p>Every element must have an IfcClassificationReference attached</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L5')"><div class="check-num">L5</div><div class="check-info"><h3>Classification Edition</h3><p>References must point to the current COP 3.1 edition</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L6')"><div class="check-num">L6</div><div class="check-info"><h3>Mandatory Pset_</h3><p>All required IFC standard property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L7')"><div class="check-num">L7</div><div class="check-info"><h3>SGPset_ (Singapore Only)</h3><p>All required Singapore-specific property sets must be present</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L8')"><div class="check-num">L8</div><div class="check-info"><h3>Property Values Populated</h3><p>Required properties must not be empty or NOTDEFINED</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L9')"><div class="check-num">L9</div><div class="check-info"><h3>Data Type Validation</h3><p>Values must match required type: string, boolean, number or measure</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L10')"><div class="check-num">L10</div><div class="check-info"><h3>Enumeration Values</h3><p>Enumeration properties must use a value from the permitted list</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L11')"><div class="check-num">L11</div><div class="check-info"><h3>Spatial Containment</h3><p>Every element must sit within a valid IfcBuildingStorey</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L12')"><div class="check-num">L12</div><div class="check-info"><h3>Storey Elevations</h3><p>IfcBuildingStorey elements must have correct elevation values</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L13')"><div class="check-num">L13</div><div class="check-info"><h3>Georeferencing</h3><p>IfcMapConversion to SVY21 (Singapore) or GDM2000 (Malaysia)</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L14')"><div class="check-num">L14</div><div class="check-info"><h3>Site and Building Hierarchy</h3><p>IfcProject, IfcSite and IfcBuilding hierarchy must be complete</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L15')"><div class="check-num">L15</div><div class="check-info"><h3>GUID Uniqueness</h3><p>Every element GlobalId must be unique across the model</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L16')"><div class="check-num">L16</div><div class="check-info"><h3>Material Assignment</h3><p>Structural elements must have an IfcMaterial assigned</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L17')"><div class="check-num">L17</div><div class="check-info"><h3>Space Boundary</h3><p>IfcSpace elements must have space boundary relationships</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L18')"><div class="check-num">L18</div><div class="check-info"><h3>Geometry Validity</h3><p>Element bounding boxes must be non-degenerate</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L19')"><div class="check-num">L19</div><div class="check-info"><h3>IFC Schema Version</h3><p>File must declare a valid IFC4 or IFC2x3 schema version</p><span class="check-click-hint">Click to learn more</span></div></div>
+      <div class="check-item" onclick="showCheck('L20')"><div class="check-num">L20</div><div class="check-info"><h3>File Header Completeness</h3><p>FILE_DESCRIPTION, FILE_NAME and FILE_SCHEMA must all be populated</p><span class="check-click-hint">Click to learn more</span></div></div>
     </div>
   </div>
 </section>
@@ -606,11 +607,11 @@
       <div>
         <form class="contact-form" id="contact-form" novalidate>
           <div class="form-row">
-            <div class="form-group"><label for="cf-name">Full Name *</label><input type="text" id="cf-name" placeholder="Your name" required></div>
-            <div class="form-group"><label for="cf-email">Email Address *</label><input type="email" id="cf-email" placeholder="you@company.com" required></div>
+            <div class="form-group"><label for="cf-name">Full Name *</label><input type="text" id="cf-name" placeholder="Your name" autocomplete="name" required></div>
+            <div class="form-group"><label for="cf-email">Email Address *</label><input type="email" id="cf-email" placeholder="you@company.com" autocomplete="email" required></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label for="cf-company">Company / Organisation</label><input type="text" id="cf-company" placeholder="Firm name"></div>
+            <div class="form-group"><label for="cf-company">Company / Organisation</label><input type="text" id="cf-company" placeholder="Firm name" autocomplete="organization"></div>
             <div class="form-group"><label for="cf-subject">Subject *</label><select id="cf-subject" required><option value="">Select...</option><option>Licence Enquiry</option><option>Technical Support</option><option>Bulk / Enterprise Pricing</option><option>Training Request</option><option>General Question</option></select></div>
           </div>
           <div class="form-group"><label for="cf-message">Message *</label><textarea id="cf-message" placeholder="Tell us how we can help..." required></textarea></div>
@@ -623,12 +624,13 @@
 </section>
 
 <!-- FOOTER -->
+</main>
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div>
         <div class="footer-brand-row">
-          <a href="https://bbmw0.com" target="_blank" title="BBMW0 Technologies" style="opacity:.75;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75">
+          <a href="https://bbmw0.com" target="_blank" title="BBMW0 Technologies" aria-label="BBMW0 Technologies - opens in new tab" style="opacity:.75;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75">
             <svg viewBox="0 0 112 90" xmlns="http://www.w3.org/2000/svg" width="30" height="24" fill="#c9a84c" aria-hidden="true">
               <polygon points="0,57 18,13 36,53 56,7 76,53 94,13 112,57"/>
               <rect x="0" y="51" width="112" height="9"/>
