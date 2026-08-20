@@ -462,6 +462,11 @@ canvas#cnv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 }
 .stat{ transition:transform .5s var(--spring); }
 </style>
+<style id="site-enhance">
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #C9A84C; outline-offset: 2px; border-radius: 2px;
+}
+</style>
 </head>
 <body>
 
@@ -1709,6 +1714,59 @@ function showToast(msg) {
   var hero=document.getElementById("hero");
   if(hero&&"IntersectionObserver" in window){new IntersectionObserver(function(e){seen=e[0].isIntersecting;run(seen&&!document.hidden);},{threshold:0}).observe(hero);}
   run(true);
+})();
+</script>
+<script id="site-enhance-js">
+(function () {
+  var reduce = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var re = /^(\d[\d,]*(?:\.\d+)?)(\+|%)?$/;
+  var items = [];
+  [].forEach.call(document.querySelectorAll('.stat-num, .sv, .hsv'), function (el) {
+    var t = el.textContent.trim();
+    var m = re.exec(t);
+    if (!m) return;                       // skip non-numeric (LDN, v5.8)
+    var raw = m[1];
+    var it = {
+      el: el, end: parseFloat(raw.replace(/,/g, '')), suffix: m[2] || '',
+      comma: raw.indexOf(',') >= 0, decimals: (raw.split('.')[1] || '').length,
+      target: t, done: false
+    };
+    el.__cu = it; items.push(it);
+    if (!reduce) el.textContent = '0' + it.suffix;
+  });
+  if (!items.length) return;
+
+  function fmt(v, it) {
+    var s = it.comma ? Math.round(v).toLocaleString('en-US')
+      : (it.decimals ? v.toFixed(it.decimals) : String(Math.round(v)));
+    return s + it.suffix;
+  }
+  function run(it) {
+    if (it.done) return; it.done = true;
+    if (reduce) { it.el.textContent = it.target; return; }
+    var dur = 1300, start = null;
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      it.el.textContent = fmt(it.end * ease(p), it);
+      if (p < 1) requestAnimationFrame(step);
+      else it.el.textContent = it.target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && e.target.__cu) { run(e.target.__cu); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    items.forEach(function (it) { io.observe(it.el); });
+  } else {
+    items.forEach(run);
+  }
 })();
 </script>
 </body>
