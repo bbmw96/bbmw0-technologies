@@ -30,7 +30,8 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behaviour: smooth; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--navy); colour: var(--white); line-height: 1.6; overflow-x: hidden; }
+    body { font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4, .section-title, .stat-num, .hw-score-num { font-family: 'Sora', 'Segoe UI', system-ui, sans-serif; }
     body { color: var(--white); }
     a { color: var(--teal); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -252,7 +253,54 @@
 .btn-primary,.btn-nav{transition:transform .28s var(--spring),background .18s ease}
 .btn-primary:active{transform:scale(0.97)}
 @media(hover:hover)and(pointer:fine){.feature:hover,.step:hover{transform:translateY(-4px)}}
-.feature,.step{transition:transform .5s var(--spring)}</style></head>
+.feature,.step{transition:transform .5s var(--spring)}</style><style id="dash-anim">
+/* Compliance dashboard reveal. No-JS and reduced-motion keep the final state. */
+.hero-visual { position: relative; }
+.hero-visual::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(0,196,160,.18), transparent);
+  opacity: 0; pointer-events: none; transform: translateY(-45%); z-index: 3;
+}
+.hero-visual.in-view::after {
+  animation: hw-scan 1650ms cubic-bezier(.23,1,.32,1) 120ms 1;
+}
+@keyframes hw-scan {
+  0% { opacity: 0; transform: translateY(-45%); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(235%); }
+}
+.js-dash .hw-score-num { display: inline-block; }
+.js-dash.in-view .hw-score-num {
+  animation: hw-pop 950ms cubic-bezier(.23,1,.32,1) both;
+}
+@keyframes hw-pop {
+  0% { transform: scale(.96); filter: drop-shadow(0 0 0 rgba(245,158,11,0)); }
+  55% { filter: drop-shadow(0 0 20px rgba(245,158,11,.5)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(245,158,11,.28)); }
+}
+.js-dash .hw-bar-fill { transition: width 1100ms cubic-bezier(.23,1,.32,1); }
+.js-dash .hw-bar-row:nth-child(1) .hw-bar-fill { transition-delay: 120ms; }
+.js-dash .hw-bar-row:nth-child(2) .hw-bar-fill { transition-delay: 220ms; }
+.js-dash .hw-bar-row:nth-child(3) .hw-bar-fill { transition-delay: 320ms; }
+.js-dash .hw-bar-row:nth-child(4) .hw-bar-fill { transition-delay: 420ms; }
+.js-dash .hw-body .badge {
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .5s ease, transform .5s cubic-bezier(.23,1,.32,1);
+}
+.js-dash.in-view .hw-body .badge { opacity: 1; transform: none; }
+.js-dash.in-view .hw-body .badge:nth-child(1) { transition-delay: .55s; }
+.js-dash.in-view .hw-body .badge:nth-child(2) { transition-delay: .65s; }
+.js-dash.in-view .hw-body .badge:nth-child(3) { transition-delay: .75s; }
+.js-dash.in-view .hw-body .badge:nth-child(4) { transition-delay: .85s; }
+.js-dash.in-view .hw-body .badge:nth-child(5) { transition-delay: .95s; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual.in-view::after { animation: none; }
+  .js-dash .hw-bar-fill { transition: none; }
+  .js-dash.in-view .hw-score-num { animation: none; filter: none; }
+  .js-dash .hw-body .badge { opacity: 1; transform: none; transition: none; }
+}
+</style>
+</head>
 <body>
 
 <!-- MODAL BACKDROP -->
@@ -674,8 +722,8 @@
 (function() {
   var l = document.createElement('link');
   l.rel = 'stylesheet';
-  l.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap';
-  l.onload = function() { document.body.style.fontFamily = "'Inter','Segoe UI',system-ui,sans-serif"; };
+  l.href = 'https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap';
+  l.onload = function() { document.body.style.fontFamily = "'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif"; };
   document.head.appendChild(l);
   setTimeout(function() { document.body.style.opacity = '1'; }, 2000);
 })();
@@ -903,5 +951,67 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
   if(hero&&"IntersectionObserver" in window){new IntersectionObserver(function(e){seen=e[0].isIntersecting;run(seen&&!document.hidden);},{threshold:0}).observe(hero);}
   run(true);
 })();
-</script></body>
+</script><script id="dash-anim-js">
+(function () {
+  var v = document.querySelector('.hero-visual');
+  if (!v) return;
+  var reduce = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  v.classList.add('js-dash');
+
+  var fills = [].slice.call(v.querySelectorAll('.hw-bar-fill'));
+  var counts = [].slice.call(v.querySelectorAll('.hw-bar-count'));
+  var scoreEl = v.querySelector('.hw-score-num');
+
+  fills.forEach(function (f) { f.dataset.w = f.style.width; if (!reduce) f.style.width = '0%'; });
+  var countTargets = counts.map(function (c) { return c.textContent; });
+  var scoreTarget = scoreEl ? scoreEl.textContent : '';
+  if (!reduce) {
+    counts.forEach(function (c) { c.textContent = '0'; });
+    if (scoreEl) scoreEl.textContent = '0.0%';
+  }
+
+  function parseNum(s) { return parseFloat(String(s).replace(/[^0-9.]/g, '')) || 0; }
+  function fmtInt(n) { return Math.round(n).toLocaleString('en-US'); }
+
+  function countUp(el, target, dur) {
+    var end = parseNum(target);
+    var decimals = /\./.test(target) ? 1 : 0;
+    var suffix = /%/.test(target) ? '%' : '';
+    var start = null;
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var val = end * ease(p);
+      el.textContent = (decimals ? val.toFixed(1) : fmtInt(val)) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function run() {
+    v.classList.add('in-view');
+    if (reduce) return;
+    requestAnimationFrame(function () {
+      fills.forEach(function (f) { f.style.width = f.dataset.w; });
+    });
+    if (scoreEl) countUp(scoreEl, scoreTarget, 1500);
+    counts.forEach(function (c, i) { countUp(c, countTargets[i], 1300); });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { run(); io.disconnect(); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(v);
+  } else {
+    run();
+  }
+})();
+</script>
+</body>
 </html>
