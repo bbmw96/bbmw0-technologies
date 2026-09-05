@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy  &middot;  BBMW0 Technologies</title>
+<meta name="description" content="How BBMW0 Technologies collects, uses and protects your data across VERIFIQ and its software.">
 <link rel="canonical" href="https://bbmw0.com/privacy/">
 <style>
 body{font-family:"DM Sans",system-ui,sans-serif;background:#040A12;color:#EEE9E2;max-width:800px;margin:0 auto;padding:60px 28px;line-height:1.75}
@@ -18,9 +19,19 @@ a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
 * { -webkit-tap-highlight-color: transparent; }
 
 </style>
-</head>
+<style id="cinematic-upgrade">:root{--spring:linear(0.0 0.0%, 0.0154 2.27%, 0.0555 4.55%, 0.1125 6.82%, 0.1801 9.09%, 0.2535 11.36%, 0.329 13.64%, 0.4038 15.91%, 0.4759 18.18%, 0.544 20.45%, 0.607 22.73%, 0.6646 25.0%, 0.7165 27.27%, 0.7627 29.55%, 0.8034 31.82%, 0.8389 34.09%, 0.8696 36.36%, 0.8958 38.64%, 0.918 40.91%, 0.9366 43.18%, 0.9521 45.45%, 0.9648 47.73%, 0.9751 50.0%, 0.9833 52.27%, 0.9899 54.55%, 0.9949 56.82%, 0.9988 59.09%, 1.0016 61.36%, 1.0036 63.64%, 1.005 65.91%, 1.0059 68.18%, 1.0063 70.45%, 1.0065 72.73%, 1.0064 75.0%, 1.0062 77.27%, 1.0058 79.55%, 1.0054 81.82%, 1.0049 84.09%, 1.0044 86.36%, 1.0039 88.64%, 1.0034 90.91%, 1.003 93.18%, 1.0026 95.45%, 1.0022 97.73%, 1.0019 100.0%);}
+
+.hero-webgl{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 900ms cubic-bezier(0.23,1,0.32,1);z-index:0}
+@media (prefers-reduced-motion: reduce){ .hero-webgl{display:none} }
+.grain-cine{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0.055;mix-blend-mode:overlay}
+
+body{position:relative}
+h1{font-size:clamp(2.4rem,5vw,3.6rem)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:340px;background:radial-gradient(60% 100% at 50% 0,rgba(201,168,76,0.10),transparent 70%);pointer-events:none;z-index:0}
+main,main#main{position:relative;z-index:1}</style></head>
 <body>
 <a href="/" class="back">&#8592; Back to bbmw0.com</a>
+<main id="main">
 <h1>Privacy Policy</h1>
 <p><strong>BBMW0 Technologies</strong>  &middot;  Last updated: April 2026</p>
 
@@ -48,6 +59,7 @@ a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
 <h2>Licence Agreement</h2>
 <p>By purchasing and activating JZW BIM AI you agree to the End User Licence Agreement (EULA) provided at the time of purchase. The software is provided as-is; BBMW0 Technologies makes no warranty regarding fitness for any specific regulatory purpose.</p>
 
+</main>
 <script>
 (function(){
   'use strict';
@@ -106,5 +118,8 @@ a{color:#C9A84C}p,li{color:#8599B0;font-size:0.92rem}
 })();
 </script>
 
-</body>
+<svg class="grain-cine" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <filter id="cine-grain"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#cine-grain)"/>
+</svg></body>
 </html>
